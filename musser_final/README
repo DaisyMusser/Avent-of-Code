@@ -1,0 +1,31 @@
+
+This is Quattro Musser's enigma final project for intro to computer programing. I succeeded in writing a program that will 
+generate a specified number of cipher alphabets, which will all be distinct from each other and unique to a specified setting, 
+following the same principles as the german military version of the enigma machine (see file enigma1.py). This can be used to 
+encrypt messages, although it is a little labor intensive for the user. I was unsuccessful in writing a program that do the work
+for the user; taking text from the user and automatically encrypting or decrypting it with the cipher alphabets enigma1.py can 
+generate. To see my failed attempt at this, see the file enigma.py. 
+
+In this project I used the following sources to learn about the enigma machine:
+	The Code Book (http://93.174.95.29/_ads/188111BF9251CA4B17FE38EB20570A62)
+        Turnings Enigma Problem (https://www.youtube.com/watch?v=d2NWPG2gB_A)
+	Enigma Machine (https://www.youtube.com/watch?v=G2_Q9FoD-oQ)
+	Flaw in the Enigma Code (https://www.youtube.com/watch?v=V4V2bpZlqx8)
+I wanted all of the code in this project to be my own, so while I used numerous websites for sytax help, I never copied anything 
+more then single cammands. Because of this nothing is cited in the body of my code.
+
+While I am proud of this project, I don’t feel that my enigma machine works as well as I want it to. If I decide to work more on this project in the future, this is my to do / wish list, in order of importance:
+
+	- Automate encryption and decryption of text
+	- Write some error catching for user inputs
+	- Make the plug board configuration adjustable by the user (it was in the military version of the enigma machines)
+	- Prevent any letter from being encrypted as itself. Because of the constraints of using actual wires and not computer 
+		code, the actual enigma machines where unable to encrypt a letter as itself, which is the flaw that eventually 
+		led to enigma being cracked in world war II. It would be cool, and a little funny to code in this flaw to my 
+		program, as it would weaken the encryption 
+	- Allow user to select from an array of rotor configurations and pick the order the text will pass through the rotors 
+		(this would all be more historically accurate and would make encryption stronger) 
+	- Write a program that can take a coded message and determine the settings that were used to produce it as well as the 
+		original text of the message. This program would use the same methods as Alan Turning’s Bombe machine. (this is 
+		basically a whole nother project)
+
