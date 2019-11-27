@@ -6,5 +6,5 @@ int tricheck( int a, int b, int c ) {
 }
 
 // main program
-int x = tricheck( 3, 3, 3 );
-
+int x;
+x = tricheck( 3, 3, 3 );
