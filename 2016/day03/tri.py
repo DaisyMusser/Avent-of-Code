@@ -14,11 +14,8 @@ count = 0
 with open('input.txt') as fp:
     line = fp.readline()
     while line:
-        count = count + tricheck(line[0], line[1], line[2])
+        print(line)
         line = fp.readline()
-
-print(count)
-
 
 
 
