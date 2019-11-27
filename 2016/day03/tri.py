@@ -14,8 +14,12 @@ count = 0
 with open('input.txt') as fp:
     line = fp.readline()
     while line:
-        print(line)
+        a = (line[2]*100) + (line[3]*10) + line[4]
+        b = (line[7]*100) + (line[8]*10) + line[9]
+        c = (line[12]*100) + (line[13]*10) + line[14]
+        count = count + tricheck(a, b, c)
         line = fp.readline()
 
+print(count)
 
 
