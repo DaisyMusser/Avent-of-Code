@@ -29,12 +29,13 @@ with open(file) as fp:
         line1 = fp.readline()
         line2 = fp.readline()
         line3 = fp.readline()
+        # print(line1,line2,line3)        line1, 2, 3 are fine at this point
         while line1:
             line1 = linefix(line1)
             line2 = linefix(line2)
             line3 = linefix(line3)
             for i in range(3):
-                index = i
+                index = 0
                 a = (line1[index+2]*100) + (line1[index+3]*10) + line1[index+4]
                 b = (line2[index+2]*100) + (line2[index+3]*10) + line2[index+4]
                 c = (line3[index+2]*100) + (line3[index+3]*10) + line3[index+4]
