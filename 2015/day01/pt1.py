@@ -12,6 +12,6 @@ def translator(directions):
 # main program
 file = 'input.txt'      # This is all you have to change to deal with dif. input file names
 with open(file) as fp:
-    directions = fp.readline()
-    properFloor = translator(directions)
-    print(properFloor)
+    directions = fp.read()
+    proper_floor = translator(directions)
+    print("\n Directed to floor: %d \n" % proper_floor)
