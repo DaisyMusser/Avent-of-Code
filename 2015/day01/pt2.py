@@ -17,11 +17,11 @@ def basement(record):
     return x+1
 
 
-# main program?
+# main program
 file = 'input.txt'      # This is all you have to change to deal with dif. input file names
 with open(file) as fp:
-    directions = fp.readline()
+    directions = fp.read()
     record = tracker(directions)
     loc = basement(record)
-    print(loc)
+    print("\n First directed to the basement at line #%d \n" % loc)
 
