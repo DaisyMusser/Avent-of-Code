@@ -50,7 +50,8 @@ def house_counter(human_houses_visited, robo_houses_visited):
     # code adapted form ( https://stackoverflow.com/questions/31053385/get-a-set-of-2d-list-in-python )
     human_houses_visited = list(set(map(tuple, human_houses_visited)))
     robo_houses_visited = list(set(map(tuple, robo_houses_visited)))
-    return len(human_houses_visited)+len(robo_houses_visited)
+    total_houses_visited = human_houses_visited.union(robo_houses_visited)
+    return len(total_houses_visited)
 
 
 # main program
