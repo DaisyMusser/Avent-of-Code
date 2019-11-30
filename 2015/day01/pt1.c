@@ -3,7 +3,8 @@
 
 
 
-// takes directions array and returns floor they send you too
+// takes directions array of arbitrary length and returns the specified floor
+// can loose the counter processing and just pass in size after measure mod is working
 int translator ( char directions[] ) {
    int i, floor, counter;
    
@@ -26,7 +27,17 @@ int translator ( char directions[] ) {
 
 // main program
 int main ( void ) {
-   char directions[] = { ')', ')', ')','(','(','(' };
-   
-   printf( "\n\n %d\n\n", translator( directions ) );
+   FILE* fp;
+   char *buffer;
+
+   buffer = (char *) malloc( MAXCHAR * sizeof( char ) );  
+
+   fp = fopen( "input.txt", "r" );
+
+   while ( fgets( buffer, MAXCHAR, fp ) ) {
+      
+
+   printf ( "ta-da: %d \n", translator( temp ) );
+
+   return 0;
 }
