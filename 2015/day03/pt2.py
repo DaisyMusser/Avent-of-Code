@@ -3,18 +3,23 @@ def human_translator(moves):
     human_houses_visited = []
     x = 0
     y = 0
-    for i in range(len(moves)):
-        index = 0
-        if moves[index] == '>':
-            x += 1
-        if moves[index] == '<':
-            x -= 1
-        if moves[index] == '^':
-            y += 1
-        if moves[index] == 'v':
-            y -= 1
-        index += 2
-        human_houses_visited.append([x, y])
+    index = 0
+    human_len = 2/len(moves)
+    for i in range(int(human_len)):
+        if moves[index]:
+            human_houses_visited.append([x, y])
+            if moves[index] == '>':
+                x += 1
+            if moves[index] == '<':
+                x -= 1
+            if moves[index] == '^':
+                y += 1
+            if moves[index] == 'v':
+                y -= 1
+            index += 2
+        else:
+            break
+
     return human_houses_visited
 
 
@@ -23,18 +28,23 @@ def robo_translator(moves):
     robo_houses_visited = []
     x = 0
     y = 0
-    for i in range(len(moves)):
-        index = 1
-        if moves[index] == '>':
-            x += 1
-        if moves[index] == '<':
-            x -= 1
-        if moves[index] == '^':
-            y += 1
-        if moves[index] == 'v':
-            y -= 1
-        index += 2
-        robo_houses_visited.append([x, y])
+    index = 1
+    robo_len = (2 / len(moves))-1
+    for i in range(int(robo_len)):
+        if moves[index]:
+            robo_houses_visited.append([x, y])
+            if moves[index] == '>':
+                x += 1
+            if moves[index] == '<':
+                x -= 1
+            if moves[index] == '^':
+                y += 1
+            if moves[index] == 'v':
+                y -= 1
+            index += 2
+        else:
+            break
+
     return robo_houses_visited
 
 
@@ -42,15 +52,18 @@ def robo_translator(moves):
 def reader(file):
     with open(file) as fp:
         moves = fp.read()
+
     return moves
 
 
 # returns count of unique houses visited (removes doubles)
 def house_counter(human_houses_visited, robo_houses_visited):
-    # code adapted form ( https://stackoverflow.com/questions/31053385/get-a-set-of-2d-list-in-python )
-    human_houses_visited = list(set(map(tuple, human_houses_visited)))
-    robo_houses_visited = list(set(map(tuple, robo_houses_visited)))
-    total_houses_visited = human_houses_visited.union(robo_houses_visited)
+    for i in range(len(human_houses_visited)):
+        robo_houses_visited.append(human_houses_visited[i])    # combines robo and human house arrays
+
+# code adapted form ( https://stackoverflow.com/questions/31053385/get-a-set-of-2d-list-in-python )
+    total_houses_visited = set(map(tuple, robo_houses_visited))
+
     return len(total_houses_visited)
 
 
@@ -58,6 +71,7 @@ def house_counter(human_houses_visited, robo_houses_visited):
 moves = reader('input.txt')   # change here for different file names
 
 human_houses_visited = human_translator(moves)
+print(human_houses_visited)
 robo_houses_visited = robo_translator(moves)
 
 print(house_counter(human_houses_visited, robo_houses_visited))
