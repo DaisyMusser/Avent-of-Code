@@ -1,12 +1,15 @@
 import math
 
 
+# takes mass and returns fuel required for that mass alone
 def fuel_counter(mass):
     # devide by 3 round down then subtract 2
-    fuel = (math.floor(mass/3))-2
-    if fuel < 1:
-        fuel = 0
-    return fuel
+    x = mass/3
+    x = math.floor(x)
+    x -= 2
+    if x < 1:
+        x = 0
+    return x
 
 
 # Reads file into modules array, code adapted from ( https://github.com/imhoffman/advent/blob/master/2015/01/one.py )
@@ -31,10 +34,13 @@ def module_tidier(messy_modules):
 
 
 # big problem with this that I d/t even know how to articulate
-def recursive_fuel_calculator(fuel, fuel_counter):
-    total_fuel = fuel   # a little stupid, but hey: readability
-    while fuel_counter(total_fuel) > 0:
+def recursive_fuel_calculator(module_fuel, fuel_counter):
+    total_fuel = 0
+    total_fuel += module_fuel
+    last_fuel = module_fuel
+    while fuel_counter(last_fuel) > 0:
         total_fuel += fuel_counter(total_fuel)
+        last_fuel = fuel_counter(total_fuel)
     return total_fuel
 
 
@@ -47,6 +53,8 @@ total_module_fuel = 0
 for i in range(len(tidy_modules)):
     total_module_fuel += (fuel_counter(tidy_modules[i]))
 
+total_fuel = recursive_fuel_calculator(total_module_fuel, fuel_counter)
+print(total_fuel)
 
 
 
