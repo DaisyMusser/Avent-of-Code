@@ -3,7 +3,12 @@ import math
 
 def fuel_counter(mass):
     # devide by 3 round down then subtract 2
-    return (math.floor(mass/3))-2
+    x = mass/3
+    x = math.floor(x)
+    x -= 2
+    if x < 1:
+        x = 0
+    return x
 
 
 # Reads file into modules array, code adapted from ( https://github.com/imhoffman/advent/blob/master/2015/01/one.py )

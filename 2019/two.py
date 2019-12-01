@@ -4,6 +4,7 @@ import math
 # takes mass and returns fuel required for that mass alone
 def fuel_counter(mass):
     # devide by 3 round down then subtract 2
+    print(mass)
     x = mass/3
     x = math.floor(x)
     x -= 2
