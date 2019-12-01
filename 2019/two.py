@@ -39,10 +39,23 @@ def recursive_fuel_calculator(module_fuel, fuel_counter):
     total_fuel = 0
     total_fuel += module_fuel
     last_fuel = module_fuel
-    while fuel_counter(last_fuel) > 0:
-        total_fuel += fuel_counter(total_fuel)
-        last_fuel = fuel_counter(total_fuel)
+    while True:
+        current_fuel = fuel_counter(last_fuel)
+        if current_fuel == 0:
+            break
+        total_fuel += current_fuel
+        last_fuel = current_fuel
     return total_fuel
+
+
+
+   # total_fuel = 0
+   # total_fuel += module_fuel
+   # last_fuel = module_fuel
+   # while fuel_counter(last_fuel) > 0:
+   #     total_fuel += fuel_counter(total_fuel)
+   #     last_fuel = fuel_counter(total_fuel)
+   # return total_fuel
 
 
 # main function
