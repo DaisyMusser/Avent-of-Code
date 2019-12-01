@@ -29,16 +29,23 @@ def module_tidier(messy_modules):
         tidy_modules[i] = int(tidy_modules[i])
     return tidy_modules
 
-def recursive_fuel_calculator(fuel):
-    total
+
+# big problem with this that I d/t even know how to articulate
+def recursive_fuel_calculator(fuel, fuel_counter):
+    total_fuel = fuel   # a little stupid, but hey: readability
+    while fuel_counter(total_fuel) > 0:
+        total_fuel += fuel_counter(total_fuel)
+    return total_fuel
+
+
 # main function
 messy_modules = file_reader('input.txt')  # change here for different file_names
 tidy_modules = module_tidier(messy_modules)
 
-total_modu_fuel = 0
+total_module_fuel = 0
 
 for i in range(len(tidy_modules)):
-    total_fuel += (fuel_counter(tidy_modules[i]))
+    total_module_fuel += (fuel_counter(tidy_modules[i]))
 
 
 
