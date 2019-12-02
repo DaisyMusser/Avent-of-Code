@@ -1,3 +1,6 @@
+import math
+
+
 # Reads file into string, code adapted from ( https://github.com/imhoffman/advent/blob/master/2015/01/one.py )
 def file_to_string(file_name):
     with open(file_name) as fp:
@@ -38,14 +41,33 @@ def string_to_array(opcode_string, comma_index):
     return opcode
 
 
+# runs the opcode and returns a modified opcode
+def run_opcode(opcode):
+    block_start = 0
+    output = opcode[:]
+    for i in range(math.ceil(len(opcode)/4)):
+        if opcode[block_start] == 1:          # add x and y at z
+            x = opcode[opcode[block_start+1]]
+            y = opcode[opcode[block_start+2]]
+            output[opcode[block_start+3]] = x+y
+        if opcode[block_start] == 2:          # mult. x and y at z
+            x = opcode[opcode[block_start + 1]]
+            y = opcode[opcode[block_start + 2]]
+            output[opcode[block_start + 3]] = x*y
+        if opcode[block_start] == 99:         # end opcode
+            break
+        block_start += 4
+    return output
+
+
 # main program:
 
 string_opcode = file_to_string('input.txt')  # change here for different file names
 all_commas = comma_finder(string_opcode)
 opcode = string_to_array(string_opcode, all_commas)
-print(opcode)
 # done with input formatting
 
 # start input processing
-
+output = run_opcode(opcode)
+print(output[0])
 
