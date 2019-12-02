@@ -37,12 +37,11 @@ def fuel_counter(mass):
 def recursive_fuel_calculator(last_fuel, fuel_counter):
     total_fuel = 0
     while True:
-        print(last_fuel)
         current_fuel = fuel_counter(last_fuel)
         if current_fuel == 0:
             break
         total_fuel += last_fuel
-        last_fuel = int(current_fuel)
+        last_fuel = current_fuel
     total_fuel += last_fuel
     return total_fuel
 
