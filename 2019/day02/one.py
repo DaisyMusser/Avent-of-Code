@@ -56,6 +56,7 @@ def run_opcode(opcode):
             output[opcode[block_start + 3]] = x*y
         if opcode[block_start] == 99:         # end opcode
             break
+        opcode = output[:]
         block_start += 4
     return output
 
@@ -69,5 +70,5 @@ opcode = string_to_array(string_opcode, all_commas)
 
 # start input processing
 output = run_opcode(opcode)
-print(output[0])
+print(output)
 
