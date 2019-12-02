@@ -1,4 +1,3 @@
-search_string = 'hello there fool'
-
-for i in range(4):
-    print(search_string.find('o'))
+test = [1,4]
+for i in range(len(test)+1):
+    print(i)

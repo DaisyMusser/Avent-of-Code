@@ -27,21 +27,25 @@ def string_to_array(opcode_string, comma_index):
     buffer = 0
     for i in range(len(comma_index)+1):   # s/d eventually make sure these are all int()
         start = buffer
-        if i == len(comma_index)+1:
+        if i == len(comma_index):
             end = len(opcode_string)+1
-        if i < len(comma_index)+1:
+            opcode.append(int(opcode_string[start:end]))
+            break
+        if i < len(comma_index):
             end = comma_index[i]
-        opcode.append(opcode_string[start:end])
+        opcode.append(int(opcode_string[start:end]))
         buffer = comma_index[i]+1
     return opcode
 
 
 # main program:
-string_opcode = file_to_string('input.txt')    # change here for different file names
-all_commas = comma_finder(string_opcode)
 
-test = '1,20,300'
-opcode = string_to_array(test, all_commas)
-print(string_opcode)
+string_opcode = file_to_string('input.txt')  # change here for different file names
+all_commas = comma_finder(string_opcode)
+opcode = string_to_array(string_opcode, all_commas)
 print(opcode)
+# done with input formatting
+
+# start input processing
+
 
