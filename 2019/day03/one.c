@@ -28,31 +28,37 @@ void reader ( FILE* f, int* maxlen, char lines[][MAX_LINE_LENGTH] ) {
 }
 
 
+
+
 int main ( void ) {
- //adapted from: https://github.com/imhoffman/advent/blob/master/2019/01/one.c
- FILE* fp;
- int number_of_lines, longest_line, total;
- char (*temp)[MAX_LINE_LENGTH]
-	 = malloc( MAX_LINES_IN_FILE * sizeof( char ) * MAX_LINE_LENGTH );
-         //  do we need to cast from (void *) to (char *) ?
+  //adapted from: https://github.com/imhoffman/advent/blob/master/2019/01/one.c
+  FILE* fp;
+  int longest_line, total;                 // might not need total?  
+  char file_name [11] = "input.txt";        // change here for different file names
 
- //  file I/O and memory allocation of memory input
- fp = fopen("puzzle.txt","r");
- reader( fp, &number_of_lines, &longest_line, temp );  // n and longest_line are known upon return
- fclose(fp);        // done with file...only read the file once
+  char (*temp)[MAX_LINE_LENGTH]       
+	 = malloc( 2 * sizeof( char ) * MAX_LINE_LENGTH );  // temp can now hold the whole file
 
- printf( "\n read %d lines from the input file\n", number_of_lines );
- printf( "\n the longest line is %d chars long\n\n", longest_line );
+  //  file I/O and memory allocation of memory input
+  fp = fopen( file_name, "r" );
+  reader( fp, &longest_line, temp );       // longest_line is known upon return
+  fclose(fp);                              // done with file...only read the file once
 
- // declare an array of appropriate length and width
- char input[number_of_lines][longest_line+1];
+  printf( "\n the longest line is %d chars long\n\n", longest_line );
 
- //  populate `input` with puzzle data for use going forward
- for( int i=0; i < number_of_lines; i++ ) {
-  strncpy( input[i], temp[i], longest_line+1 );
- }
- // `input` now has the data...free the big temp array from the file read
- free( temp );
- //  end of file I/O
+  char wire_path[2][longest_line+1];
 
+  for( int i=0; i < 2; i++ ) {
+     strncpy( wire_path[i], temp[i], longest_line+1 );
+  }
+
+  // `wire_path` now has the data...free the big temp array from the file read
+  free( temp );
+  //  end of file I/O
+  
+  // check wire_path:
+  // for( int i=0; i<2; i++ ) {
+  //    printf( '%s', wire_path[i] );
+  // }
+ return 0;
 }
