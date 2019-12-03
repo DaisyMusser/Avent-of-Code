@@ -57,6 +57,11 @@ def path_finder(directions):
     return red_path, green_path
 
 
+# needs to fill the gaps in red and green wire paths
+def filler(red_path, green_path):
+
+
+
 # find the intersections between red and green wires
 def spot_checker(red_path, green_path):
     intersections = []
@@ -78,6 +83,8 @@ directions = file_reader('input.txt')    # change here for different file names
 directions = formatter(directions)
 
 red_path, green_path = path_finder(directions)
+
+
 
 red_path = [ 1 , 2 ]
 green_path = [ 1 , 2 ]
