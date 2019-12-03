@@ -23,7 +23,9 @@ def list_formatter(presents):
 def paper_calculator(presents):
     total_paper = 0
     box_start = 0
-    for i in range(1000):
+    # // method from:
+    # https://stackoverflow.com/questions/19824721/i-keep-getting-this-error-for-my-simple-python-program-typeerror-float-obje
+    for i in range((len(presents)-2)//3):
         l = int(presents[box_start])
         w = int(presents[box_start+1])
         h = int(presents[box_start+2])
@@ -37,6 +39,7 @@ def paper_calculator(presents):
             total_paper += side_two
         elif side_three <= side_one and side_three <= side_two:
             total_paper += side_three
+        box_start += 3
     return total_paper
 
 
