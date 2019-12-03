@@ -78,6 +78,10 @@ directions = file_reader('input.txt')    # change here for different file names
 directions = formatter(directions)
 
 red_path, green_path = path_finder(directions)
+
+red_path = [ 1 , 2 ]
+green_path = [ 1 , 2 ]
+
 intersections = spot_checker(red_path, green_path)
 print(intersections)
 
