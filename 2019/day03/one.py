@@ -57,12 +57,27 @@ def path_finder(directions):
     return red_path, green_path
 
 
+# find the intersections between red and green wires
+def spot_checker(red_path, green_path):
+    intersections = []
+    x = 0
+    for i in range(len(red_path)//2):
+        y = 0
+        for ii in range(len(green_path)//2):
+            if green_path[y] == red_path[x]:
+                if green_path[y+1] == red_path[x+1]:
+                    loc = [green_path[y], green_path[y+1]]
+                    intersections.append(loc)
+            y += 2
+        x += 2
+    return intersections
+
+
 # main program
 directions = file_reader('input.txt')    # change here for different file names
 directions = formatter(directions)
 
 red_path, green_path = path_finder(directions)
-x = 0
-for i in range(len(red_path)//2):
-    print(red_path[x], ' ', red_path[x+1])
-    x += 2
+intersections = spot_checker(red_path, green_path)
+print(intersections)
+
