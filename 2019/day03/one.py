@@ -40,7 +40,7 @@ def path_finder(directions):
 
     red = [0, 0]
     for i in range(len(directions[1])):
-        if directions[1][i][len(directions[1][i]) - 1] != 'n':
+        if directions[1][i][len(directions[1][i]) - 1] != 'n':        # so much easier jesus christ
             if directions[1][i][0] == 'R':
                 red[0] += int(directions[1][i][1:len(directions[1][i])])
             elif directions[1][i][0] == 'U':
@@ -59,7 +59,13 @@ def path_finder(directions):
 
 # needs to fill the gaps in red and green wire paths
 def filler(red_path, green_path):
-
+    old_spot = 0
+    new_spot = 2
+    for i in range(len(red_path)//4):
+        if red_path[old_spot] != 
+        old_spot += 2
+        new_spot += 2
+    return red_path, green_path
 
 
 # find the intersections between red and green wires
