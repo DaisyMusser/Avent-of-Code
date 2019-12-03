@@ -12,7 +12,7 @@ def file_to_string(file_name):
     return string_opcode
 
 
-# finds locations of all commas in str
+# parses string into an array
 def comma_finder(string_opcode):
     start_search = 0
     all_commas = []
@@ -25,11 +25,10 @@ def comma_finder(string_opcode):
     return all_commas
 
 
-# parses string into an array
 def string_to_array(opcode_string, comma_index):
     opcode = []
     buffer = 0
-    for i in range(len(comma_index)+1):
+    for i in range(len(comma_index)+1):   # s/d eventually make sure these are all int()
         start = buffer
         if i == len(comma_index):
             end = len(opcode_string)+1
@@ -51,15 +50,28 @@ def run_opcode(opcode):
             x = opcode[opcode[block_start+1]]
             y = opcode[opcode[block_start+2]]
             output[opcode[block_start+3]] = x+y
-        elif opcode[block_start] == 2:          # mult. x and y at z
+        if opcode[block_start] == 2:          # mult. x and y at z
             x = opcode[opcode[block_start + 1]]
             y = opcode[opcode[block_start + 2]]
             output[opcode[block_start + 3]] = x*y
-        elif opcode[block_start] == 99:         # end opcode
+        if opcode[block_start] == 99:         # end opcode
             break
         opcode = output[:]
         block_start += 4
-    return output
+    return output[0]
+
+
+# cycles through 0-99 for verbs and nouns until output = 19690720
+def noun_verb_checker(run_opcode, opcode):
+    for i in range(100):
+        dummy = opcode[:]     # reset memory
+        dummy[1] = i
+        for ii in range(100):
+            dummy[2] = ii
+            output = run_opcode(dummy)
+            if output == 19690720:
+                return i, ii
+    return -1, -1
 
 
 # main program:
@@ -69,6 +81,9 @@ opcode = string_to_array(string_opcode, all_commas)
 # done with input formatting
 
 # start input processing
-output = run_opcode(opcode)
-print(output)
-
+noun, verb = noun_verb_checker(run_opcode, opcode)
+if noun == -1:
+    print('ERROR: no possible solutions')
+else:
+    print('Noun: ', noun, '\nVerb: ', verb)
+    print('Answer: ', 100*noun+verb)
