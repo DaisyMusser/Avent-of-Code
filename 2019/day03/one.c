@@ -6,7 +6,6 @@
 #define MAX_LINE_LENGTH       30000
 
 
-
 // determines longest line of file
 // adapted from: https://github.com/imhoffman/advent/blob/master/2019/01/one.c
 void reader ( FILE* f, int* maxlen, char lines[][MAX_LINE_LENGTH] ) {
@@ -29,11 +28,12 @@ void reader ( FILE* f, int* maxlen, char lines[][MAX_LINE_LENGTH] ) {
 
 
 
+int path_finder(directions, 
 
 int main ( void ) {
   //adapted from: https://github.com/imhoffman/advent/blob/master/2019/01/one.c
   FILE* fp;
-  int longest_line, total;                 // might not need total?  
+  int longest_line, total;                  // might not need total?  
   char file_name [11] = "input.txt";        // change here for different file names
 
   char (*temp)[MAX_LINE_LENGTH]       
@@ -46,13 +46,13 @@ int main ( void ) {
 
   printf( "\n the longest line is %d chars long\n\n", longest_line );
 
-  char wire_path[2][longest_line+1];
+  char directions[2][longest_line+1];
 
   for( int i=0; i < 2; i++ ) {
-     strncpy( wire_path[i], temp[i], longest_line+1 );
+     strncpy( directions[i], temp[i], longest_line+1 );
   }
 
-  // `wire_path` now has the data...free the big temp array from the file read
+  // `directions` now has the data...free the big temp array from the file read
   free( temp );
   //  end of file I/O
   
@@ -60,5 +60,8 @@ int main ( void ) {
   // for( int i=0; i<2; i++ ) {
   //    printf( '%s', wire_path[i] );
   // }
+
+  int path_red [
+  int path_blue[
  return 0;
 }
