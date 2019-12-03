@@ -21,26 +21,26 @@ def list_formatter(presents):
 
 
 def paper_calculator(presents):
-    total_paper = 0
+    total_ribbon = 0
     box_start = 0
     # // method from:
     # https://stackoverflow.com/questions/19824721/i-keep-getting-this-error-for-my-simple-python-program-typeerror-float-obje
     for i in range((len(presents)-2)//3):
-        l = int(presents[box_start])
-        w = int(presents[box_start+1])
-        h = int(presents[box_start+2])
-        total_paper += 2*l*w + 2*w*h + 2*h*l   # surface area of box
-        side_one = h*l
-        side_two = l*w
-        side_three = w*h
+        length = int(presents[box_start])
+        width = int(presents[box_start+1])
+        height = int(presents[box_start+2])
+        total_ribbon += length*width*height                     # volume of the box (bow)
+        side_one = 2*height+2*length
+        side_two = 2*length+2*width
+        side_three = 2*width+2*height
         if side_one <= side_two and side_one <= side_three:
-            total_paper += side_one
+            total_ribbon += side_one
         elif side_two <= side_one and side_two <= side_three:
-            total_paper += side_two
+            total_ribbon += side_two
         elif side_three <= side_one and side_three <= side_two:
-            total_paper += side_three
+            total_ribbon += side_three
         box_start += 3
-    return total_paper
+    return total_ribbon
 
 
 # main program
