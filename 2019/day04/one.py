@@ -24,6 +24,10 @@ def criteria_three(password):
 
     for i in range(5):
         if temp[i] == temp[i + 1]:
+
+            # do specail i based cases: if pair is right at the start or right at the end
+
+
             password = int(temp)
             break
 
@@ -46,16 +50,16 @@ def criteria_four(password):
 
 
 # checks if password follows pt 2 rule
-def criteria_five(password):
-    temp = str(password)
-    password = -1
-
-    for i in range(4):
-        if temp[i] == temp[i + 1] == temp[i + 2]:
-            password = int(temp)
-            break
-
-    return password
+# def criteria_five(password):
+#    temp = str(password)
+#    password = -1
+#
+#    for i in range(4):
+#        if temp[i] == temp[i + 1] == temp[i + 2]:
+#            password = int(temp)
+#            break
+#
+#    return password
 
 
 # main program
@@ -63,7 +67,7 @@ def criteria_five(password):
 passwords = file_reader('input.txt')
 
 # applies rules
-real_passwords = set()
+real_passwords = set()               # change this is if i really was foolish
 for i in range(len(passwords)):
     if criteria_three(passwords[i]) != -1:
         if criteria_four(passwords[i]) != -1:
