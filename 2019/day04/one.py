@@ -9,10 +9,7 @@ def file_reader(file_name):
                 break
             puzzle = line.split('-')
 
-            bottom = int(puzzle[0][0:6])                   # silly but helpful
-            top    = int(puzzle[1][0:6])
-
-            difference = top - bottom
+            difference = int(puzzle[1][0:6]) - int(puzzle[0][0:6])
             for i in range(difference+1):
                 passwords.append(int(puzzle[0][0:6]) + i)  # not sure why 2nd int() is needed
     

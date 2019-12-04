@@ -1,6 +1,7 @@
 # gets input
 def file_reader(file_name):
     passwords = []
+
     with open(file_name) as fp:
         while True:
             line = fp.read()
@@ -8,12 +9,10 @@ def file_reader(file_name):
                 break
             puzzle = line.split('-')
 
-            bottom = int(puzzle[0][0:6])                   # silly but helpful
-            top    = int(puzzle[1][0:6])
+            difference = int(puzzle[1][0:6]) - int(puzzle[0][0:6])
+            for i in range(difference + 1):
+                passwords.append(int(puzzle[0][0:6]) + i)  # not sure why 2nd int() is needed
 
-            difference = top - bottom
-            for i in range(difference+1):
-                passwords.append(int(puzzle[0][0:6]) + i)  # not sure why the redundant int() is needed here?
     return passwords
 
 
@@ -23,7 +22,7 @@ def criteria_three(password):
     password = -1
 
     for i in range(5):
-        if temp[i] == temp[i + 1]:
+        if temp[i] == temp[i + 1]:         # criteria five applied here
             if i == 0:
                 if temp[i] != temp[i + 2]:
                     password = int(temp)
@@ -73,7 +72,7 @@ def criteria_four(password):
 passwords = file_reader('input.txt')
 
 # applies rules
-real_passwords = set()               # change this is if i really was foolish
+real_passwords = set()
 for i in range(len(passwords)):
     if criteria_three(passwords[i]) != -1:
         real_passwords.add(criteria_four(passwords[i]))
