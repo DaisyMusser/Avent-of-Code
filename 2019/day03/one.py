@@ -1,3 +1,6 @@
+import math
+
+
 # reads file into array
 def file_reader(file_name):
     directions = []
@@ -61,10 +64,27 @@ def path_finder(directions):
 def filler(red_path, green_path):
     old_spot = 0
     new_spot = 2
+
     for i in range(len(red_path)//4):
-        if red_path[old_spot] != 
+
+        for i in range(2):
+            if red_path[old_spot+i] != red_path[new_spot+i]:
+                distance = abs(red_path[old_spot+i] - red_path[new_spot+i])
+                if red_path[old_spot+i] > red_path[new_spot+i]:
+                    x = 1
+                    for ii in range(distance-1):
+                        red_path.append(red_path[old_spot+i]-x)
+                        x += 1
+                if red_path[old_spot+i] < red_path[new_spot+i]:
+                    x = 1
+                    for ii in range(distance-1):
+                        red_path.append(red_path[old_spot+i]+x)
+                        x += 1
+
+
         old_spot += 2
         new_spot += 2
+
     return red_path, green_path
 
 
