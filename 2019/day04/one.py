@@ -17,21 +17,57 @@ def file_reader(file_name):
     return passwords
 
 
-# checks if password follows adjacent criteria
-def aj_criteria(password):
+# checks if password follows pair criteria
+def criteria_three(password):
     temp = str(password)
     password = -1
+
     for i in range(5):
         if temp[i] == temp[i + 1]:
             password = int(temp)
+            break
+
+    return password
+
+
+# checks if password follows never decreasing left to right rule
+def criteria_four(password):
+    temp = []
+    dummy = str(password)
+    for i in range(6):
+        temp.append(int(dummy[i]))
+
+    for i in range(5):
+        if temp[i] > temp[i+1]:
+            password = -1
+            break
+
+    return password
+
+
+# checks if password follows pt 2 rule
+def criteria_five(password):
+    temp = str(password)
+    password = -1
+
+    for i in range(4):
+        if temp[i] == temp[i + 1] == temp[i + 2]:
+            password = int(temp)
+            break
+
     return password
 
 
 # main program
+# file io
 passwords = file_reader('input.txt')
 
-x = 101010
+# applies rules
+real_passwords = set()
+for i in range(len(passwords)):
+    if criteria_three(passwords[i]) != -1:
+        if criteria_four(passwords[i]) != -1:
+            real_passwords.add(criteria_five(passwords[i]))
 
-password = aj_criteria(x)
-print(password)
-
+# answer
+print(len(real_passwords)-1)
