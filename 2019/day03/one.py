@@ -61,7 +61,7 @@ def path_finder(directions):
 
 
 # finds the gaps between two spots
-def baby_filler(two_spots):
+def baby_fill(two_spots):
     old_x = two_spots[0]     # this is totally nuts but i'm bad at reading code so i need it
     old_y = two_spots[1]
     new_x = two_spots[2]
@@ -102,24 +102,25 @@ def baby_filler(two_spots):
     return gaps
 
 
-def teen_filler(path, baby_filler):
+def teen_fill(path, baby_fill):
     all_gaps = []
     counter = 0
     for i in range((len(path)//2)-1):
-        two_spots = path[counter:counter+3]
-        all_gaps.append(baby_filler(two_spots))
+        two_spots = path[counter:counter+4]       # remember +4 because ranges need to go one further
+        for i in range(2):
+            all_gaps.append(baby_fill(two_spots)[i])
         counter += 2
     return all_gaps
 
 
 # needs to fill the gaps in red and green wire paths
-def grown_ass_man_filler(green_path, red_path, teen_filler, baby_filler):
+def grown_ass_man_fill(green_path, red_path, teen_fill, baby_fill):
 
-    all_green_gaps = teen_filler(green_path, baby_filler)
+    all_green_gaps = teen_fill(green_path, baby_fill)
     for i in range(len(all_green_gaps)):
         green_path.append(all_green_gaps[i])
 
-    all_red_gaps = teen_filler(red_path, baby_filler)
+    all_red_gaps = teen_fill(red_path, baby_fill)
     for i in range(len(all_red_gaps)):
         red_path.append(all_red_gaps[i])
 
@@ -147,8 +148,9 @@ directions = file_reader('input.txt')    # change here for different file names
 directions = formatter(directions)
 
 red_path, green_path = path_finder(directions)
+red_path, green_path = grown_ass_man_fill(green_path, red_path, teen_fill, baby_fill)
 
-red_path, green_path = grown_ass_man_filler(green_path, red_path, teen_filler, baby_filler)
-print(red_path)
+intersections = spot_checker(red_path, green_path)
+print(green_path)
 
 
