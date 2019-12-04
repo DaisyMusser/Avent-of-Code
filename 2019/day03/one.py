@@ -117,12 +117,14 @@ def teen_fill(path, baby_fill):
 def grown_ass_man_fill(green_path, red_path, teen_fill, baby_fill):
 
     all_green_gaps = teen_fill(green_path, baby_fill)
-    for i in range(len(all_green_gaps)):
-        green_path.append(all_green_gaps[i])
+    print(all_green_gaps)
+    #for i in range(len(all_green_gaps)):
+    #    green_path.append(all_green_gaps[i])
 
     all_red_gaps = teen_fill(red_path, baby_fill)
-    for i in range(len(all_red_gaps)):
-        red_path.append(all_red_gaps[i])
+    print(all_red_gaps)
+    #for i in range(len(all_red_gaps)):
+    #    red_path.append(all_red_gaps[i])
 
     return red_path, green_path
 
@@ -150,7 +152,6 @@ directions = formatter(directions)
 red_path, green_path = path_finder(directions)
 red_path, green_path = grown_ass_man_fill(green_path, red_path, teen_fill, baby_fill)
 
-intersections = spot_checker(red_path, green_path)
-print(green_path)
+# intersections = spot_checker(red_path, green_path)
 
 
