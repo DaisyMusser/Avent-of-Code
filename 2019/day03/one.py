@@ -68,6 +68,7 @@ def filler(red_path, green_path):
     for i in range(len(red_path)//4):
 
         for i in range(2):
+
             if red_path[old_spot+i] != red_path[new_spot+i]:
                 distance = abs(red_path[old_spot+i] - red_path[new_spot+i])
                 if red_path[old_spot+i] > red_path[new_spot+i]:
@@ -76,6 +77,7 @@ def filler(red_path, green_path):
                         red_path.append(red_path[old_spot+i]-x)
                         x += 1
                 if red_path[old_spot+i] < red_path[new_spot+i]:
+                    if i == 0
                     x = 1
                     for ii in range(distance-1):
                         red_path.append(red_path[old_spot+i]+x)
