@@ -5,11 +5,8 @@ def file_reader(file_name):
             line = fp.read()
             if not line:
                 break
-            input = line
-            hyphen = input.find('-')
-            input.replace(input[hyphen], '')  # code from: https://www.journaldev.com/23674/python-remove-character-from-string#python-remove-character-from-string
-
-    return input
+            puzzle = line.split('-')
+    return puzzle
 
 
 
