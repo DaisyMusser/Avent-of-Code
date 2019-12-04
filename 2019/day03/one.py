@@ -60,6 +60,48 @@ def path_finder(directions):
     return red_path, green_path
 
 
+# finds the gaps between two spots
+def baby_filler(two_spots):
+    old_x = two_spots[0]     # this is totally nuts but i'm bad at reading code so i need it
+    old_y = two_spots[1]
+    new_x = two_spots[2]
+    new_y = two_spots[3]
+
+    if old_x != new_x:
+
+        difference = abs(old_x - new_x)
+
+        if old_x > new_x:
+            counter = 1
+            for i in range(difference-1):
+                gaps = [old_x-counter, old_y]
+                counter += 1
+
+        elif old_x < new_x:
+            counter = 1
+            for i in range(difference-1):
+                gaps = [old_x+counter, old_y]
+                counter += 1
+
+    elif old_y != new_y:
+
+        difference = abs(old_y - new_y)
+
+        if old_y > new_y:
+            counter = 1
+            for i in range(difference - 1):
+                gaps = [old_x, old_y - counter]
+                counter += 1
+
+        elif old_y < new_y:
+            counter = 1
+            for i in range(difference - 1):
+                gaps = [old_x, old_y + counter]
+                counter += 1
+
+    return gaps
+
+
 # needs to fill the gaps in red and green wire paths
 def filler(red_path, green_path):
     old_spot = 0
