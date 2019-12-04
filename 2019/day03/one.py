@@ -102,32 +102,26 @@ def baby_filler(two_spots):
     return gaps
 
 
+def teen_filler(path, baby_filler):
+    all_gaps = []
+    counter = 0
+    for i in range((len(path)//2)-1):
+        two_spots = path[counter:counter+3]
+        all_gaps.append(baby_filler(two_spots))
+        counter += 2
+    return all_gaps
+
+
 # needs to fill the gaps in red and green wire paths
-def filler(red_path, green_path):
-    old_spot = 0
-    new_spot = 2
+def grown_ass_man_filler(green_path, red_path, teen_filler, baby_filler):
 
-    for i in range(len(red_path)//4):
+    all_green_gaps = teen_filler(green_path, baby_filler)
+    for i in range(len(all_green_gaps)):
+        green_path.append(all_green_gaps[i])
 
-        for i in range(2):
-
-            if red_path[old_spot+i] != red_path[new_spot+i]:
-                distance = abs(red_path[old_spot+i] - red_path[new_spot+i])
-                if red_path[old_spot+i] > red_path[new_spot+i]:
-                    x = 1
-                    for ii in range(distance-1):
-                        red_path.append(red_path[old_spot+i]-x)
-                        x += 1
-                if red_path[old_spot+i] < red_path[new_spot+i]:
-                    if i == 0
-                    x = 1
-                    for ii in range(distance-1):
-                        red_path.append(red_path[old_spot+i]+x)
-                        x += 1
-
-
-        old_spot += 2
-        new_spot += 2
+    all_red_gaps = teen_filler(red_path, baby_filler)
+    for i in range(len(all_red_gaps)):
+        red_path.append(all_red_gaps[i])
 
     return red_path, green_path
 
@@ -154,11 +148,7 @@ directions = formatter(directions)
 
 red_path, green_path = path_finder(directions)
 
+red_path, green_path = grown_ass_man_filler(green_path, red_path, teen_filler, baby_filler)
+print(red_path)
 
-
-red_path = [ 1 , 2 ]
-green_path = [ 1 , 2 ]
-
-intersections = spot_checker(red_path, green_path)
-print(intersections)
 
