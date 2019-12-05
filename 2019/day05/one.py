@@ -106,15 +106,19 @@ def run_program(puzzle):
         if opcode_checker(number):                     # might need a "== True"
             yarn = yarnifier(number)
 
-            if yarn[4] == 1:
-            
-            if yarn[4] == 2:
+            first  = int(yarn[2])
+            second = int(yarn[1])
+            third  = int(yarn[0])
 
-            if yarn[4] == 3:
+            if int(yarn[4]) == 1:
+                
+            if int(yarn[4]) == 2:
 
-            if yarn[4] == 4:
+            if int(yarn[4]) == 3:
 
-            if yarn[4] == 9:
+            if int(yarn[4]) == 4:
+
+            if int(yarn[4]) == 9:
                return output
 
     return output
