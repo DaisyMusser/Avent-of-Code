@@ -75,14 +75,16 @@ def opcode_checker(number):
     mode_two   = int(yarn[1])
     mode_one   = int(yarn[2])
 
+    print(yarn)
+
     # https://stackoverflow.com/questions/148042/using-or-comparisons-with-if-statements
     if ones in (1, 2, 3, 4):
         if tens == 0:
-            if mode_three == (0 or 1) and mode_two == (0 or 1) and mode_one == (0 or 1):
+            if mode_three in (0, 1) and mode_two in (0, 1) and mode_one in (0, 1):
                 answer = True
 
-    if yarn[3:5] == 99:
-        if mode_three == (0 or 1) and mode_two == (0 or 1) and mode_one == (0 or 1):
+    if int(yarn[3:5]) == 99:
+        if mode_three in (0, 1) and mode_two in (0, 1) and mode_one in (0, 1):
             answer = True
 
     return answer
@@ -96,6 +98,6 @@ all_commas = comma_finder(string_puzzle)
 puzzle = string_to_array(string_puzzle, all_commas)
 # done with input formatting
 
-number = opcode_checker(3)
+number = opcode_checker(10199)
 print(number)
 
