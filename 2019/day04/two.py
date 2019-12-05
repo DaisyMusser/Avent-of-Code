@@ -75,7 +75,8 @@ passwords = file_reader('input.txt')
 real_passwords = set()
 for i in range(len(passwords)):
     if criteria_three(passwords[i]) != -1:
-        real_passwords.add(criteria_four(passwords[i]))
+        if criteria_four(passwords[i]) != -1:
+            real_passwords.add(passwords[i])       # there is now no reason this has to be a set
 
 # answer
-print(len(real_passwords)-1)
+print(len(real_passwords))
