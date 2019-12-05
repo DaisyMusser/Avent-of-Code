@@ -89,7 +89,10 @@ def opcode_checker(number):
 
     return answer
 
-
+def run_program(puzzle):
+    for number in puzzle:
+        print(number)
+    return
 
 # main program:
 string_puzzle = file_to_string('input.txt')  # change here for different file names
@@ -98,6 +101,6 @@ all_commas = comma_finder(string_puzzle)
 puzzle = string_to_array(string_puzzle, all_commas)
 # done with input formatting
 
-number = opcode_checker(10199)
-print(number)
+run_program(puzzle)
+
 
