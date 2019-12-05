@@ -40,6 +40,13 @@ def string_to_array(opcode_string, comma_index):
     return opcode
 
 
+# makes number workable
+def yarnifier(number):
+    yarn = str(number)
+    yarn = ("0" * int(5-len(yarn))) + yarn
+    return yarn
+
+
 # runs the opcode and returns a modified opcode
 # def run_opcode(opcode):
 #    block_start = 0
@@ -66,6 +73,9 @@ def opcode_checker(number):
     if len(yarn) > 5:                          # greater than 5 digits c/t be an opcode
         return answer
 
+    if number < 1:                             # 0 or -#s c/t be opcodes
+        return answer
+
     yarn = ("0" * int(5-len(yarn))) + yarn     # fill yarn with 0s
 
     ones = int(yarn[4])                        # to save some typing and confusion
@@ -89,10 +99,25 @@ def opcode_checker(number):
 
     return answer
 
+#
 def run_program(puzzle):
+    output = puzzle[:]
     for number in puzzle:
-        print(number)
-    return
+        if opcode_checker(number):                     # might need a "== True"
+            yarn = yarnifier(number)
+
+            if yarn[4] == 1:
+            
+            if yarn[4] == 2:
+
+            if yarn[4] == 3:
+
+            if yarn[4] == 4:
+
+            if yarn[4] == 9:
+               return output
+
+    return output
 
 # main program:
 string_puzzle = file_to_string('input.txt')  # change here for different file names
