@@ -12,7 +12,6 @@ def file_to_string(file_name):
     return string_opcode
 
 
-# parses string into an array
 def comma_finder(string_opcode):
     start_search = 0
     all_commas = []
@@ -24,7 +23,7 @@ def comma_finder(string_opcode):
         start_search = comma_loc + 1
     return all_commas
 
-
+# parses string into an array
 def string_to_array(opcode_string, comma_index):
     opcode = []
     buffer = 0
@@ -42,31 +41,57 @@ def string_to_array(opcode_string, comma_index):
 
 
 # runs the opcode and returns a modified opcode
-def run_opcode(opcode):
-    block_start = 0
-    output = opcode[:]
-    for i in range(math.ceil(len(opcode)/4)):
-        if opcode[block_start] == 1:              # add x and y at z
-            x = opcode[opcode[block_start+1]]
-            y = opcode[opcode[block_start+2]]
-            output[opcode[block_start+3]] = x+y
-        if opcode[block_start] == 2:              # mult. x and y at z
-            x = opcode[opcode[block_start + 1]]
-            y = opcode[opcode[block_start + 2]]
-            output[opcode[block_start + 3]] = x*y
-        if opcode[block_start] == 99:             # end opcode
-            break
-        opcode = output[:]
-        block_start += 4
-    return output[0]
+# def run_opcode(opcode):
+#    block_start = 0
+#    output = opcode[:]
+#    for i in range(math.ceil(len(opcode)/4)):
+#        if opcode[block_start] == 1:              # add x and y at z
+#            x = opcode[opcode[block_start+1]]
+#            y = opcode[opcode[block_start+2]]
+#            output[opcode[block_start+3]] = x+y
+#        if opcode[block_start] == 2:              # mult. x and y at z
+#            x = opcode[opcode[block_start + 1]]
+#            y = opcode[opcode[block_start + 2]]
+#            output[opcode[block_start + 3]] = x*y
+#        if opcode[block_start] == 99:             # end opcode
+#            break
+#        opcode = output[:]
+#        block_start += 4
+#    return output[0]
+
+# returns true if number was a valid opcode, false if not
+def opcode_checker(number):
+    answer = False                             # default falseyness
+    yarn = str(number)                         # string of number
+    if len(yarn) > 5:                          # greater than 5 digits c/t be an opcode
+        return answer
+
+    yarn = ("0" * int(5-len(yarn))) + yarn     # fill yarn with 0s
+
+    ones = int(yarn[4])                        # to save some typing and confusion
+    tens = int(yarn[3])
+
+    mode_three = int(yarn[0])
+    mode_two   = int(yarn[1])
+    mode_one   = int(yarn[2])
+
+    # https://stackoverflow.com/questions/148042/using-or-comparisons-with-if-statements
+    if ones in (1, 2, 3, 4)
+        (ones == 1 and tens == 0) or (ones == 2 and tens == 0) or (ones == 3 and tens = 0) or (ones == 4 and tens == 0) or (ones == 9 and tens == 9):
+        if mode_three == (0 or 1) and mode_two == (0 or 1) and mode_one == (0 or 1):
+            answer = True
+
+    return answer
+
 
 
 # main program:
-string_opcode = file_to_string('input.txt')  # change here for different file names
-all_commas = comma_finder(string_opcode)
+string_puzzle = file_to_string('input.txt')  # change here for different file names
+all_commas = comma_finder(string_puzzle)
 
-opcode = string_to_array(string_opcode, all_commas)
+puzzle = string_to_array(string_puzzle, all_commas)
 # done with input formatting
 
-print(opcode)
+number = opcode_checker(203)
+print(number)
 
