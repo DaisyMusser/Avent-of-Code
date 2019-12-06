@@ -45,19 +45,16 @@ def base_search(object, orbit_map):
     return -1
 
 
-# counts up orbits for all objects ( i hope )
-def base_finder(orbit_map, objects):
-    total_orbits = 0
-    for object in objects:
-        total_orbits += orbit_counter_upper(object, orbit_map)
-    return total_orbits
-
-
-
 # main program
 orbit_map = file_reader('input.txt')      # change filename here!
 orbit_map, objects = orbit_sorter(orbit_map)
 objects.remove('COM')
 
-total_orbits = base_finder(orbit_map, objects)
-print(total_orbits)
+print("Passed file IO")
+
+total_orbits = 0
+for object in objects:
+    print("Into all-objects loop (in main)")
+    total_orbits += orbit_counter_upper(object, orbit_map)
+
+print('Answer: ', total_orbits)
