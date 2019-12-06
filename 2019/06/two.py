@@ -32,25 +32,29 @@ def orbit_sorter(old_orbit_map):
 
 # given the base orbit it counts its way up and returns the number of orbits
 def orbit_counter_upper(object, orbit_map):
-    # print('   into orbit_counter_upper')
-    counter = 0
+    orbit_tree = []
     one_up = object
     while base_search(one_up, orbit_map) != -1:
-        # print('      into while-base orbit exists loop')
         x = base_search(one_up, orbit_map)
         one_up = x[0:3]
-        counter += 1
-    return counter
+        orbit_tree.append(x[0:4])
+    return orbit_tree
 
 
 # returns base orbit of an object
 def base_search(object, orbit_map):
-    # print('         into base_search')
     for orbit in orbit_map:
-        # print('            into for-orbits search loop')
         if orbit[4:7] == object:
             return orbit
     return -1
+
+
+def person_tracker(orbit_map):
+     me_tree = orbit_counter_upper('YOU', orbit_map)
+     san_tree = orbit_counter_upper('SAN', orbit_map)
+
+     print(me_tree)
+     return
 
 
 # main program
@@ -60,11 +64,3 @@ objects.remove('COM')
 
 # print("Passed file IO")
 
-total_orbits = 0
-for object in objects:
-    # print("Into all-objects loop (in main)")
-    total_orbits += orbit_counter_upper(object, orbit_map)
-
-print('Answer: ', total_orbits)
-# see top for time source
-print("--- %s seconds ---" % (time.time() - start_time))
