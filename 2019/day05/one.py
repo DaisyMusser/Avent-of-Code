@@ -40,7 +40,7 @@ def string_to_array(opcode_string, comma_index):
     return opcode
 
 
-# makes number workable
+# makes number workable by back-filling with 0s
 def yarnifier(number):
     yarn = str(number)
     yarn = ("0" * int(5-len(yarn))) + yarn
@@ -102,45 +102,48 @@ def opcode_checker(number):
 #
 def run_program(puzzle):
     output = puzzle[:]
+    skips = 0
     for number in puzzle:
-        spot = 0
-        if opcode_checker(number):            # might need a "== True"
-            yarn = yarnifier(number)
+        if skips = 0:
+            spot = 0
+            if opcode_checker(number):            # might need a "== True"
+                yarn = yarnifier(number)
 
-            first  = int(yarn[2])
-            second = int(yarn[1])
+                first  = int(yarn[2])
+                second = int(yarn[1])
 
-            if int(yarn[4]) == 1:
-                x = puzzle[spot+1]            # default set to value not address
-                y = puzzle[spot+2]
-                if first == 0:                # x and y updated if modes not 1
-                    x = puzzle[x]
-                if second == 0:
-                    y = puzzle[y]
-                puzzle[spot+3] = x+y          # + rule
+                if int(yarn[4]) == 1:
+                    x = puzzle[spot+1]            # default set to value not address
+                    y = puzzle[spot+2]
+                    if first == 0:                # x and y updated if modes not 1
+                        x = puzzle[x]
+                    if second == 0:
+                        y = puzzle[y]
+                    puzzle[spot+3] = x+y          # + rule
 
-            if int(yarn[4]) == 2:
-                x = puzzle[spot+1]
-                y = puzzle[spot+2]
-                if first == 0:
-                    x = puzzle[x]
-                if second == 0:
-                    y = puzzle[y]
-                puzzle[spot+3] = x*y          # * rule
+                if int(yarn[4]) == 2:
+                    x = puzzle[spot+1]
+                    y = puzzle[spot+2]
+                    if first == 0:
+                        x = puzzle[x]
+                    if second == 0:
+                        y = puzzle[y]
+                    puzzle[spot+3] = x*y          # * rule
 
-            if int(yarn[4]) == 3:
-                x = int(input('Give me some CHEESE:'))
-                puzzle[spot+1] = x
+                if int(yarn[4]) == 3:
+                    x = int(input('INPUT: '))
+                    puzzle[spot+1] = x
 
-            if int(yarn[4]) == 4:
-                if first == 0:
-                    print(puzzle[puzzle[spot+1]])
-                elif first == 1:
-                    print(puzzle[spot+1])
+                if int(yarn[4]) == 4:
+                    if first == 0:
+                        print(puzzle[puzzle[spot+1]])
+                    elif first == 1:
+                        print(puzzle[spot+1])
 
-            if int(yarn[4]) == 9:
-               return output
-
+                if int(yarn[4]) == 9:
+                    return output
+        else:
+            skips -= 1
         # now what if it's not an opcode??? how do i do this!?
 
         spot += 1
