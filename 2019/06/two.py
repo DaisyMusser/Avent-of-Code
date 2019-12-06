@@ -56,9 +56,6 @@ def orbital_route_calculator(orbit_map):
     me_tree = orbit_counter_upper('YOU', orbit_map)
     san_tree = orbit_counter_upper('SAN', orbit_map)
 
-    print(me_tree, "\n\n")
-    print(san_tree)
-
     done = False
     for me_object in me_tree:
         if not done:                       # not totally sure why this is needed, but it really is
