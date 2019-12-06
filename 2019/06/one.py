@@ -49,7 +49,7 @@ def base_search(object, orbit_map):
 def base_finder(orbit_map, objects):
     total_orbits = 0
     for object in objects:
-        total_orbits += 
+        total_orbits += orbit_counter_upper(object, orbit_map)
     return total_orbits
 
 
