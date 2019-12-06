@@ -1,3 +1,7 @@
+# from https://stackoverflow.com/questions/1557571/how-do-i-get-time-of-a-python-programs-execution
+import time
+start_time = time.time()
+
 # dumps orbits into list
 def file_reader(file_name):
     orbit_map = []
@@ -28,11 +32,11 @@ def orbit_sorter(old_orbit_map):
 
 # given the base orbit it counts its way up and returns the number of orbits
 def orbit_counter_upper(object, orbit_map):
-    print('   into orbit_counter_upper')
+    # print('   into orbit_counter_upper')
     counter = 0
     one_up = object
     while base_search(one_up, orbit_map) != -1:
-        print('      into while-base orbit exists loop')
+        # print('      into while-base orbit exists loop')
         x = base_search(one_up, orbit_map)
         one_up = x[0:3]
         counter += 1
@@ -41,9 +45,9 @@ def orbit_counter_upper(object, orbit_map):
 
 # returns base orbit of an object
 def base_search(object, orbit_map):
-    print('         into base_search')
+    # print('         into base_search')
     for orbit in orbit_map:
-        print('            into for-orbits search loop')
+        # print('            into for-orbits search loop')
         if orbit[4:7] == object:
             return orbit
     return -1
@@ -54,11 +58,13 @@ orbit_map = file_reader('input.txt')      # change filename here!
 orbit_map, objects = orbit_sorter(orbit_map)
 objects.remove('COM')
 
-print("Passed file IO")
+# print("Passed file IO")
 
 total_orbits = 0
 for object in objects:
-    print("Into all-objects loop (in main)")
+    # print("Into all-objects loop (in main)")
     total_orbits += orbit_counter_upper(object, orbit_map)
 
 print('Answer: ', total_orbits)
+# see top for time source
+print("--- %s seconds ---" % (time.time() - start_time))
