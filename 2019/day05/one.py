@@ -80,16 +80,16 @@ def opcode_checker(number):
 
     return answer
 
-#
+
+# s/d run the program?? please??
 def run_program(puzzle):
     skips = 0
     spot = 0
     for number in puzzle:
         if skips == 0:
-            if opcode_checker(number):            # might need a "== True"
+            if opcode_checker(number):
                 yarn = yarnifier(number)
-
-                first  = int(yarn[2])
+                first = int(yarn[2])
                 second = int(yarn[1])
 
                 if int(yarn[4]) == 1:
@@ -99,7 +99,7 @@ def run_program(puzzle):
                         x = puzzle[x]
                     elif second == 0:
                         y = puzzle[y]
-                    puzzle[spot+3] = x+y          # + rule
+                    puzzle[puzzle[spot+3]] = x+y          # + rule
                     skips += 4
 
                 elif int(yarn[4]) == 2:
@@ -109,12 +109,12 @@ def run_program(puzzle):
                         x = puzzle[x]
                     elif second == 0:
                         y = puzzle[y]
-                    puzzle[spot+3] = x*y          # * rule
+                    puzzle[puzzle[spot+3]] = x*y          # * rule
                     skips += 4
 
                 elif int(yarn[4]) == 3:
                     x = int(input('INPUT: '))
-                    puzzle[spot+1] = x
+                    puzzle[puzzle[spot+1]] = x
                     skips += 1
 
                 elif int(yarn[4]) == 4:
@@ -134,8 +134,8 @@ def run_program(puzzle):
 
 # main program:
 string_puzzle = file_to_string('input.txt')  # change here for different file names
+# done with file io
 all_commas = comma_finder(string_puzzle)
-
 puzzle = string_to_array(string_puzzle, all_commas)
 # done with input formatting
 
