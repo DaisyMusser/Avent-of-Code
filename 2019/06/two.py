@@ -37,7 +37,7 @@ def orbit_counter_upper(object, orbit_map):
     while base_search(one_up, orbit_map) != -1:
         x = base_search(one_up, orbit_map)
         one_up = x[0:3]
-        orbit_tree.append(x[0:4])
+        orbit_tree.append(x[0:3])
     return orbit_tree
 
 
@@ -49,12 +49,20 @@ def base_search(object, orbit_map):
     return -1
 
 
-def person_tracker(orbit_map):
-     me_tree = orbit_counter_upper('YOU', orbit_map)
-     san_tree = orbit_counter_upper('SAN', orbit_map)
+# orbital route calculator
+def orbital_route_calculator(orbit_map):
+    orbital_route = []
+    me_tree = orbit_counter_upper('YOU', orbit_map)
+    san_tree = orbit_counter_upper('SAN', orbit_map)
+    for me_object in me_tree:
+        for san_object in san_tree:
+            if me_object == san_object:
+                intersection = me_tree.index(me_object)
 
-     print(me_tree)
-     return
+    orbital_route.append(me_tree[0:intersection+1])
+    orbital_route.append(san_tree[0:intersection+1])
+
+    return orbital_route
 
 
 # main program
@@ -62,5 +70,6 @@ orbit_map = file_reader('input.txt')      # change filename here!
 orbit_map, objects = orbit_sorter(orbit_map)
 objects.remove('COM')
 
-# print("Passed file IO")
+orbital_route = orbital_route_calculator(orbit_map)
+print(len(orbital_route))
 
