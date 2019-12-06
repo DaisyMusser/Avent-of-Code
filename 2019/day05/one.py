@@ -97,7 +97,7 @@ def run_program(puzzle):
                     y = puzzle[spot+2]
                     if first == 0:                # x and y updated if modes not 1
                         x = puzzle[x]
-                    elif second == 0:
+                    if second == 0:
                         y = puzzle[y]
                     puzzle[puzzle[spot+3]] = x+y          # + rule
                     skips += 3
@@ -107,7 +107,7 @@ def run_program(puzzle):
                     y = puzzle[spot+2]
                     if first == 0:
                         x = puzzle[x]
-                    elif second == 0:
+                    if second == 0:
                         y = puzzle[y]
                     puzzle[puzzle[spot+3]] = x*y          # * rule
                     skips += 3
@@ -118,10 +118,9 @@ def run_program(puzzle):
                     skips += 1
 
                 elif int(yarn[4]) == 4:
-                    print("Index: ", spot)
                     if first == 0:
                         print(puzzle[puzzle[spot+1]])
-                    elif first == 1:
+                    if first == 1:
                         print(puzzle[spot+1])
                     skips += 1
 
@@ -129,15 +128,10 @@ def run_program(puzzle):
                     return puzzle
             else:
                 print("ya fucked up")
+                print("@ ", spot, "which is int: ", puzzle[spot])
         else:
             skips -= 1
         spot += 1
-        #if spot == 102:
-        #    print("ERROR ONE: \n\n\n", puzzle[0:104], "<RETURNS ERROR>", puzzle[104:len(puzzle)-1], "\n\n\n")
-        #if spot == 172:
-        #    print("ERROR TWO: \n\n\n", puzzle[0:174], "<RETURNS ERROR>", puzzle[174:len(puzzle)+1], "\n\n\n")
-        #if spot == 220:
-        #    print("ERROR THREE: \n\n\n", puzzle[0:222], "<RETURNS ERROR>", puzzle[222:len(puzzle) + 1], "\n\n\n")
     return puzzle        # now it's really output
 
 
@@ -149,9 +143,6 @@ puzzle = string_to_array(string_puzzle, all_commas)
 # done with input formatting
 
 output = run_program(puzzle)
-# print(output[0:104], "<RETURNS ERROR>", puzzle[104:len(puzzle)-1], "\n\n\n")
-# print(output[0:174], "<RETURNS ERROR>", puzzle[174:len(output)+1], "\n\n\n")
-# print(output[0:222], "<RETURNS ERROR>", puzzle[222:len(output)+1], "\n\n\n")
 
 
 
