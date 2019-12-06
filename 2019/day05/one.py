@@ -118,6 +118,7 @@ def run_program(puzzle):
                     skips += 1
 
                 elif int(yarn[4]) == 4:
+                    print("Index: ", spot)
                     if first == 0:
                         print(puzzle[puzzle[spot+1]])
                     elif first == 1:
@@ -140,5 +141,11 @@ puzzle = string_to_array(string_puzzle, all_commas)
 # done with input formatting
 
 output = run_program(puzzle)
+# print(output[0:104], "<RETURNS ERROR>", puzzle[104:len(puzzle)-1], "\n\n\n")
+# print(output[0:174], "<RETURNS ERROR>", puzzle[174:len(output)+1], "\n\n\n")
+# print(output[0:222], "<RETURNS ERROR>", puzzle[222:len(output)+1], "\n\n\n")
+
+
+print("\n\n", puzzle[224], "\n\n")
 
 
