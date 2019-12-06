@@ -12,6 +12,7 @@ def file_to_string(file_name):
     return string_opcode
 
 
+# finds commas in string
 def comma_finder(string_opcode):
     start_search = 0
     all_commas = []
@@ -24,6 +25,7 @@ def comma_finder(string_opcode):
     return all_commas
 
 # parses string into an array
+# could be done with .split() way easier, but oh well
 def string_to_array(opcode_string, comma_index):
     opcode = []
     buffer = 0
@@ -47,25 +49,6 @@ def yarnifier(number):
     return yarn
 
 
-# runs the opcode and returns a modified opcode
-# def run_opcode(opcode):
-#    block_start = 0
-#    output = opcode[:]
-#    for i in range(math.ceil(len(opcode)/4)):
-#        if opcode[block_start] == 1:              # add x and y at z
-#            x = opcode[opcode[block_start+1]]
-#            y = opcode[opcode[block_start+2]]
-#            output[opcode[block_start+3]] = x+y
-#        if opcode[block_start] == 2:              # mult. x and y at z
-#            x = opcode[opcode[block_start + 1]]
-#            y = opcode[opcode[block_start + 2]]
-#            output[opcode[block_start + 3]] = x*y
-#        if opcode[block_start] == 99:             # end opcode
-#            break
-#        opcode = output[:]
-#        block_start += 4
-#    return output[0]
-
 # returns true if number was a valid opcode, false if not
 def opcode_checker(number):
     answer = False                             # default falseyness
@@ -85,8 +68,6 @@ def opcode_checker(number):
     mode_two   = int(yarn[1])
     mode_one   = int(yarn[2])
 
-    print(yarn)
-
     # https://stackoverflow.com/questions/148042/using-or-comparisons-with-if-statements
     if ones in (1, 2, 3, 4):
         if tens == 0:
@@ -101,7 +82,6 @@ def opcode_checker(number):
 
 #
 def run_program(puzzle):
-    output = puzzle[:]
     skips = 0
     spot = 0
     for number in puzzle:
@@ -130,24 +110,27 @@ def run_program(puzzle):
                     elif second == 0:
                         y = puzzle[y]
                     puzzle[spot+3] = x*y          # * rule
+                    skips += 4
 
                 elif int(yarn[4]) == 3:
                     x = int(input('INPUT: '))
                     puzzle[spot+1] = x
+                    skips += 1
 
                 elif int(yarn[4]) == 4:
                     if first == 0:
                         print(puzzle[puzzle[spot+1]])
                     elif first == 1:
                         print(puzzle[spot+1])
+                    skips += 1
 
                 elif int(yarn[4]) == 9:
-                    return output
+                    return puzzle
         else:
             skips -= 1
-
         spot += 1
-    return output
+    return puzzle          # now it's really output
+
 
 # main program:
 string_puzzle = file_to_string('input.txt')  # change here for different file names
@@ -156,6 +139,6 @@ all_commas = comma_finder(string_puzzle)
 puzzle = string_to_array(string_puzzle, all_commas)
 # done with input formatting
 
-run_program(puzzle)
+output = run_program(puzzle)
 
 
