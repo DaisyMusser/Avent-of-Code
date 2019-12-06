@@ -127,15 +127,17 @@ def run_program(puzzle):
 
                 elif int(yarn[4]) == 9:
                     return puzzle
+            else:
+                print("ya fucked up")
         else:
             skips -= 1
         spot += 1
-        if spot == 102:
-            print("ERROR ONE: \n\n\n", output[0:104], "<RETURNS ERROR>", output[104:len(puzzle)-1], "\n\n\n"])
-        if spot == 172:
-            print("ERROR TWO: \n\n\n", output[0:174], "<RETURNS ERROR>", output[174:len(output)+1], "\n\n\n")
-        if spot == 220:
-            print("ERROR THREE: ", output[0:222], "<RETURNS ERROR>", puzzle[222:len(output) + 1], "\n\n\n")
+        #if spot == 102:
+        #    print("ERROR ONE: \n\n\n", puzzle[0:104], "<RETURNS ERROR>", puzzle[104:len(puzzle)-1], "\n\n\n")
+        #if spot == 172:
+        #    print("ERROR TWO: \n\n\n", puzzle[0:174], "<RETURNS ERROR>", puzzle[174:len(puzzle)+1], "\n\n\n")
+        #if spot == 220:
+        #    print("ERROR THREE: \n\n\n", puzzle[0:222], "<RETURNS ERROR>", puzzle[222:len(puzzle) + 1], "\n\n\n")
     return puzzle        # now it's really output
 
 
