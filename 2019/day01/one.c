@@ -7,7 +7,7 @@
 #define MAX_LINES_IN_FILE     30000
 
 // should return an array of that contains only the input
-char reader ( char file_name[MAX_LINE_LENGTH] ) {
+int reader ( char file_name[MAX_LINE_LENGTH] ) {
     FILE* fp;
     char buffer[MAX_LINE_LENGTH];   // fgets null-terminates
     char *qnull, (*temp)[MAX_LINE_LENGTH] = malloc( MAX_LINES_IN_FILE * sizeof( char ) * MAX_LINE_LENGTH );
@@ -27,7 +27,7 @@ char reader ( char file_name[MAX_LINE_LENGTH] ) {
         number_of_lines ++;
     }
     
-    fclose( fp );     // might be closef ??
+    fclose( fp );
 
     char input[number_of_lines][max_lenght+1];
     for( int i=0; i < number_of_lines; i++ ) {
@@ -36,7 +36,7 @@ char reader ( char file_name[MAX_LINE_LENGTH] ) {
     
     free( temp );
 
-    return input;
+    return &input;
 }
 
 
@@ -57,7 +57,6 @@ int main ( void ) {
     char file_name[MAX_LINE_LENGTH] = "input.txt";
     
     input = reader( file_name );
-    print(input);
     
     return 0;
 }
