@@ -10,6 +10,7 @@ def file_reader(file_name):
     return orbit_map
 
 
+# parses orbit_map into a more workable orbit_map and the set of all objects
 def orbit_sorter(old_orbit_map):
     objects = set()
     orbit_map = []
@@ -25,8 +26,38 @@ def orbit_sorter(old_orbit_map):
     return orbit_map, objects
 
 
+# given the base orbit it counts its way up and returns the number of orbits
+def orbit_counter_upper(object, orbit_map):
+    counter = 0
+    one_up = object
+    while base_search(one_up, orbit_map) != -1:
+        x = base_search(one_up, orbit_map)
+        one_up = x[0:3]
+        counter += 1
+    return counter
+
+
+# returns base orbit of an object
+def base_search(object, orbit_map):
+    for orbit in orbit_map:
+        if orbit[4:7] == object:
+            return orbit
+    return -1
+
+
+# counts up orbits for all objects ( i hope )
+def base_finder(orbit_map, objects):
+    total_orbits = 0
+    for object in objects:
+        total_orbits += 
+    return total_orbits
+
+
+
 # main program
 orbit_map = file_reader('input.txt')      # change filename here!
 orbit_map, objects = orbit_sorter(orbit_map)
+objects.remove('COM')
 
-print(len(objects)-1)
+total_orbits = base_finder(orbit_map, objects)
+print(total_orbits)
