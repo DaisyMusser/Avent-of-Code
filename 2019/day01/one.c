@@ -7,24 +7,21 @@
 #define MAX_LINES_IN_FILE     30000
 
 // should return an array of that contains only the input
-int reader ( char file_name[MAX_LINE_LENGTH] ) {
+char reader ( int *max_lenght, int *number_of_lines, char file_name[MAX_LINE_LENGTH] ) {
     FILE* fp;
     char buffer[MAX_LINE_LENGTH];   // fgets null-terminates
     char *qnull, (*temp)[MAX_LINE_LENGTH] = malloc( MAX_LINES_IN_FILE * sizeof( char ) * MAX_LINE_LENGTH );
     size_t maxtemp;
-    
-    int max_lenght = 0;
-    int number_of_lines = 0;
 
     fp = fopen( file_name, "r" );
     while ( fgets(buffer, MAX_LINE_LENGTH, fp) != NULL ) {
-        strncpy( temp[number_of_lines], buffer, MAX_LINE_LENGTH );
+        strncpy( temp[*number_of_lines], buffer, MAX_LINE_LENGTH );
         qnull = strchr( buffer, '\0' );
         maxtemp = qnull - &buffer[0];
-        if ( (int)maxtemp > max_lenght ) {
+        if ( (int)maxtemp > *max_lenght ) {
             max_lenght = (int)maxtemp;
         }
-        number_of_lines ++;
+        *number_of_lines ++;
     }
     
     fclose( fp );
@@ -55,8 +52,10 @@ int fuel_parser ( const int mass ) {
 //
 int main ( void ) {
     char file_name[MAX_LINE_LENGTH] = "input.txt";
+    int max_lenght = 0;
+    int number_of_lines = 0;
     
-    input = reader( file_name );
+    input = reader( &max_lenght, &number_of_lines, file_name );
     
     return 0;
 }
