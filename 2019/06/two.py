@@ -49,30 +49,30 @@ def base_search(object, orbit_map):
     return -1
 
 
-# orbital route calculator
-def orbital_route_calculator(orbit_map):
+# finds orbital path between x and y
+def orbital_route_calculator(orbit_map, x, y):
     orbital_route = []
 
-    me_tree = orbit_counter_upper('YOU', orbit_map)
-    san_tree = orbit_counter_upper('SAN', orbit_map)
+    me_tree = orbit_counter_upper(x, orbit_map)
+    san_tree = orbit_counter_upper(y, orbit_map)
 
     done = False
     for me_object in me_tree:
         if not done:                       # not totally sure why this is needed, but it really is
             for san_object in san_tree:
                 if me_object == san_object:
-                    print(me_object)
-                    print(san_object, '\n\n')
-                    intersection = me_tree.index(me_object)
+                    my_intersection = me_tree.index(me_object)
+                    san_intersection = san_tree.index(san_object)
                     done = True
 
-    my_route = me_tree[0:intersection+1]
-    san_route = san_tree[0:intersection+1]
+    my_route = me_tree[0:my_intersection]
+    san_route = san_tree[0:san_intersection+1]
     san_route.reverse()      # for space flight convenience
-    for object in my_route:
-        orbital_route.append(object)
-    for object in san_route:
-        orbital_route.append(object)
+
+    for c in my_route:
+        orbital_route.append(c)
+    for c in san_route:
+        orbital_route.append(c)
 
     return orbital_route
 
@@ -82,7 +82,6 @@ orbit_map = file_reader('input.txt')      # change filename here!
 orbit_map, objects = orbit_sorter(orbit_map)
 objects.remove('COM')
 
-orbital_route = orbital_route_calculator(orbit_map)
-print(len(orbital_route))
-print(len(set(orbital_route)))
+orbital_route = orbital_route_calculator(orbit_map, 'YOU', 'SAN')
+print('Answer: ', len(orbital_route)-1)
 
