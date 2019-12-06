@@ -1,3 +1,4 @@
+// this file is almost all copied from https://github.com/imhoffman/advent/blob/master/2019/01/one.c
 #include<stdio.h>
 #include<stdlib.h>
 #include<string.h>
@@ -34,10 +35,8 @@ void reader ( int *max_lenght, int *number_of_lines, char file_name[MAX_LINE_LEN
 
 
 //  function to parse mass into fuel from input string
-int fuel_parser ( const int mass ) {
-    int fuel;
-    
-    fuel = floor( (double)mass / 3.0 ) - 2;
+int fuel_counter ( const int mass ) {
+    int fuel = floor( (double)mass / 3.0 ) - 2;
 
     return fuel;
 }
@@ -48,8 +47,7 @@ int fuel_parser ( const int mass ) {
 //
 int main ( void ) {
     char file_name[MAX_LINE_LENGTH] = "input.txt";     // change file name here!
-    int max_lenght;
-    int number_of_lines;
+    int max_lenght, number_of_lines, total;
     char (*temp)[MAX_LINE_LENGTH] = malloc( MAX_LINES_IN_FILE * sizeof( char ) * MAX_LINE_LENGTH );
     
     reader( &max_lenght, &number_of_lines, file_name, temp );
@@ -61,5 +59,10 @@ int main ( void ) {
     
     free( temp );
     
+    for ( int i=0; i < number_of_lines; i++ ) {
+        total += fuel_counter( (int)input[i]);
+    }
+    
+    printf("\n%d\n\n", total);
     return 0;
 }
