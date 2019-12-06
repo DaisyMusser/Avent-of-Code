@@ -59,8 +59,13 @@ def orbital_route_calculator(orbit_map):
             if me_object == san_object:
                 intersection = me_tree.index(me_object)
 
-    orbital_route.append(me_tree[0:intersection+1])
-    orbital_route.append(san_tree[0:intersection+1])
+    my_route = me_tree[0:intersection+1]
+    san_route = san_tree[0:intersection+1]
+    san_route.reverse()      # for space flight convenience
+    for object in my_route:
+        orbital_route.append(object)
+    for object in san_route:
+        orbital_route.append(object)
 
     return orbital_route
 
