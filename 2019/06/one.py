@@ -67,4 +67,4 @@ for object in objects:
 
 print('Answer: ', total_orbits)
 # see top for time source
-print("--- %s seconds ---" % (time.time() - start_time))
+print("--- %s seconds ---" % (time.time() - start_time)) 
