@@ -103,9 +103,9 @@ def opcode_checker(number):
 def run_program(puzzle):
     output = puzzle[:]
     skips = 0
+    spot = 0
     for number in puzzle:
-        if skips = 0:
-            spot = 0
+        if skips == 0:
             if opcode_checker(number):            # might need a "== True"
                 yarn = yarnifier(number)
 
@@ -117,34 +117,34 @@ def run_program(puzzle):
                     y = puzzle[spot+2]
                     if first == 0:                # x and y updated if modes not 1
                         x = puzzle[x]
-                    if second == 0:
+                    elif second == 0:
                         y = puzzle[y]
                     puzzle[spot+3] = x+y          # + rule
+                    skips += 4
 
-                if int(yarn[4]) == 2:
+                elif int(yarn[4]) == 2:
                     x = puzzle[spot+1]
                     y = puzzle[spot+2]
                     if first == 0:
                         x = puzzle[x]
-                    if second == 0:
+                    elif second == 0:
                         y = puzzle[y]
                     puzzle[spot+3] = x*y          # * rule
 
-                if int(yarn[4]) == 3:
+                elif int(yarn[4]) == 3:
                     x = int(input('INPUT: '))
                     puzzle[spot+1] = x
 
-                if int(yarn[4]) == 4:
+                elif int(yarn[4]) == 4:
                     if first == 0:
                         print(puzzle[puzzle[spot+1]])
                     elif first == 1:
                         print(puzzle[spot+1])
 
-                if int(yarn[4]) == 9:
+                elif int(yarn[4]) == 9:
                     return output
         else:
             skips -= 1
-        # now what if it's not an opcode??? how do i do this!?
 
         spot += 1
     return output
