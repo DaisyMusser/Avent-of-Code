@@ -100,7 +100,7 @@ def run_program(puzzle):
                     elif second == 0:
                         y = puzzle[y]
                     puzzle[puzzle[spot+3]] = x+y          # + rule
-                    skips += 4
+                    skips += 3
 
                 elif int(yarn[4]) == 2:
                     x = puzzle[spot+1]
@@ -110,7 +110,7 @@ def run_program(puzzle):
                     elif second == 0:
                         y = puzzle[y]
                     puzzle[puzzle[spot+3]] = x*y          # * rule
-                    skips += 4
+                    skips += 3
 
                 elif int(yarn[4]) == 3:
                     x = int(input('INPUT: '))
