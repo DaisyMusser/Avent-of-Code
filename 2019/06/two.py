@@ -52,12 +52,22 @@ def base_search(object, orbit_map):
 # orbital route calculator
 def orbital_route_calculator(orbit_map):
     orbital_route = []
+
     me_tree = orbit_counter_upper('YOU', orbit_map)
     san_tree = orbit_counter_upper('SAN', orbit_map)
+
+    print(me_tree, "\n\n")
+    print(san_tree)
+
+    done = False
     for me_object in me_tree:
-        for san_object in san_tree:
-            if me_object == san_object:
-                intersection = me_tree.index(me_object)
+        if not done:                       # not totally sure why this is needed, but it really is
+            for san_object in san_tree:
+                if me_object == san_object:
+                    print(me_object)
+                    print(san_object, '\n\n')
+                    intersection = me_tree.index(me_object)
+                    done = True
 
     my_route = me_tree[0:intersection+1]
     san_route = san_tree[0:intersection+1]
@@ -77,4 +87,5 @@ objects.remove('COM')
 
 orbital_route = orbital_route_calculator(orbit_map)
 print(len(orbital_route))
+print(len(set(orbital_route)))
 
