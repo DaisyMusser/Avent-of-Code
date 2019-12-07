@@ -183,8 +183,8 @@ def opcode_processor(pointer, program, setting):
     return pointer, program, input_received, output
 
 
-# feeds pointers and programs into opcode_processor until 'DONE'
-def run_program(program, input_one, input_two):
+# runs one amp at specified phase setting and input signal
+def single_amp(program, input_one, input_two):
     pointer = 0
     setting = input_one
     while True:
@@ -198,12 +198,21 @@ def run_program(program, input_one, input_two):
     return program, output
 
 
+def test_amp_config(program, amp_setting):
+    _, output = single_amp(program, int(amp_setting[0]), 0)
+    _, output = single_amp(program, int(amp_setting[1]), output)
+    _, output = single_amp(program, int(amp_setting[2]), output)
+    _, output = single_amp(program, int(amp_setting[3]), output)
+    _, signal = single_amp(program, int(amp_setting[4]), output)
+    return signal
+
 # main program:
 program = file_to_string('input.txt')  # change file name here!
 all_commas = comma_finder(program)
 program = string_to_array(program, all_commas)
 # done with file io / formatting
 
-ran_program, output = run_program(program, 3, 0)
-print(output)
+signal = test_amp_config(program, '01234')
+print(signal)
+
 
