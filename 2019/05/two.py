@@ -123,7 +123,7 @@ def opcode_processor(pointer, program):
             pointer += 2
 
         elif int(yarn[4]) == 9:
-            return 'DONE'
+            return 'DONE', program
     else:
         print("--- ERORR ---")
         print("@ adress: ", pointer, "which is int: ", opcode)
@@ -133,23 +133,16 @@ def opcode_processor(pointer, program):
 
 # feeds pointers and programs into opcode_processor until 'DONE'
 def run_program(program):
-    counter = 0
     pointer = 0
-    while opcode_processor(pointer, program) != 'DONE':
-        print(program)
-        print(pointer)
+    while True:
         pointer, program = opcode_processor(pointer, program)
-        print(program)
-        print(pointer)
-        counter += 1
-        if counter == 2:
+        if pointer == 'DONE':
             break
-    print('DONE')
     return program
 
 
 # main program:
-string_puzzle = file_to_string('eight.txt')  # change here for different file names
+string_puzzle = file_to_string('input.txt')  # change here for different file names
 # done with file io
 
 all_commas = comma_finder(string_puzzle)
@@ -161,7 +154,6 @@ final_program_state = run_program(program)
 
 # p, prog = opcode_processor(0, program)
 
-# print(prog)
 # print(p)
 
 # print(opcode_processor(p, prog))
