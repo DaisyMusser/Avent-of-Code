@@ -85,7 +85,6 @@ def opcode_checker(number):
 # given a pointer and a program, executes instructions and returns modified program + pointer
 def opcode_processor(pointer, program):
     opcode = program[pointer]         # purely symbolic
-    print(opcode)
     if opcode_checker(opcode):        # this is only helpful for debugging
         yarn = yarnifier(opcode)
         first = int(yarn[2])
@@ -99,7 +98,7 @@ def opcode_processor(pointer, program):
             if second == 0:
                 y = program[y]
             program[program[pointer + 3]] = x + y  # + rule
-            pointer += 4
+            pointer += 5
 
         elif int(yarn[4]) == 2:
             x = program[pointer + 1]
@@ -109,19 +108,19 @@ def opcode_processor(pointer, program):
             if second == 0:
                 y = program[y]
             program[program[pointer + 3]] = x * y  # * rule
-            pointer += 4
+            pointer += 5
 
         elif int(yarn[4]) == 3:  # get input rule
             x = int(input('INPUT: '))  # always adress mode
             program[program[pointer + 1]] = x
-            pointer += 1
+            pointer += 2
 
         elif int(yarn[4]) == 4:  # print rule
             if first == 0:
                 print(program[program[pointer + 1]])
             if first == 1:  # originally this was elif :|
                 print(program[pointer + 1])
-            pointer += 1
+            pointer += 2
 
         elif int(yarn[4]) == 9:
             return 'DONE'
@@ -151,6 +150,8 @@ program = string_to_array(string_puzzle, all_commas)
 # prints answer
 final_program_state = run_program(program)
 
+# p, prog = opcode_processor(0, program)
 
-
+# print(prog)
+# print(p)
 
