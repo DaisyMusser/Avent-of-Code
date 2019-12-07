@@ -81,7 +81,9 @@ def opcode_checker(number):
 
 
 # given a pointer and a program, executes instructions and returns modified program + pointer
-def opcode_processor(pointer, program):
+def opcode_processor(pointer, program, setting):
+    input_received = -1            # default falsyness
+    output = -1
     opcode = program[pointer]         # purely symbolic
     if opcode_checker(opcode):        # this is only helpful for debugging
         yarn = yarnifier(opcode)
@@ -109,15 +111,16 @@ def opcode_processor(pointer, program):
             pointer += 4
 
         elif int(yarn[4]) == 3:  # get input rule
-            x = int(input('INPUT: '))  # always adress mode
+            x = setting  # always address mode
             program[program[pointer + 1]] = x
+            input_received = 1
             pointer += 2
 
         elif int(yarn[4]) == 4:  # print rule
             if first == 0:
-                print(program[program[pointer + 1]])
-            if first == 1:  # originally this was elif :|
-                print(program[pointer + 1])
+                output = program[program[pointer + 1]]
+            elif first == 1:
+                output = program[pointer + 1]
             pointer += 2
 
         elif int(yarn[4]) == 5:   # jump-if-true
@@ -171,37 +174,36 @@ def opcode_processor(pointer, program):
             pointer += 4
 
         elif int(yarn[4]) == 9:
-            return 'DONE', program
+            return 'DONE', program, 0, output
     else:
         print("--- ERORR ---")
         print("@ adress: ", pointer, "which is int: ", opcode)
-        return 'DONE', 'ERROR'
+        return 'DONE', 'ERROR', 0, 0
 
-    return pointer, program
+    return pointer, program, input_received, output
 
 
 # feeds pointers and programs into opcode_processor until 'DONE'
-def run_program(program):
+def run_program(program, input_one, input_two):
     pointer = 0
+    setting = input_one
     while True:
-        pointer, program = opcode_processor(pointer, program)
+        pointer, program, input_received, maybe_output = opcode_processor(pointer, program, setting)
+        if input_received != -1:
+            setting = input_two
+        if maybe_output != -1:
+            output = maybe_output
         if pointer == 'DONE':
             break
-    return program
-
-
-# runs with given input and returns output
-def intcode_computer():
-    program = file_to_string('input.txt')   # change file name here
-    all_commas = comma_finder(program)
-    program = string_to_array(program, all_commas)
-
-    run_program(program)
-
-    return
+    return program, output
 
 
 # main program:
-intcode_computer('input.txt')
+program = file_to_string('input.txt')  # change file name here!
+all_commas = comma_finder(program)
+program = string_to_array(program, all_commas)
+# done with file io / formatting
 
+ran_program, output = run_program(program, 3, 0)
+print(output)
 
