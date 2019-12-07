@@ -150,25 +150,27 @@ def opcode_processor(pointer, program):
         elif int(yarn[4]) == 7:
             x = program[pointer + 1]
             y = program[pointer + 2]
-            program[program[pointer + 3]] = 0
             if first == 0:
                 x = program[x]
             if second == 0:
                 y = program[y]
             if x < y:
                 program[program[pointer+3]] = 1
+            else:
+                program[program[pointer + 3]] = 0
             pointer += 4
 
         elif int(yarn[4]) == 8:
             x = program[pointer + 1]
             y = program[pointer + 2]
-            program[program[pointer + 3]] = 0
             if first == 0:
                 x = program[x]
             if second == 0:
                 y = program[y]
             if x == y:
-                program[program[pointer+3]] = 1
+                program[program[pointer + 3]] = 1
+            else:
+                program[program[pointer + 3]] = 0
             pointer += 4
 
         elif int(yarn[4]) == 9:
