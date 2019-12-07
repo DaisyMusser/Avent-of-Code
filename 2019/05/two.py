@@ -82,68 +82,62 @@ def opcode_checker(number):
     return answer
 
 
-# runs the part one intcode program correctly
-def run_program(puzzle):
-    skips = 0
-    spot = 0
-    for number in puzzle:
-        if skips == 0:                           # skips are used to return inst. pointer
-            if opcode_checker(number):           # this is only helpful for debugging
-                yarn = yarnifier(number)
-                first = int(yarn[2])
-                second = int(yarn[1])
+# given a pointer and a program, executes instructions and returns modified program + pointer
+def opcode_processor(pointer, program):
+    opcode = program[pointer]         # purely symbolic
+    print(opcode)
+    if opcode_checker(opcode):        # this is only helpful for debugging
+        yarn = yarnifier(opcode)
+        first = int(yarn[2])
+        second = int(yarn[1])
 
-                if int(yarn[4]) == 1:
-                    x = puzzle[spot+1]           # default set to value not address
-                    y = puzzle[spot+2]
-                    if first == 0:               # x and y updated if modes not 1
-                        x = puzzle[x]
-                    if second == 0:
-                        y = puzzle[y]
-                    puzzle[puzzle[spot+3]] = x+y          # + rule
-                    skips += 3
+        if int(yarn[4]) == 1:
+            x = program[pointer + 1]  # default set to value not address
+            y = program[pointer + 2]
+            if first == 0:            # x and y updated if modes not 1
+                x = program[x]
+            if second == 0:
+                y = program[y]
+            program[program[pointer + 3]] = x + y  # + rule
+            pointer += 4
 
-                elif int(yarn[4]) == 2:
-                    x = puzzle[spot+1]
-                    y = puzzle[spot+2]
-                    if first == 0:
-                        x = puzzle[x]
-                    if second == 0:
-                        y = puzzle[y]
-                    puzzle[puzzle[spot+3]] = x*y          # * rule
-                    skips += 3
+        elif int(yarn[4]) == 2:
+            x = program[pointer + 1]
+            y = program[pointer + 2]
+            if first == 0:
+                x = program[x]
+            if second == 0:
+                y = program[y]
+            program[program[pointer + 3]] = x * y  # * rule
+            pointer += 4
 
-                elif int(yarn[4]) == 3:                   # get input rule
-                    x = int(input('INPUT: '))             # always adress mode
-                    puzzle[puzzle[spot+1]] = x
-                    skips += 1
+        elif int(yarn[4]) == 3:  # get input rule
+            x = int(input('INPUT: '))  # always adress mode
+            program[program[pointer + 1]] = x
+            pointer += 1
 
-                elif int(yarn[4]) == 4:                   # print rule
-                    if first == 0:
-                        print(puzzle[puzzle[spot+1]])
-                    if first == 1:                        # originally this was elif :|
-                        print(puzzle[spot+1])
-                    skips += 1
+        elif int(yarn[4]) == 4:  # print rule
+            if first == 0:
+                print(program[program[pointer + 1]])
+            if first == 1:  # originally this was elif :|
+                print(program[pointer + 1])
+            pointer += 1
 
-                elif int(yarn[4]) == 9:
-                    return puzzle
+        elif int(yarn[4]) == 9:
+            return 'DONE'
+    else:
+        print("--- ERORR ---")
+        print("@ adress: ", pointer, "which is int: ", opcode)
 
-                elif int(yarn[4]) == 5:  # this could mean we had to go backwards, don't know how
-                                        # skips won't go backwards
-                elif int(yarn[4]) == 6:
-
-                elif int(yarn[4]) == 7:
-
-                elif int(yarn[4]) == 8:
+    return pointer, program
 
 
-            else:
-                print("--- ERORR ---")
-                print("@ adress: ", spot, "which is int: ", puzzle[spot])
-        else:
-            skips -= 1
-        spot += 1
-    return puzzle
+# feeds pointers and programs into opcode_processor until 'DONE'
+def run_program(program):
+    pointer = 0
+    while opcode_processor(pointer, program) != 'DONE':
+        pointer, program = opcode_processor(pointer, program)
+    return program
 
 
 # main program:
@@ -151,11 +145,11 @@ string_puzzle = file_to_string('input.txt')  # change here for different file na
 # done with file io
 
 all_commas = comma_finder(string_puzzle)
-puzzle = string_to_array(string_puzzle, all_commas)
+program = string_to_array(string_puzzle, all_commas)
 # done with input formatting
 
 # prints answer
-output = run_program(puzzle)
+final_program_state = run_program(program)
 
 
 
