@@ -88,9 +88,6 @@ def opcode_processor(pointer, program):
         first = int(yarn[2])
         second = int(yarn[1])
 
-        print(program)
-        print('pointer: ', pointer)
-
         if int(yarn[4]) == 1:
             x = program[pointer + 1]  # default set to value not address
             y = program[pointer + 2]
@@ -194,7 +191,7 @@ def run_program(program):
 
 
 # main program:
-string_puzzle = file_to_string('eight.txt')  # change here for different file names
+string_puzzle = file_to_string('input.txt')  # change here for different file names
 # done with file io
 
 all_commas = comma_finder(string_puzzle)
