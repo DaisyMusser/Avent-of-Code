@@ -211,8 +211,15 @@ def test_amp_config(program, amp_setting):
 
 #
 def phase_setting_checker(program):
-    
-    list(itertools.permutations([1, 2, 3]))
+    # generates all possible settings
+    # https://stackoverflow.com/questions/104420/how-to-generate-all-permutations-of-a-list
+    x = list(itertools.permutations([0, 1, 2, 3, 4]))
+    all_settings = []
+    for c in x:
+        c = str(c)
+        all_settings.append(c[1] + c[4] + c[7] + c[10] + c[13])
+    return all_settings
+
 
 # main program:
 program = file_to_string('input.txt')  # change file name here!
@@ -220,7 +227,6 @@ all_commas = comma_finder(program)
 program = string_to_array(program, all_commas)
 # done with file io / formatting
 
-signal = test_amp_config(program, '01234')
-print(signal)
-
+all_settings = phase_setting_checker(program)
+print(all_settings)
 
