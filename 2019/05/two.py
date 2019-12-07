@@ -90,6 +90,9 @@ def opcode_processor(pointer, program):
         first = int(yarn[2])
         second = int(yarn[1])
 
+        print(program)
+        print('pointer: ', pointer)
+
         if int(yarn[4]) == 1:
             x = program[pointer + 1]  # default set to value not address
             y = program[pointer + 2]
@@ -122,11 +125,60 @@ def opcode_processor(pointer, program):
                 print(program[pointer + 1])
             pointer += 2
 
+        elif int(yarn[4]) == 5:   # jump-if-true
+            x = program[pointer+1]
+            y = program[pointer+2]
+            if first == 0:
+                x = program[x]
+            if second == 0:
+                y = program[y]
+            if x != 0:
+                pointer = y
+            else:                 # this might need to be something else
+                pointer += 3
+
+        elif int(yarn[4]) == 6:   # jump-if-false
+            x = program[pointer + 1]
+            y = program[pointer + 2]
+            if first == 0:
+                x = program[x]
+            if second == 0:
+                y = program[y]
+            if x == 0:
+                pointer = y
+            else:                 # this might need to be something else
+                pointer += 3
+
+        elif int(yarn[4]) == 7:
+            x = program[pointer + 1]
+            y = program[pointer + 2]
+            program[program[pointer + 3]] = 0
+            if first == 0:
+                x = program[x]
+            if second == 0:
+                y = program[y]
+            if x < y:
+                program[program[pointer+3]] = 1
+            pointer += 4
+
+        elif int(yarn[4]) == 8:
+            x = program[pointer + 1]
+            y = program[pointer + 2]
+            program[program[pointer + 3]] = 0
+            if first == 0:
+                x = program[x]
+            if second == 0:
+                y = program[y]
+            if x == y:
+                program[program[pointer+3]] = 1
+            pointer += 4
+
         elif int(yarn[4]) == 9:
             return 'DONE', program
     else:
         print("--- ERORR ---")
         print("@ adress: ", pointer, "which is int: ", opcode)
+        return 'DONE', 'ERROR'
 
     return pointer, program
 
@@ -142,7 +194,7 @@ def run_program(program):
 
 
 # main program:
-string_puzzle = file_to_string('input.txt')  # change here for different file names
+string_puzzle = file_to_string('eight.txt')  # change here for different file names
 # done with file io
 
 all_commas = comma_finder(string_puzzle)
@@ -151,11 +203,5 @@ program = string_to_array(string_puzzle, all_commas)
 
 # prints answer
 final_program_state = run_program(program)
-
-# p, prog = opcode_processor(0, program)
-
-# print(p)
-
-# print(opcode_processor(p, prog))
 
 
