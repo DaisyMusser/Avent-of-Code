@@ -1,4 +1,5 @@
 import math
+import itertools
 
 # Reads file into string, code adapted from ( https://github.com/imhoffman/advent/blob/master/2015/01/one.py )
 def file_to_string(file_name):
@@ -198,6 +199,7 @@ def single_amp(program, input_one, input_two):
     return program, output
 
 
+# runs all five amps, with specified phase settings
 def test_amp_config(program, amp_setting):
     _, output = single_amp(program, int(amp_setting[0]), 0)
     _, output = single_amp(program, int(amp_setting[1]), output)
@@ -205,6 +207,12 @@ def test_amp_config(program, amp_setting):
     _, output = single_amp(program, int(amp_setting[3]), output)
     _, signal = single_amp(program, int(amp_setting[4]), output)
     return signal
+
+
+#
+def phase_setting_checker(program):
+    
+    list(itertools.permutations([1, 2, 3]))
 
 # main program:
 program = file_to_string('input.txt')  # change file name here!
