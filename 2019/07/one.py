@@ -190,15 +190,18 @@ def run_program(program):
     return program
 
 
+# runs with given input and returns output
+def intcode_computer():
+    program = file_to_string('input.txt')   # change file name here
+    all_commas = comma_finder(program)
+    program = string_to_array(program, all_commas)
+
+    run_program(program)
+
+    return
+
+
 # main program:
-string_puzzle = file_to_string('input.txt')  # change here for different file names
-# done with file io
-
-all_commas = comma_finder(string_puzzle)
-program = string_to_array(string_puzzle, all_commas)
-# done with input formatting
-
-# prints answer
-final_program_state = run_program(program)
+intcode_computer('input.txt')
 
 
