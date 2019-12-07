@@ -218,7 +218,14 @@ def phase_setting_checker(program):
     for c in x:
         c = str(c)
         all_settings.append(c[1] + c[4] + c[7] + c[10] + c[13])
-    return all_settings
+
+    highest_signal = 0
+    for setting in all_settings:
+        signal = test_amp_config(program, setting)
+        if signal > highest_signal:
+            highest_signal = signal
+
+    return highest_signal
 
 
 # main program:
@@ -227,6 +234,6 @@ all_commas = comma_finder(program)
 program = string_to_array(program, all_commas)
 # done with file io / formatting
 
-all_settings = phase_setting_checker(program)
-print(all_settings)
+answer = phase_setting_checker(program)
+print(answer)
 
