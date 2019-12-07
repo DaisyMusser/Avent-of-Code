@@ -98,7 +98,7 @@ def opcode_processor(pointer, program):
             if second == 0:
                 y = program[y]
             program[program[pointer + 3]] = x + y  # + rule
-            pointer += 5
+            pointer += 4
 
         elif int(yarn[4]) == 2:
             x = program[pointer + 1]
@@ -108,7 +108,7 @@ def opcode_processor(pointer, program):
             if second == 0:
                 y = program[y]
             program[program[pointer + 3]] = x * y  # * rule
-            pointer += 5
+            pointer += 4
 
         elif int(yarn[4]) == 3:  # get input rule
             x = int(input('INPUT: '))  # always adress mode
@@ -133,14 +133,23 @@ def opcode_processor(pointer, program):
 
 # feeds pointers and programs into opcode_processor until 'DONE'
 def run_program(program):
+    counter = 0
     pointer = 0
     while opcode_processor(pointer, program) != 'DONE':
+        print(program)
+        print(pointer)
         pointer, program = opcode_processor(pointer, program)
+        print(program)
+        print(pointer)
+        counter += 1
+        if counter == 2:
+            break
+    print('DONE')
     return program
 
 
 # main program:
-string_puzzle = file_to_string('input.txt')  # change here for different file names
+string_puzzle = file_to_string('eight.txt')  # change here for different file names
 # done with file io
 
 all_commas = comma_finder(string_puzzle)
@@ -154,4 +163,7 @@ final_program_state = run_program(program)
 
 # print(prog)
 # print(p)
+
+# print(opcode_processor(p, prog))
+
 
