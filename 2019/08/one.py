@@ -28,14 +28,24 @@ def data_processor(raw_data):
 
 # use .count method https://stackoverflow.com/questions/2600191/how-can-i-count-the-occurrences-of-a-list-item
 def zero_counter(data):
+    answer = [9999999999, 'ERROR']    # [0]: lowest number of zeros, [1]: layer with that number of zeros
+    for layer in data:
+        zeros = 0   # lol
+        for line in range(6):
+            for x in layer[line]:
+                if x == 0:
+                    zeros += 1
+        if zeros < answer[0]:
+            answer[0] = zeros
+            answer[1] = layer
+    return answer[1]
 
-    return right_layer
 
 
 # main program
 data = file_reader('input.txt')  # change file name here!
 data = data_processor(data)
+layer = zero_counter(data)
 
-print(len(data[0][0]))
-
+print(layer)
 
