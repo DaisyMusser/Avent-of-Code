@@ -9,18 +9,27 @@ def file_reader(file_name):
     return raw_data
 
 
+# stealing populating method from: https://www.ict.social/python/basics/multidimensional-lists-in-python
 def data_processor(raw_data):
+    counter = 0
     clean_data = []
-    counter = -1
     while True:
-        counter += 1
-        for line in range(6):
-            for digit in range(25):
-                clean_data[]
-
-    return clean_data
+        layer = []
+        for _ in range(6):
+            line = []
+            for _ in range(25):
+                if counter == len(raw_data):
+                    return clean_data
+                line.append(int(raw_data[counter]))
+                counter += 1
+            layer.append(line)
+        clean_data.append(layer)
 
 
 # main program
-raw_data = file_reader('input.txt')  # change file name here!
+data = file_reader('input.txt')  # change file name here!
+data = data_processor(data)
+
+print(len(data[0][0]))
+
 
