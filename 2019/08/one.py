@@ -26,7 +26,8 @@ def data_processor(raw_data):
         clean_data.append(layer)
 
 
-# use .count method https://stackoverflow.com/questions/2600191/how-can-i-count-the-occurrences-of-a-list-item
+# counts zeros in layers and returns layer with fewest zeros
+# would have been simpler and more idiomatic to use .count
 def zero_counter(data):
     answer = [9999999999, 'ERROR']    # [0]: lowest number of zeros, [1]: layer with that number of zeros
     for layer in data:
@@ -38,8 +39,13 @@ def zero_counter(data):
         if zeros < answer[0]:
             answer[0] = zeros
             answer[1] = layer
-    return answer[1]
 
+    # formats layer conveniently
+    real_answer = []
+    for line in answer[1]:
+        for x in range(25):
+            real_answer.append(line[x])
+    return real_answer
 
 
 # main program
@@ -47,5 +53,7 @@ data = file_reader('input.txt')  # change file name here!
 data = data_processor(data)
 layer = zero_counter(data)
 
-print(layer)
+# https://stackoverflow.com/questions/2600191/how-can-i-count-the-occurrences-of-a-list-item
+print((layer.count(1))*(layer.count(2)))
+
 
