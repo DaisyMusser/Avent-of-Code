@@ -26,6 +26,12 @@ def data_processor(raw_data):
         clean_data.append(layer)
 
 
+# use .count method https://stackoverflow.com/questions/2600191/how-can-i-count-the-occurrences-of-a-list-item
+def zero_counter(data):
+
+    return right_layer
+
+
 # main program
 data = file_reader('input.txt')  # change file name here!
 data = data_processor(data)
