@@ -26,6 +26,42 @@ def data_processor(raw_data):
         clean_data.append(layer)
 
 
+# takes new_layer and background, and returns new background
+def layer_reader(new_layer, background):
+    new_background = []
+    for line in range(6):
+        new_line = []
+        for digit in range(25):
+            if new_layer[line][digit] == 0:
+                new_line.append(0)
+            if new_layer[line][digit] == 1:
+                new_line.append(1)
+            if new_layer[line][digit] == 2:
+                new_line.append(background[line][digit])
+        new_background.append(new_line)
+    return new_background
+
+
+# generates image
+def image_generator(data):
+    data.reverse()
+    layer_counter = 0
+    for layer in data:
+        if layer_counter == 0:
+            background = layer
+        else:
+            background = layer_reader(layer, background)
+        layer_counter += 1
+    image = background       # symbolic
+    return image
+
+
 # main program
+# file io and data formatting
 data = file_reader('input.txt')  # change file name here!
 data = data_processor(data)
+
+# image printing
+image = image_generator(data)
+
+
