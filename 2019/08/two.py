@@ -34,9 +34,9 @@ def layer_reader(new_layer, background):
         for digit in range(25):
             if new_layer[line][digit] == 0:
                 new_line.append(0)
-            if new_layer[line][digit] == 1:
+            elif new_layer[line][digit] == 1:
                 new_line.append(1)
-            if new_layer[line][digit] == 2:
+            elif new_layer[line][digit] == 2:
                 new_line.append(background[line][digit])
         new_background.append(new_line)
     return new_background
@@ -56,6 +56,24 @@ def image_generator(data):
     return image
 
 
+def image_printer(image):
+    fancy_image = []        # this is all very fancy
+    for line in range(6):
+        fancy_line = ''
+        for digit in range(25):
+            if image[line][digit] == 1:
+                fancy_line = fancy_line + '#'
+            elif image[line][digit] == 0:
+                fancy_line = fancy_line + ' '
+            else:
+                print('--- ERROR ---')
+                return
+        fancy_image.append(fancy_line)
+    for line in fancy_image:
+        print(line)
+    return
+
+
 # main program
 # file io and data formatting
 data = file_reader('input.txt')  # change file name here!
@@ -63,5 +81,6 @@ data = data_processor(data)
 
 # image printing
 image = image_generator(data)
+image_printer(image)
 
 
