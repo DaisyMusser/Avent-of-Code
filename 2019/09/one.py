@@ -138,6 +138,8 @@ def opcode_processor(pointer, program, relative_base):
             x = input('INPUT: ')
             if first == 0:
                 program[program[pointer + 1]] = x
+            elif first == 1:
+                program[pointer + 1] = x
             elif first == 2:
                 program[program[pointer + 1] + relative_base] = x
             pointer += 2
