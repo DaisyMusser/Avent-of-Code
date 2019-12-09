@@ -82,7 +82,7 @@ def opcode_checker(number):
 
 
 # given a pointer and a program, executes instructions and returns modified program + pointer
-def opcode_processor(pointer, program):
+def opcode_processor(pointer, program, relative_base):
     opcode = program[pointer]         # purely symbolic
     if opcode_checker(opcode):        # this is only helpful for debugging
         yarn = yarnifier(opcode)
@@ -173,21 +173,30 @@ def opcode_processor(pointer, program):
                 program[program[pointer + 3]] = 0
             pointer += 4
 
-        elif int(yarn[3]) == 9:
-            return 'END', program
+        #elif int(yarn[3:5]) == 09:
+        #    if first == 0:
+        #        value = program[program[pointer + 1]]
+        #    if first == 1:
+        #        value = program[pointer + 1]
+        #    relative_base += value
+        #    pointer += 2
+
+        elif int(yarn[3:5]) == 99:
+            return 'END', program, relative_base
     else:
         print("--- ERORR ---")
         print("@ adress: ", pointer, "which is int: ", opcode)
         return 'DONE', 'ERROR', 0, 0
 
-    return pointer, program
+    return pointer, program, relative_base
 
 
 # runs program until END
 def run_program(program):
     pointer = 0
+    relative_base = 0
     while True:
-        pointer, program = opcode_processor(pointer, program)
+        pointer, program, relative_base = opcode_processor(pointer, program, relative_base)
         if pointer == 'END':
             return program
 
