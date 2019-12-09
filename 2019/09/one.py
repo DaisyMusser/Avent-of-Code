@@ -90,9 +90,11 @@ def opcode_processor(pointer, program):
         second = int(yarn[1])
 
         if int(yarn[4]) == 1:
+            # used this page to figure out an error message:
+            # https://www.pythonforbeginners.com/concatenation/string-concatenation-and-formatting-in-python
             x = int(program[pointer + 1])  # default set to value not address
             y = int(program[pointer + 2])
-            if first == 0:            # x and y updated if modes not 1
+            if first == 0:                 # x and y updated if modes not 1
                 x = int(program[x])
             if second == 0:
                 y = int(program[y])
