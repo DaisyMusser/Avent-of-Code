@@ -60,23 +60,20 @@ def opcode_checker(number):
     if number < 1:                             # 0 or -#s c/t be opcodes
         return answer
 
-    yarn = ("0" * int(5-len(yarn))) + yarn     # fill yarn with 0s, just like yarnifier
+    yarn = ("0" * int(5-len(yarn))) + yarn     # backfill yarn with 0s, just like yarnifier
 
-    ones = int(yarn[4])                        # purely symbolic
-    tens = int(yarn[3])
+    opcode     = int(yarn[3:5])                # purely symbolic
     mode_three = int(yarn[0])
     mode_two   = int(yarn[1])
     mode_one   = int(yarn[2])
 
     # https://stackoverflow.com/questions/148042/using-or-comparisons-with-if-statements
-    if ones in (1, 2, 3, 4, 5, 6, 7, 8):
-        if tens == 0:
-            if mode_three in (0, 1) and mode_two in (0, 1) and mode_one in (0, 1):
-                answer = True
-
-    if int(yarn[3:5]) == 99:
-        if mode_three in (0, 1) and mode_two in (0, 1) and mode_one in (0, 1):
+    if opcode in (1, 2, 3, 4, 5, 6, 7, 8, 9):
+        if mode_three in (0, 1, 2) and mode_two in (0, 1, 2) and mode_one in (0, 1, 2):
             answer = True
+
+    if opcode == 99:
+        answer = True
 
     return answer
 
@@ -207,8 +204,6 @@ program = file_to_string('five.txt')  # change file name here!
 all_commas = comma_finder(program)
 program = string_to_array(program, all_commas)
 # done with file io / formatting
-
-print(program)
 
 run_program(program)
 
