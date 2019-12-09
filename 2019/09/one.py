@@ -97,9 +97,11 @@ def opcode_processor(pointer, program, relative_base):
         if int(yarn[4]) == 1:
             # used this page to figure out an error message:
             # https://www.pythonforbeginners.com/concatenation/string-concatenation-and-formatting-in-python
-            x = int(program[pointer + 1])  # default set to value not address
+            # used this to figure out another error:
+            # https://www.reddit.com/r/adventofcode/comments/e8aw9j/2019_day_9_part_1_how_to_fix_203_error/
+            x = int(program[pointer + 1])    # default set to value not address
             y = int(program[pointer + 2])
-            if first == 0:                 # x and y updated if modes not 1
+            if first == 0:                   # x and y updated if modes not 1
                 x = int(program[x])
             elif first == 2:
                 x = program[x + relative_base]
@@ -143,8 +145,6 @@ def opcode_processor(pointer, program, relative_base):
         elif int(yarn[4]) == 4:  # print rule
             if first == 0:
                 print(program[program[pointer + 1]])
-            elif first == 1:
-                print(program[pointer + 1])
             elif first == 2:
                 print(program[program[pointer + 1] + relative_base])
             pointer += 2
