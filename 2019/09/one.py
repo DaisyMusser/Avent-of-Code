@@ -90,13 +90,13 @@ def opcode_processor(pointer, program):
         second = int(yarn[1])
 
         if int(yarn[4]) == 1:
-            x = program[pointer + 1]  # default set to value not address
-            y = program[pointer + 2]
+            x = int(program[pointer + 1])  # default set to value not address
+            y = int(program[pointer + 2])
             if first == 0:            # x and y updated if modes not 1
-                x = program[x]
+                x = int(program[x])
             if second == 0:
-                y = program[y]
-            program[program[pointer + 3]] = x + y  # + rule
+                y = int(program[y])
+            program[program[pointer + 3]] = x + y      # + rule
             pointer += 4
 
         elif int(yarn[4]) == 2:
@@ -181,25 +181,23 @@ def opcode_processor(pointer, program):
     return pointer, program
 
 
+# runs program until END
 def run_program(program):
     pointer = 0
-    setting = input_one
     while True:
-        pointer, program, input_received, maybe_output = opcode_processor(pointer, program, setting)
-        if input_received != -1:
-            setting = input_two
-        if maybe_output != -1:
-            output = maybe_output
-        if pointer == 'DONE':
-            break
-    return program, output
+        pointer, program = opcode_processor(pointer, program)
+        if pointer == 'END':
+            return program
 
 
 # main program:
-program = file_to_string('input.txt')  # change file name here!
+program = file_to_string('five.txt')  # change file name here!
 all_commas = comma_finder(program)
 program = string_to_array(program, all_commas)
 # done with file io / formatting
 
+print(program)
+
+run_program(program)
 
 
