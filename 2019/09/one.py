@@ -44,6 +44,13 @@ def string_to_array(opcode_string, comma_index):
     return opcode
 
 
+# adds memory to the end of the program
+def add_memory(program):
+    for _ in range(math.floor(len(program)/2)):
+        program.append(0)
+    return program
+
+
 # makes number str and back-fills with 0s
 def yarnifier(number):
     yarn = str(number)
@@ -248,9 +255,10 @@ def run_program(program):
 
 
 # main program:
-program = file_to_string('five.txt')  # change file name here!
+program = file_to_string('input.txt')  # change file name here!
 all_commas = comma_finder(program)
 program = string_to_array(program, all_commas)
+program = add_memory(program)
 # done with file io / formatting
 
 run_program(program)
