@@ -173,13 +173,14 @@ def opcode_processor(pointer, program, relative_base):
                 program[program[pointer + 3]] = 0
             pointer += 4
 
-        #elif int(yarn[3:5]) == 09:
-        #    if first == 0:
-        #        value = program[program[pointer + 1]]
-        #    if first == 1:
-        #        value = program[pointer + 1]
-        #    relative_base += value
-        #    pointer += 2
+        elif int(yarn[3:5]) == 9:
+            # leading 0s not allowed https://stackoverflow.com/questions/36386346/syntaxerror-invalid-token
+            if first == 0:
+                value = program[program[pointer + 1]]
+            if first == 1:
+                value = program[pointer + 1]
+            relative_base += value
+            pointer += 2
 
         elif int(yarn[3:5]) == 99:
             return 'END', program, relative_base
