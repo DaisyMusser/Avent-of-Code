@@ -148,6 +148,8 @@ def opcode_processor(pointer, program, relative_base):
         elif int(yarn[4]) == 4:  # print rule
             if first == 0:
                 print(program[program[pointer + 1]])
+            if first == 1:
+                print(program[pointer + 1])
             elif first == 2:
                 print(program[program[pointer + 1] + relative_base])
             pointer += 2
@@ -258,7 +260,7 @@ def run_program(program):
 
 
 # main program:
-program = file_to_string('copyier.txt')  # change file name here!
+program = file_to_string('large_output.txt')  # change file name here!
 all_commas = comma_finder(program)
 program = string_to_array(program, all_commas)
 program = add_memory(program)
