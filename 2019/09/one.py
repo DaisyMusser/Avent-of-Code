@@ -46,7 +46,8 @@ def string_to_array(opcode_string, comma_index):
 
 # adds memory to the end of the program
 def add_memory(program):
-    for _ in range(math.floor(len(program)/2)):
+    # for _ in range(math.floor(len(program)/2)):
+    for _ in range(1000):
         program.append(0)
     return program
 
@@ -183,7 +184,7 @@ def opcode_processor(pointer, program, relative_base):
             else:                 # this might need to be something else
                 pointer += 3
 
-        elif int(yarn[4]) == 7:
+        elif int(yarn[4]) == 7:   # less-than rule
             x = program[pointer + 1]
             y = program[pointer + 2]
             if first == 0:
@@ -204,7 +205,7 @@ def opcode_processor(pointer, program, relative_base):
                 program[address] = 0
             pointer += 4
 
-        elif int(yarn[4]) == 8:
+        elif int(yarn[4]) == 8:   # equal-to rule
             x = program[pointer + 1]
             y = program[pointer + 2]
             if first == 0:
@@ -257,7 +258,7 @@ def run_program(program):
 
 
 # main program:
-program = file_to_string('input.txt')  # change file name here!
+program = file_to_string('copyier.txt')  # change file name here!
 all_commas = comma_finder(program)
 program = string_to_array(program, all_commas)
 program = add_memory(program)
