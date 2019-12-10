@@ -47,7 +47,7 @@ def string_to_array(opcode_string, comma_index):
 # adds memory to the end of the program
 def add_memory(program):
     # for _ in range(math.floor(len(program)/2)):
-    for _ in range(1000):
+    for _ in range(3000):
         program.append(0)
     return program
 
@@ -100,107 +100,102 @@ def opcode_processor(pointer, program, relative_base):
             # https://www.pythonforbeginners.com/concatenation/string-concatenation-and-formatting-in-python
             # used this to figure out another error:
             # https://www.reddit.com/r/adventofcode/comments/e8aw9j/2019_day_9_part_1_how_to_fix_203_error/
-            x = int(program[pointer + 1])    # default set to value not address
+            x = int(program[pointer + 1])    # default set to value not address (mode 1)
             y = int(program[pointer + 2])
             if first == 0:                   # x and y updated if modes not 1
                 x = int(program[x])
             elif first == 2:
-                x = program[x + relative_base]
+                x = int(program[x + relative_base])
             if second == 0:
                 y = int(program[y])
             elif second == 2:
-                y = program[y + relative_base]
-            if third == 0:
-                address = program[pointer + 3]
-            elif third == 2:
-                address = program[pointer + 3] + relative_base
+                y = int(program[y + relative_base])
+            address = int(program[pointer + 3])
+            if third == 2:
+                address = int(program[pointer + 3] + relative_base)
             program[address] = x + y      # + rule
             pointer += 4
 
         elif int(yarn[4]) == 2:
-            x = program[pointer + 1]
-            y = program[pointer + 2]
+            x = int(program[pointer + 1])   # default x and y set to raw (mode 1)
+            y = int(program[pointer + 2])
             if first == 0:
-                x = program[x]
+                x = int(program[x])
             elif first == 2:
-                x = program[x + relative_base]
+                x = int(program[x + relative_base])
             if second == 0:
-                y = program[y]
+                y = int(program[y])
             elif second == 2:
-                y = program[y + relative_base]
-            if third == 0:
-                address = program[pointer + 3]
-            elif third == 2:
-                address = program[pointer + 3] + relative_base
-            program[address] = x * y  # * rule
+                y = int(program[y + relative_base])
+            address = int(program[pointer + 3])
+            if third == 2:
+                address = int(program[pointer + 3] + relative_base)
+            program[address] = int(x * y)  # * rule
             pointer += 4
 
         elif int(yarn[4]) == 3:  # get input rule
-            x = input('INPUT: ')
+            x = input('~INPUT: ')
             if first == 0:
                 program[program[pointer + 1]] = x
-            elif first == 1:
-                program[pointer + 1] = x
             elif first == 2:
-                program[program[pointer + 1] + relative_base] = x
+                program[int(program[pointer + 1]) + relative_base] = x
             pointer += 2
 
         elif int(yarn[4]) == 4:  # print rule
             if first == 0:
-                print(program[program[pointer + 1]])
+                print('OUTPUT:', program[program[pointer + 1]])
             if first == 1:
-                print(program[pointer + 1])
+                print('OUTPUT:', program[pointer + 1])
             elif first == 2:
-                print(program[program[pointer + 1] + relative_base])
+                print('OUTPUT:', program[program[pointer + 1] + relative_base])
             pointer += 2
 
         elif int(yarn[4]) == 5:   # jump-if-true
-            x = program[pointer+1]
-            y = program[pointer+2]
+            x = int(program[pointer + 1])
+            y = int(program[pointer + 2])
             if first == 0:
-                x = program[x]
+                x = int(program[x])
             elif first == 2:
-                x = program[x + relative_base]
+                x = int(program[x + relative_base])
             if second == 0:
-                y = program[y]
+                y = int(program[y])
             elif second == 2:
-                y = program[y + relative_base]
+                y = int(program[y + relative_base])
             if x != 0:
                 pointer = y
             else:
                 pointer += 3
 
         elif int(yarn[4]) == 6:   # jump-if-false
-            x = program[pointer + 1]
-            y = program[pointer + 2]
+            x = int(program[pointer + 1])  # default mode 1
+            y = int(program[pointer + 2])
             if first == 0:
-                x = program[x]
+                x = int(program[x])
             elif first == 2:
-                x = program[x + relative_base]
+                x = int(program[x + relative_base])
             if second == 0:
-                y = program[y]
+                y = int(program[y])
             elif second == 2:
-                y = program[y + relative_base]
+                y = int(program[y + relative_base])
             if x == 0:
                 pointer = y
-            else:                 # this might need to be something else
+            else:
                 pointer += 3
 
         elif int(yarn[4]) == 7:   # less-than rule
-            x = program[pointer + 1]
-            y = program[pointer + 2]
+            x = int(program[pointer + 1])
+            y = int(program[pointer + 2])
             if first == 0:
-                x = program[x]
+                x = int(program[x])
             elif first == 2:
-                x = program[x + relative_base]
+                x = int(program[x + relative_base])
             if second == 0:
-                y = program[y]
+                y = int(program[y])
             elif second == 2:
-                y = program[y + relative_base]
-            if third == 0:
-                address = program[pointer + 3]
-            elif third == 2:
-                address = program[pointer + 3] + relative_base
+                y = int(program[y + relative_base])
+            address = int(program[pointer + 3])
+            if third == 2:
+                address = int(program[pointer + 3] + relative_base)
             if x < y:
                 program[address] = 1
             else:
@@ -208,34 +203,32 @@ def opcode_processor(pointer, program, relative_base):
             pointer += 4
 
         elif int(yarn[4]) == 8:   # equal-to rule
-            x = program[pointer + 1]
-            y = program[pointer + 2]
+            x = int(program[pointer + 1])
+            y = int(program[pointer + 2])
             if first == 0:
-                x = program[x]
+                x = int(program[x])
             elif first == 2:
-                x = program[x + relative_base]
+                x = int(program[x + relative_base])
             if second == 0:
-                y = program[y]
+                y = int(program[y])
             elif second == 2:
-                y = program[y + relative_base]
-            if third == 0:
-                address = program[pointer + 3]
-            elif third == 2:
-                address = program[pointer + 3] + relative_base
+                y = int(program[y + relative_base])
+            address = int(program[pointer + 3])
+            if third == 2:
+                address = int(program[pointer + 3] + relative_base)
             if x == y:
                 program[address] = 1
             else:
                 program[address] = 0
             pointer += 4
 
-        elif int(yarn[3:5]) == 9:
+        elif int(yarn[3:5]) == 9:   # relative base modifier rule
             # leading 0s not allowed https://stackoverflow.com/questions/36386346/syntaxerror-invalid-token
+            value = int(program[pointer + 1])
             if first == 0:
-                value = program[program[pointer + 1]]
-            elif first == 1:
-                value = program[pointer + 1]
+                value = int(program[value])
             elif first == 2:
-                value = program[program[pointer + 1] + relative_base]
+                value = int(program[value + relative_base])
             relative_base += value
             pointer += 2
 
@@ -256,11 +249,11 @@ def run_program(program):
     while True:
         pointer, program, relative_base = opcode_processor(pointer, program, relative_base)
         if pointer == 'END':
-            return program
+            return pointer, program, relative_base
 
 
 # main program:
-program = file_to_string('large_output.txt')  # change file name here!
+program = file_to_string('input.txt')  # change file name here!
 all_commas = comma_finder(program)
 program = string_to_array(program, all_commas)
 program = add_memory(program)
