@@ -251,7 +251,7 @@ def run_program(pointer, program, relative_base, inputs, outputs):
             return pointer, program, relative_base, outputs
 
 
-class Robot:
+class Robot(object):
     def __init__(self, panels):
         self.location = (0, 0)
         self.facing = 0
@@ -277,16 +277,22 @@ class Robot:
             self.facing += 1
         else:
             self.facing -= 1
+        if self.facing == 4:
+            self.facing = 0
+        elif self.facing == -1:
+            self.facing = 3
+        return
 
     def paint(self, abs_program):
         pointer = 0
         rel_program = abs_program[:]
         relative_base = 0
-        outputs = []
-        inputs = 0
-        while pointer != 'END':
+        inputs = 1
+        while True:
+            outputs = []
             pointer, rel_program, relative_base, outputs = run_program(pointer, rel_program, relative_base, inputs, outputs)
-
+            if pointer == 'END':
+                return self.panels
             # add self.location as a key to the dict self.panels, then set outputs[0] to the value for that key
             self.panels[self.location] = outputs[0]
 
@@ -299,7 +305,6 @@ class Robot:
                 inputs = self.panels[self.location]
             else:
                 inputs = 0
-        return self.panels
 
 
 # main program:
@@ -312,3 +317,4 @@ panels = {}
 
 robot = Robot(panels)
 answer = robot.paint(program)
+print(len(answer))
