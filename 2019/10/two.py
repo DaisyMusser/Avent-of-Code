@@ -26,6 +26,7 @@ asteroid_xy = asteroid_finder(raw_map)
 
 
 class Asteroid:
+    # an asteroid has an xy position, a map, and a relative map
     def __init__(self, xy):
         self.xy = xy
         self.x = xy[0]
@@ -41,29 +42,53 @@ class Asteroid:
         self.relative_map = relative_map
         return
 
+    # counts the number of other asteroids that can be seen from the spec Asteroid object
     def look_for_asteroids(self):
-        asteroids_found = set()
+        asteroids_found = {}
         for asteroid in self.relative_map:
             x = asteroid[0]
             y = asteroid[1]
             if x == 0:
                 if y > 0:
-                    asteroids_found.add('UP')
+                    if 'UP' in asteroids_found:
+                        asteroids_found['UP'] += 1
+                    else:
+                        asteroids_found['UP'] = 1
                 else:
-                    asteroids_found.add('DOWN')
+                    if 'DOWN' in asteroids_found:
+                        asteroids_found['DOWN'] += 1
+                    else:
+                        asteroids_found['DOWN'] = 1
             elif y == 0:
                 if x > 0:
-                    asteroids_found.add('RIGHT')
+                    if 'RIGHT' in asteroids_found:
+                        asteroids_found['RIGHT'] += 1
+                    else:
+                        asteroids_found['RIGHT'] = 1
                 else:
-                    asteroids_found.add('LEFT')
+                    if 'LEFT' in asteroids_found:
+                        asteroids_found['LEFT'] += 1
+                    else:
+                        asteroids_found['LEFT'] = 1
             elif y < 0:
                 if x < 0:
-                    asteroids_found.add(('III', float(asteroid[0])/float(asteroid[1])))
+                    if ('III', float(asteroid[0])/float(asteroid[1])) in asteroids_found:
+                        asteroids_found[('III', float(asteroid[0])/float(asteroid[1]))] += 1
+                    else:
+                        asteroids_found[('III', float(asteroid[0])/float(asteroid[1]))] = 1
                 else:
-                    asteroids_found.add(('IV', float(asteroid[0])/float(asteroid[1])))
+                    if ('IV', float(asteroid[0])/float(asteroid[1])) in asteroids_found:
+                        asteroids_found[('IV', float(asteroid[0])/float(asteroid[1]))] += 1
+                    else:
+                        asteroids_found[('IV', float(asteroid[0])/float(asteroid[1]))] = 1
             else:
-                asteroids_found.add(float(asteroid[0])/float(asteroid[1]))
+                if float(asteroid[0])/float(asteroid[1]) in asteroids_found:
+                    asteroids_found[float(asteroid[0])/float(asteroid[1])] += 1
+                else:
+                    asteroids_found[float(asteroid[0])/float(asteroid[1])] = 1
         return len(asteroids_found)
+
+    # def zap(self):
 
 
 # main program two:
@@ -73,4 +98,4 @@ for xy in asteroid_xy:
     seen = spot.look_for_asteroids()
     if seen > most_seen[1]:
         most_seen = [xy, seen]
-print(most_seen)    # answer
+print(most_seen[0])    # answer
