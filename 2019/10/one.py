@@ -20,10 +20,15 @@ def asteroid_finder(raw_map):
     return asteroid_xy
 
 
-# main program
+# main program one: file io and makes asteroid_xy
 raw_map = file_reader('input.txt')            # change file name here
 asteroid_xy = asteroid_finder(raw_map)
 
-print(asteroid_xy)
-print(len(asteroid_xy))
 
+class Asteroid:
+    def __init__(self, xy):
+        self.xy = xy
+        self.x = xy[0]
+        self.y = xy[1]
+        self.map = asteroid_xy
+        return
