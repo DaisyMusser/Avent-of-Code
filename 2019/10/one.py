@@ -3,7 +3,7 @@ def file_reader(file_name):
     raw_data = []
     with open(file_name) as fp:
         while True:
-            line = fp.readline
+            line = fp.readline()
             if not line:
                 break
             raw_data.append(line)
@@ -22,4 +22,8 @@ def asteroid_finder(raw_map):
 
 # main program
 raw_map = file_reader('input.txt')            # change file name here
+asteroid_xy = asteroid_finder(raw_map)
+
+print(asteroid_xy)
+print(len(asteroid_xy))
 
