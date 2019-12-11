@@ -1,3 +1,4 @@
+# to polish steal commets and other updates from two.py
 # reads each line as a separate item onto raw_map ll
 def file_reader(file_name):
     raw_data = []
