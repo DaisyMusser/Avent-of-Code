@@ -82,20 +82,29 @@ class Asteroid:
                     else:
                         asteroids_found[('IV', float(asteroid[0])/float(asteroid[1]))] = 1
             else:
-                if float(asteroid[0])/float(asteroid[1]) in asteroids_found:
-                    asteroids_found[float(asteroid[0])/float(asteroid[1])] += 1
+                if x > 0:
+                    if float(asteroid[0]) / float(asteroid[1]) in asteroids_found:
+                        asteroids_found[('I', float(asteroid[0]) / float(asteroid[1]))] += 1
+                    else:
+                        asteroids_found[('I', float(asteroid[0]) / float(asteroid[1]))] = 1
                 else:
-                    asteroids_found[float(asteroid[0])/float(asteroid[1])] = 1
-        return len(asteroids_found)
+                    if float(asteroid[0]) / float(asteroid[1]) in asteroids_found:
+                        asteroids_found[('II', float(asteroid[0]) / float(asteroid[1]))] += 1
+                    else:
+                        asteroids_found[('II', float(asteroid[0]) / float(asteroid[1]))] = 1
+        return asteroids_found
 
-    # def zap(self):
+    #def zap(self):
 
 
 # main program two:
 most_seen = ['xy', 0]
 for xy in asteroid_xy:
     spot = Asteroid(xy)
-    seen = spot.look_for_asteroids()
+    seen = len(spot.look_for_asteroids())
     if seen > most_seen[1]:
         most_seen = [xy, seen]
-print(most_seen[0])    # answer
+print(most_seen[0] )     # answer for part one, need to use as input to part two code
+
+a = Asteroid(xy)
+x = a.look_for_asteroids()
