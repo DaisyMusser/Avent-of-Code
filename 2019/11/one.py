@@ -251,26 +251,25 @@ def run_program(pointer, program, relative_base, inputs, outputs):
             return pointer, program, relative_base, outputs
 
 
-# takes a turn (1 or 0) and returns the new xy value for the next input
-def turn_processor(turn):
-    return
-
-
 class Robot:
     def __init__(self, panels):
-        self.location = [0, 0]
+        self.location = (0, 0)
         self.facing = 0
         self.panels = panels
 
     def move(self):
-        if self.facing == 0:
-            self.location[1] += 1
-        elif self.facing == 1:
-            self.location[0] += 1
-        elif self.facing == 2:
-            self.location[1] -= 1
-        elif self.facing == 3:
-            self.location[0] -= 1
+        new_location = []       # added this bc location has to be a tuple, so must be replaced
+        new_location.append(self.location[0])
+        new_location.append(self.location[1])
+        if self.facing == 0:        # up
+            new_location[1] += 1
+        elif self.facing == 1:      # right
+            new_location[0] += 1
+        elif self.facing == 2:      # down
+            new_location[1] -= 1
+        elif self.facing == 3:      # left
+            new_location[0] -= 1
+        self.location = tuple(new_location)
         return
 
     def turning(self, turn):
@@ -298,9 +297,9 @@ class Robot:
             # now we need to change inputs to be right
             if self.location in self.panels:
                 inputs = self.panels[self.location]
-
-
-
+            else:
+                inputs = 0
+        return self.panels
 
 
 # main program:
@@ -311,7 +310,5 @@ program = add_memory(program)
 panels = {}
 # done with file io / formatting
 
-
-
-
-
+robot = Robot(panels)
+answer = robot.paint(program)
