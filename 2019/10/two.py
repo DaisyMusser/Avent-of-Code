@@ -67,10 +67,10 @@ class Asteroid:
 
 
 # main program two:
-most_seen = 0
+most_seen = ['xy', 0]
 for xy in asteroid_xy:
     spot = Asteroid(xy)
     seen = spot.look_for_asteroids()
-    if seen > most_seen:
-        most_seen = seen
+    if seen > most_seen[1]:
+        most_seen = [xy, seen]
 print(most_seen)    # answer
