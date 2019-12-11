@@ -21,7 +21,7 @@ def asteroid_finder(raw_map):
 
 
 # main program one: file io and makes asteroid_xy
-raw_map = file_reader('test.txt')            # change file name here
+raw_map = file_reader('input.txt')            # change file name here
 asteroid_xy = asteroid_finder(raw_map)
 
 
@@ -37,16 +37,40 @@ class Asteroid:
             rel_y = asteroid[1] + (self.y * -1)
             relative_xy = (rel_x, rel_y)        # relative xy's are tuples
             relative_map.append(relative_xy)
+        relative_map.remove((0, 0))
         self.relative_map = relative_map
         return
 
     def look_for_asteroids(self):
-        asteroids_found = set(self.relative_map[:])
-        asteroids_found.remove((0, 0))
-        
-        return asteroids_found
+        asteroids_found = set()
+        for asteroid in self.relative_map:
+            x = asteroid[0]
+            y = asteroid[1]
+            if x == 0:
+                if y > 0:
+                    asteroids_found.add('UP')
+                else:
+                    asteroids_found.add('DOWN')
+            elif y == 0:
+                if x > 0:
+                    asteroids_found.add('RIGHT')
+                else:
+                    asteroids_found.add('LEFT')
+            elif y < 0:
+                if x < 0:
+                    asteroids_found.add(('III', float(asteroid[0])/float(asteroid[1])))
+                else:
+                    asteroids_found.add(('IV', float(asteroid[0])/float(asteroid[1])))
+            else:
+                asteroids_found.add(float(asteroid[0])/float(asteroid[1]))
+        return len(asteroids_found)
 
 
 # main program two:
-test = Asteroid((1, 0))
-test.look_for_asteroids()
+most_seen = 0
+for xy in asteroid_xy:
+    spot = Asteroid(xy)
+    seen = spot.look_for_asteroids()
+    if seen > most_seen:
+        most_seen = seen
+print(most_seen)    # answer
