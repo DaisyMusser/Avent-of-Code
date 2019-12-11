@@ -248,7 +248,7 @@ def run_program(pointer, program, relative_base, inputs, outputs):
         if len(outputs) == 2:
             return pointer, program, relative_base, outputs   # this is the modified pointer and program,
         if pointer == 'END':                   # both can be fed back in to restart program at same spot
-            return pointer, program, relative_base
+            return pointer, program, relative_base, outputs
 
 
 # takes a turn (1 or 0) and returns the new xy value for the next input
@@ -257,20 +257,50 @@ def turn_processor(turn):
 
 
 class Robot:
-    def __init__(self):
+    def __init__(self, panels):
         self.location = [0, 0]
-        self.facing = '^'
+        self.facing = 0
+        self.panels = panels
 
     def move(self):
-        if self.facing == '^':
+        if self.facing == 0:
             self.location[1] += 1
-        elif self.facing == '>':
+        elif self.facing == 1:
             self.location[0] += 1
-        elif self.facing == 'v':
+        elif self.facing == 2:
             self.location[1] -= 1
-        elif self.facing == '<':
+        elif self.facing == 3:
             self.location[0] -= 1
         return
+
+    def turning(self, turn):
+        if turn == 1:
+            self.facing += 1
+        else:
+            self.facing -= 1
+
+    def paint(self, abs_program):
+        pointer = 0
+        rel_program = abs_program[:]
+        relative_base = 0
+        outputs = []
+        inputs = 0
+        while pointer != 'END':
+            pointer, rel_program, relative_base, outputs = run_program(pointer, rel_program, relative_base, inputs, outputs)
+
+            # add self.location as a key to the dict self.panels, then set outputs[0] to the value for that key
+            self.panels[self.location] = outputs[0]
+
+            # updates self.facing and then moves self.loctation
+            self.turning(outputs[1])
+            self.move()
+
+            # now we need to change inputs to be right
+            if self.location in self.panels:
+                inputs = self.panels[self.location]
+
+
+
 
 
 # main program:
@@ -278,6 +308,7 @@ program = file_to_string('input.txt')  # change file name here!
 all_commas = comma_finder(program)
 program = string_to_array(program, all_commas)
 program = add_memory(program)
+panels = {}
 # done with file io / formatting
 
 
