@@ -1,6 +1,3 @@
-import math
-import itertools
-# when polishing remove unneeded int() in opcode_processer
 
 # Reads file into string, code adapted from ( https://github.com/imhoffman/advent/blob/master/2015/01/one.py )
 def file_to_string(file_name):
@@ -228,9 +225,9 @@ def opcode_processor(pointer, program, relative_base):
             # leading 0s not allowed https://stackoverflow.com/questions/36386346/syntaxerror-invalid-token
             value = program[pointer + 1]
             if first == 0:
-                value = int(program[value])
+                value = program[value]
             elif first == 2:
-                value = int(program[value + relative_base])
+                value = program[value + relative_base]
             relative_base += value
             pointer += 2
 
