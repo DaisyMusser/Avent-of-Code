@@ -96,6 +96,14 @@ def run_one(time_steps, locations):
     europa = JupMoon(locations[1])
     ganymede = JupMoon(locations[2])
     callisto = JupMoon(locations[3])
+    print('After 0 steps:\npos=<', io.x, ', ', io.y, ', ', io.z, '>, ', 'vel=<', io.velocity[0], end='')
+    print(', ', io.velocity[1], ', ', io.velocity[2], '>')
+    print('pos = < ', europa.x, ', ', europa.y, ', ', europa.z, ' >, ', 'vel = < ', europa.velocity[0], end='')
+    print(', ', europa.velocity[1], ', ', europa.velocity[2], '>')
+    print('pos = < ', ganymede.x, ', ', ganymede.y, ', ', ganymede.z, ' >, ', 'vel = < ', ganymede.velocity[0], end='')
+    print(', ', ganymede.velocity[1], ', ', ganymede.velocity[2], '>')
+    print('pos = < ', callisto.x, ', ', callisto.y, ', ', callisto.z, ' >, ', 'vel = < ', callisto.velocity[0], end='')
+    print(', ', callisto.velocity[1], ', ', callisto.velocity[2], '>')
     for step in range(time_steps):
 
         io.apply_gravity(europa.loc, ganymede.loc, callisto.loc)
@@ -108,15 +116,26 @@ def run_one(time_steps, locations):
         ganymede.apply_velocity()
         callisto.apply_velocity()
 
+        print('After ', step, ' steps:\npos=<', io.x, ', ', io.y, ', ', io.z, '>, ', 'vel=<', io.velocity[0], end='')
+        print(', ', io.velocity[1], ', ', io.velocity[2], '>')
+        print('pos=<', europa.x, ', ', europa.y, ', ', europa.z, '>, ', 'vel=<', europa.velocity[0], end='')
+        print(', ', europa.velocity[1], ', ', europa.velocity[2], '>')
+        print('pos=<', ganymede.x, ', ', ganymede.y, ', ', ganymede.z, '>, ', 'vel=<', ganymede.velocity[0],
+              end='')
+        print(', ', ganymede.velocity[1], ', ', ganymede.velocity[2], '>')
+        print('pos=<', callisto.x, ', ', callisto.y, ', ', callisto.z, '>, ', 'vel=<', callisto.velocity[0],
+              end='')
+        print(', ', callisto.velocity[1], ', ', callisto.velocity[2], '>')
+
     total_total_energy = (io.calc_total_energy() + europa.calc_total_energy() + ganymede.calc_total_energy() + callisto.calc_total_energy())
     return total_total_energy
 
 
 # main program
-locations = file_to_string('input.txt')    # change file names here
+locations = file_to_string('ten_steps.txt')    # change file name here
 locations = formatter(locations)
 
-answer = run_one(1000, locations)
+answer = run_one(10, locations)                # change steps here
 print(answer)
 
 
