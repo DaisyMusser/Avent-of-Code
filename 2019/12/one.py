@@ -88,7 +88,7 @@ class JupMoon(object):
     def calc_total_energy(self):
         kinetic = abs(self.loc[0]) + abs(self.loc[1]) + abs(self.loc[2])
         potential = abs(self.velocity[0]) + abs(self.velocity[1]) + abs(self.velocity[2])
-        return kinetic + potential
+        return kinetic * potential
 
 
 # answers part one
