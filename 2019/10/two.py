@@ -1,3 +1,5 @@
+import re
+
 # reads each line as a separate item onto raw_map ll
 def file_reader(file_name):
     raw_data = []
@@ -40,6 +42,7 @@ class Asteroid:
             relative_map.append(relative_xy)
         relative_map.remove((0, 0))
         self.relative_map = relative_map
+        self.asteroids_found = 'NULL'
         return
 
     # turns a relative xy into an absolute xy
@@ -102,9 +105,21 @@ class Asteroid:
                             asteroids_found[('II', ratio)].append(self.relative_to_absolute(asteroid))
                         else:
                             asteroids_found[('II', ratio)] = [self.relative_to_absolute(asteroid)]
+        self.asteroids_found = asteroids_found
         return asteroids_found
 
-    # for i in range(200):
+    def zap_one_asteroid(self, rocks, last_rock, end):   # i think last_asteroid should be the tuple key
+        if last_rock == 'FIRST':
+            if 'UP' in rocks:
+                if len(rocks['UP']) > 0:
+                    rocks['UP'].remove(min(rocks['UP']))
+            # wildcard! https://www.educative.io/edpresso/how-to-implement-wildcards-in-python
+            elif ('I', *) in rocks:
+
+
+    def zap_asteroids(self):
+        rocks = self.asteroids_found
+        for i in range(200):
 
 
 # main program two:
@@ -114,6 +129,7 @@ for xy in asteroid_xy:
     seen = len(spot.look_for_asteroids())
     if seen > most_seen[1]:
         most_seen = [xy, seen]
-print(most_seen[0])     # answer for part one, need to use as input to part two code
+
+base = Asteroid(most_seen[0])          # correct asteroid to build a base on
 
 
