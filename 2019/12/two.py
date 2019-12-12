@@ -1,5 +1,7 @@
 # day 12: tracking the moons
-import math
+# from https://stackoverflow.com/questions/1557571/how-do-i-get-time-of-a-python-programs-execution
+import time
+start_time = time.time()
 
 def file_to_string(file_name):
     locations = []
@@ -119,5 +121,7 @@ locations = formatter(locations)
 
 answer = run_one(1000, locations)                # change steps here
 print(answer)
+print("--- %s seconds ---" % (time.time() - start_time))
+
 
 
