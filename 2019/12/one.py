@@ -52,11 +52,11 @@ def formatter(locations):
 
 
 class JupMoon(object):
-    def __init__(self, x, y, z):
-        self.loc = [x, y, z]
-        self.x = x
-        self.y = y
-        self.z = z
+    def __init__(self, loc):
+        self.loc = loc
+        self.x = loc[0]
+        self.y = loc[1]
+        self.z = loc[2]
         self.velocity = [0, 0, 0]  # does velocity need to be reset every time step?
         return
 
@@ -91,8 +91,32 @@ class JupMoon(object):
         return kinetic + potential
 
 
+def run_one(time_steps, locations):
+    io = JupMoon(locations[0])
+    europa = JupMoon(locations[1])
+    ganymede = JupMoon(locations[2])
+    callisto = JupMoon(locations[3])
+    for step in range(time_steps):
+
+        io.apply_gravity(europa.loc, ganymede.loc, callisto.loc)
+        europa.apply_gravity(io.loc, ganymede.loc, callisto.loc)
+        ganymede.apply_gravity(io.loc, europa.loc, callisto.loc)
+        callisto.apply_gravity(io.loc, europa.loc, ganymede.loc)
+
+        io.apply_velocity()
+        europa.apply_velocity()
+        ganymede.apply_velocity()
+        callisto.apply_velocity()
+
+    total_total_energy = (io.calc_total_energy() + europa.calc_total_energy() + ganymede.calc_total_energy() + callisto.calc_total_energy())
+    return total_total_energy
+
+
 # main program
 locations = file_to_string('input.txt')    # change file names here
 locations = formatter(locations)
 
-print(locations)
+answer = run_one(1000, locations)
+print(answer)
+
+
