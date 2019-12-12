@@ -326,12 +326,16 @@ class Robot(object):
                     corner_iv = panel
         length = corner_iv[0] - corner_ii[0]
         height = corner_ii[1] - corner_iv[1]
+        x_start = corner_ii[0]
+        y_start = corner_ii[1]
         map = []
         for i in range(len(height)):
             line = []
-            x_start = corner_ii[0] - i
+            y = y_start - i
             for ii in range(len(length)):
-                line.append((x_start + ii, corner_ii[1]))
+                line.append((x_start + ii, y))
+            map.append(line)
+        
 
 
 
