@@ -311,6 +311,7 @@ class Robot(object):
         x_max = 0
         y_min = 0
         y_max = 0
+        print(len(pigment))
         for panel in pigment:         # could also try this with elifs
             if panel[0] < x_min:
                 x_min = panel[0]
@@ -331,6 +332,7 @@ class Robot(object):
             for ii in range(length):
                 line.append((x_start + ii, y))
             map.append(line)
+        print(len(map[0]))
         color_map = []
         for i in range(len(map)):
             color_line = []
@@ -340,7 +342,7 @@ class Robot(object):
                 else:
                     color_line.append(0)
             color_map.append(color_line)
-        self.renderer(color_map)
+        #self.renderer(color_map)
         return
 
     def renderer(self, color_map):
@@ -355,9 +357,9 @@ class Robot(object):
             fancy_map.append(fancy_line)
         for line in fancy_map:
             for x in line:
-                print(x, end = ' ')
+                print(x, end=' ')
+            print('')
         return
-
 
 
 # main program:
