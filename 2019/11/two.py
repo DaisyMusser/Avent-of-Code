@@ -306,12 +306,13 @@ class Robot(object):
                 inputs = 0
 
     def render_panels(self, program):
-        pigment = self.paint(program)      # pigment is a dictionary w/ all visted xys as keys and 0 or 1 as values
+        pigment = self.paint(program)      # pigment is a dictionary w/ all visited xys as keys and 0 or 1 as values
         corner_i = (0, 0)
         corner_ii = (0, 0)
         corner_iii = (0, 0)
         corner_iv = (0, 0)
-        for panel in iter(pigment):         # could also try this with elifs
+        print(pigment)
+        for panel in pigment:         # could also try this with elifs
             if panel[0] > corner_i[0]:      # finds four corners of drawing
                 if panel[1] > corner_i[1]:
                     corner_i = panel
@@ -324,8 +325,11 @@ class Robot(object):
             if panel[0] > corner_iv[0]:
                 if panel[1] < corner_iv[1]:
                     corner_iv = panel
+        print('corners are: ', corner_i, corner_ii, corner_iii, corner_iv)
         length = corner_iv[0] - corner_ii[0]
+        print('each row should be: ', length)
         height = corner_ii[1] - corner_iv[1]
+        print('needs ', height, ' lines')
         x_start = corner_ii[0]
         y_start = corner_ii[1]
         map = []
