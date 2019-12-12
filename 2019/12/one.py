@@ -11,17 +11,19 @@ def file_to_string(file_name):
 
 
 def int_maker(list_of_strings):
-    return int(list_of_strings[0:len(list_of_strings)])
+    x = ''
+    for string in list_of_strings:
+        x += string
+    return int(x)
 
 
 def formatter(locations):
     formatted_loc = []
     for i in range(4):
-
         x_start = (locations[i].index('x')) + 2
         dummy = []
-        for i in range(100):
-            x = locations[x_start + i]
+        for ii in range(10):
+            x = locations[i][x_start + ii]
             if x == ',':
                 break
             dummy.append(x)
@@ -29,8 +31,8 @@ def formatter(locations):
 
         y_start = (locations[i].index('y')) + 2
         dummy = []
-        for i in range(100):
-            x = locations[y_start + i]
+        for ii in range(100):
+            x = locations[i][y_start + ii]
             if x == ',':
                 break
             dummy.append(x)
@@ -38,8 +40,8 @@ def formatter(locations):
 
         z_start = (locations[i].index('z')) + 2
         dummy = []
-        for i in range(100):
-            x = locations[z_start + i]
+        for ii in range(100):
+            x = locations[i][z_start + ii]
             if x == '>':
                 break
             dummy.append(x)
