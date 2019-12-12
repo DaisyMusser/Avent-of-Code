@@ -94,13 +94,15 @@ class JupMoon(object):
 
 
 # answers part one
-def run_one(time_steps, locations):
+def run_two(locations):
+    original_state = [[0, 0, 0, 0], [0, 0, 0, 0], [0, 0, 0, 0], [0, 0, 0, 0], [0, 0, 0, 0], [0, 0, 0, 0], [0, 0, 0, 0], [0, 0, 0, 0]]
     io = JupMoon(locations[0])
     europa = JupMoon(locations[1])
     ganymede = JupMoon(locations[2])
     callisto = JupMoon(locations[3])
 
-    for step in range(time_steps):
+    counter = 0
+    while True:
         io.apply_gravity(europa.loc, ganymede.loc, callisto.loc)
         europa.apply_gravity(io.loc, ganymede.loc, callisto.loc)
         ganymede.apply_gravity(io.loc, europa.loc, callisto.loc)
@@ -111,15 +113,17 @@ def run_one(time_steps, locations):
         ganymede.apply_velocity()
         callisto.apply_velocity()
 
-    total_total_energy = io.calc_total_energy() + europa.calc_total_energy() + ganymede.calc_total_energy() + callisto.calc_total_energy()
-    return total_total_energy
+        state = [io.velocity, io.loc, europa.velocity, europa.loc, ganymede.velocity, ganymede.loc, callisto.velocity, callisto.loc]
+        if state == original_state:
+            return counter
+        counter += 1
 
 
 # main program
 locations = file_to_string('input.txt')    # change file name here
 locations = formatter(locations)
 
-answer = run_one(1000, locations)                # change steps here
+answer = run_two(locations)                # change steps here
 print(answer)
 print("--- %s seconds ---" % (time.time() - start_time))
 
