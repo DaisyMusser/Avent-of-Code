@@ -305,7 +305,7 @@ class Robot(object):
             else:
                 inputs = 0
 
-    def display_panels(self, program):
+    def render_panels(self, program):
         pigment = self.paint(program)      # pigment is a dictionary w/ all visted xys as keys and 0 or 1 as values
         corner_i = (0, 0)
         corner_ii = (0, 0)
@@ -329,13 +329,34 @@ class Robot(object):
         x_start = corner_ii[0]
         y_start = corner_ii[1]
         map = []
-        for i in range(len(height)):
+        for i in range(height):
             line = []
             y = y_start - i
-            for ii in range(len(length)):
+            for ii in range(length):
                 line.append((x_start + ii, y))
             map.append(line)
-        
+        color_map = []
+        for i in range(len(map)):
+            color_line = []
+            for xy in map[i]:
+                if xy in pigment:
+                    color_line.append(pigment[xy])
+                else:
+                    color_line.append(0)
+            color_map.append(color_line)
+        self.renderer(color_map)
+        return
+
+    def renderer(self, color_map):
+        for i in range(len(color_map)):
+            for ii in range(len(color_map[i])):
+                if color_map[i][ii] == 1:
+                    color_map[i][ii] == '#'
+                elif color_map[i][ii] == 0:
+                    color_map[i][ii] == ' '
+        for line in color_map:
+            print(line)
+        return
 
 
 
@@ -348,5 +369,4 @@ panels = {}
 # done with file io / formatting
 
 robot = Robot(panels)
-answer = robot.paint(program)
-print(len(answer))
+robot.render_panels(program)
