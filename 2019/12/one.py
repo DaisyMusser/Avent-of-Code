@@ -62,7 +62,6 @@ class JupMoon(object):
 
     def apply_gravity(self, moon_one, moon_two, moon_three):   # pass in loc of other three moons
         for i in range(3):
-
             if self.loc[i] > moon_one[i]:       # rel one
                 self.velocity[i] -= 1
             elif self.loc[i] < moon_one[i]:
@@ -77,12 +76,12 @@ class JupMoon(object):
                 self.velocity[i] -= 1
             elif self.loc[i] < moon_three[i]:
                 self.velocity[i] += 1
-
         return
 
     def apply_velocity(self):
         for i in range(3):
             self.loc[i] += self.velocity[i]
+        self.velocity = [0, 0, 0]      # resets velocity for next gav calc
         return
 
     def calc_total_energy(self):
@@ -91,6 +90,7 @@ class JupMoon(object):
         return kinetic + potential
 
 
+# answers part one
 def run_one(time_steps, locations):
     io = JupMoon(locations[0])
     europa = JupMoon(locations[1])
