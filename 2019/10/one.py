@@ -1,4 +1,4 @@
-# to polish steal commets and other updates from two.py
+# to polish steal commets and other updates from two.pyZz
 # reads each line as a separate item onto raw_map ll
 def file_reader(file_name):
     raw_data = []
@@ -16,7 +16,7 @@ def asteroid_finder(raw_map):
     for i in range(len(raw_map)):
         for ii in range(len(raw_map[i])):
             if raw_map[i][ii] == '#':
-                xy = (ii, -i)                  # xy's are tuples
+                xy = (ii, -i)                 # xy's are tuples
                 asteroid_xy.add(xy)           # asteroid_xy is a set
     return asteroid_xy
 
