@@ -326,7 +326,7 @@ class Robot(object):
         x_start = x_min
         y_start = y_max
         map = []
-        for i in range(height):
+        for i in range(height + 1):
             line = []
             y = y_start - i
             for ii in range(length):
@@ -342,7 +342,7 @@ class Robot(object):
                 else:
                     color_line.append(0)
             color_map.append(color_line)
-        #self.renderer(color_map)
+        self.renderer(color_map)
         return
 
     def renderer(self, color_map):
