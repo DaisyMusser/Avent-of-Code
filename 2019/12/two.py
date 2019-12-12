@@ -95,7 +95,7 @@ class JupMoon(object):
 
 # answers part one
 def run_two(locations):
-    original_state = [[0, 0, 0, 0], [0, 0, 0, 0], [0, 0, 0, 0], [0, 0, 0, 0], [0, 0, 0, 0], [0, 0, 0, 0], [0, 0, 0, 0], [0, 0, 0, 0]]
+    past_states = [[[0, 0, 0, 0], [0, 0, 0, 0], [0, 0, 0, 0], [0, 0, 0, 0], [0, 0, 0, 0], [0, 0, 0, 0], [0, 0, 0, 0], [0, 0, 0, 0]]]
     io = JupMoon(locations[0])
     europa = JupMoon(locations[1])
     ganymede = JupMoon(locations[2])
@@ -114,9 +114,16 @@ def run_two(locations):
         callisto.apply_velocity()
 
         state = [io.velocity, io.loc, europa.velocity, europa.loc, ganymede.velocity, ganymede.loc, callisto.velocity, callisto.loc]
-        if state == original_state:
-            return counter
+        for usfg in past_states:
+            if state == usfg:
+                print(state)
+                print(past_states)
+                return counter
+        past_states.append(state)
         counter += 1
+        if counter == 5000:
+            print("counter = ", counter)
+            print("--- %s seconds ---" % (time.time() - start_time))
 
 
 # main program
