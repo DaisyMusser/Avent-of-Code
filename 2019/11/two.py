@@ -307,31 +307,23 @@ class Robot(object):
 
     def render_panels(self, program):
         pigment = self.paint(program)      # pigment is a dictionary w/ all visited xys as keys and 0 or 1 as values
-        corner_i = (0, 0)
-        corner_ii = (0, 0)
-        corner_iii = (0, 0)
-        corner_iv = (0, 0)
-        print(pigment)
+        x_min = 0
+        x_max = 0
+        y_min = 0
+        y_max = 0
         for panel in pigment:         # could also try this with elifs
-            if panel[0] > corner_i[0]:      # finds four corners of drawing
-                if panel[1] > corner_i[1]:
-                    corner_i = panel
-            if panel[0] < corner_ii[0]:
-                if panel[1] > corner_ii[1]:
-                    corner_ii = panel
-            if panel[0] < corner_iii[0]:
-                if panel[1] < corner_iii[1]:
-                    corner_iii = panel
-            if panel[0] > corner_iv[0]:
-                if panel[1] < corner_iv[1]:
-                    corner_iv = panel
-        print('corners are: ', corner_i, corner_ii, corner_iii, corner_iv)
-        length = corner_iv[0] - corner_ii[0]
-        print('each row should be: ', length)
-        height = corner_ii[1] - corner_iv[1]
-        print('needs ', height, ' lines')
-        x_start = corner_ii[0]
-        y_start = corner_ii[1]
+            if panel[0] < x_min:
+                x_min = panel[0]
+            if panel[0] > x_max:
+                x_max = panel[0]
+            if panel[1] < y_min:
+                y_min = panel[1]
+            if panel[1] > y_max:
+                y_max = panel[1]
+        length = x_max - x_min
+        height = y_max - y_min
+        x_start = x_min
+        y_start = y_max
         map = []
         for i in range(height):
             line = []
@@ -361,9 +353,9 @@ class Robot(object):
                 elif ii == 0:
                     fancy_line.append(' ')
             fancy_map.append(fancy_line)
-        #for line in fancy_map:
-        #    print(line)
-        #print(fancy_map)
+        for line in fancy_map:
+            for x in line:
+                print(x, end = ' ')
         return
 
 
