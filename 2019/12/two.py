@@ -94,8 +94,9 @@ class JupMoon(object):
 
 
 # answers part one
+# in a century
 def run_two(locations):
-    past_states = [[[0, 0, 0, 0], [0, 0, 0, 0], [0, 0, 0, 0], [0, 0, 0, 0], [0, 0, 0, 0], [0, 0, 0, 0], [0, 0, 0, 0], [0, 0, 0, 0]]]
+    past_states = set()
     io = JupMoon(locations[0])
     europa = JupMoon(locations[1])
     ganymede = JupMoon(locations[2])
@@ -103,6 +104,9 @@ def run_two(locations):
 
     counter = 0
     while True:
+        last_state = tuple([io.velocity[:], io.loc[:], europa.velocity[:], europa.loc[:], ganymede.velocity[:], ganymede.loc[:], callisto.velocity[:], callisto.loc[:]])
+        past_states.add(last_state)
+
         io.apply_gravity(europa.loc, ganymede.loc, callisto.loc)
         europa.apply_gravity(io.loc, ganymede.loc, callisto.loc)
         ganymede.apply_gravity(io.loc, europa.loc, callisto.loc)
@@ -113,13 +117,10 @@ def run_two(locations):
         ganymede.apply_velocity()
         callisto.apply_velocity()
 
-        state = [io.velocity, io.loc, europa.velocity, europa.loc, ganymede.velocity, ganymede.loc, callisto.velocity, callisto.loc]
-        for usfg in past_states:
-            if state == usfg:
-                print(state)
-                print(past_states)
-                return counter
-        past_states.append(state)
+# convert to sets
+        new_state = tuple([io.velocity[:], io.loc[:], europa.velocity[:], europa.loc[:], ganymede.velocity[:], ganymede.loc[:], callisto.velocity[:], callisto.loc[:]])
+
+
         counter += 1
         if counter == 5000:
             print("counter = ", counter)
