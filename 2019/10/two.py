@@ -113,8 +113,7 @@ class Asteroid:
             if 'UP' in rocks:
                 if len(rocks['UP']) > 0:
                     rocks['UP'].remove(min(rocks['UP']))
-            # wildcard! https://www.educative.io/edpresso/how-to-implement-wildcards-in-python
-            elif ('I', *) in rocks:
+            # fuck i don't know how to do this
 
 
     def zap_asteroids(self):
