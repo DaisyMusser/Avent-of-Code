@@ -1,4 +1,3 @@
-
 # Reads file into string, code adapted from ( https://github.com/imhoffman/advent/blob/master/2015/01/one.py )
 def file_to_string(file_name):
     with open(file_name) as fp:
@@ -258,7 +257,7 @@ class Robot(object):
         self.panels = panels
 
     def move(self):
-        new_location = []       # added this bc location has to be a tuple, so must be replaced
+        new_location = []
         new_location.append(self.location[0])
         new_location.append(self.location[1])
         if self.facing == 0:        # up
@@ -287,7 +286,7 @@ class Robot(object):
         pointer = 0
         rel_program = abs_program[:]
         relative_base = 0
-        inputs = 0
+        inputs = 1
         while True:
             outputs = []
             pointer, rel_program, relative_base, outputs = run_program(pointer, rel_program, relative_base, inputs, outputs)
@@ -305,6 +304,35 @@ class Robot(object):
                 inputs = self.panels[self.location]
             else:
                 inputs = 0
+
+    def display_panels(self, program):
+        pigment = self.paint(program)      # pigment is a dictionary w/ all visted xys as keys and 0 or 1 as values
+        corner_i = (0, 0)
+        corner_ii = (0, 0)
+        corner_iii = (0, 0)
+        corner_iv = (0, 0)
+        for panel in iter(pigment):         # could also try this with elifs
+            if panel[0] > corner_i[0]:      # finds four corners of drawing
+                if panel[1] > corner_i[1]:
+                    corner_i = panel
+            if panel[0] < corner_ii[0]:
+                if panel[1] > corner_ii[1]:
+                    corner_ii = panel
+            if panel[0] < corner_iii[0]:
+                if panel[1] < corner_iii[1]:
+                    corner_iii = panel
+            if panel[0] > corner_iv[0]:
+                if panel[1] < corner_iv[1]:
+                    corner_iv = panel
+        length = corner_iv[0] - corner_ii[0]
+        height = corner_ii[1] - corner_iv[1]
+        map = []
+        for i in range(len(height)):
+            line = []
+            x_start = corner_ii[0] - i
+            for ii in range(len(length)):
+                line.append((x_start + ii, corner_ii[1]))
+
 
 
 # main program:
