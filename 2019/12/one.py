@@ -51,6 +51,21 @@ def formatter(locations):
     return formatted_loc
 
 
+class JupMoon(object):
+    def __init__(self, x, y, z):
+        self.loc = [x, y, z]
+        self.x = x
+        self.y = y
+        self.z = z
+        return
+
+    def apply_gravity(self, moon_one, moon_two, moon_three):   # pass in loc of other three moons
+       for i in range(3)
+
+    def apply_velocity(self):
+
+
+
 # main program
 locations = file_to_string('input.txt')    # change file names here
 locations = formatter(locations)
