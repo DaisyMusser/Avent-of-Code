@@ -348,14 +348,18 @@ class Robot(object):
         return
 
     def renderer(self, color_map):
-        for i in range(len(color_map)):
-            for ii in range(len(color_map[i])):
-                if color_map[i][ii] == 1:
-                    color_map[i][ii] == '#'
-                elif color_map[i][ii] == 0:
-                    color_map[i][ii] == ' '
-        for line in color_map:
-            print(line)
+        fancy_map = []
+        for i in color_map:
+            fancy_line = []
+            for ii in i:
+                if ii == 1:
+                    fancy_line.append('#')
+                elif ii == 0:
+                    fancy_line.append(' ')
+            fancy_map.append(fancy_line)
+        #for line in fancy_map:
+        #    print(line)
+        #print(fancy_map)
         return
 
 
