@@ -44,15 +44,16 @@ class Asteroid:
 
     # turns a relative xy into an absolute xy
     def relative_to_absolute(self, rel_xy):     # if the answer is wrong, check that this is doing what it s/d
-        abs_xy = []
-        abs_xy.append(rel_xy[0] - (self.x * -1))
-        abs_xy.append(rel_xy[1] - (self.y * -1))
+        dummy = []
+        dummy.append(rel_xy[0] - (self.x * -1))
+        dummy.append(rel_xy[1] - (self.y * -1))
+        abs_xy = (dummy[0], dummy[1])
         return abs_xy
 
     # counts the number of other asteroids that can be seen from the spec Asteroid object
     def look_for_asteroids(self):
         asteroids_found = {}
-        for asteroid in self.relative_map:
+        for asteroid in self.relative_map:     # there is no 0,0 in rel_map
             x = asteroid[0]
             y = asteroid[1]
             if x == 0:
@@ -77,28 +78,29 @@ class Asteroid:
                         asteroids_found['LEFT'].append(self.relative_to_absolute(asteroid))
                     else:
                         asteroids_found['LEFT'] = [self.relative_to_absolute(asteroid)]
-            elif y < 0:
+            ratio = float(asteroid[0])/float(asteroid[1])
+            if y < 0:
                 if x < 0:
-                    if ('III', float(asteroid[0])/float(asteroid[1])) in asteroids_found:
-                        asteroids_found[('III', float(asteroid[0])/float(asteroid[1]))].append[self.relative_to_absolute(asteroid)]
+                    if ('III', ratio) in asteroids_found:
+                        asteroids_found[('III', ratio)].append(self.relative_to_absolute(asteroid))
                     else:
-                        asteroids_found[('III', float(asteroid[0])/float(asteroid[1]))] = [self.relative_to_absolute(asteroid)]
+                        asteroids_found[('III', ratio)] = [self.relative_to_absolute(asteroid)]
                 else:
-                    if ('IV', float(asteroid[0])/float(asteroid[1])) in asteroids_found:
-                        asteroids_found[('IV', float(asteroid[0])/float(asteroid[1]))].append(self.relative_to_absolute(asteroid))
+                    if ('IV', ratio) in asteroids_found:
+                        asteroids_found[('IV', ratio)].append(self.relative_to_absolute(asteroid))
                     else:
-                        asteroids_found[('IV', float(asteroid[0])/float(asteroid[1]))] = [self.relative_to_absolute(asteroid)]
-            else:
+                        asteroids_found[('IV', ratio)] = [self.relative_to_absolute(asteroid)]
+            if y > 0:
                 if x > 0:
-                    if float(asteroid[0]) / float(asteroid[1]) in asteroids_found:
-                        asteroids_found[('I', float(asteroid[0]) / float(asteroid[1]))].append[self.relative_to_absolute(asteroid)]
+                    if ('I', ratio) in asteroids_found:
+                        asteroids_found[('I', ratio)].append(self.relative_to_absolute(asteroid))
                     else:
-                        asteroids_found[('I', float(asteroid[0]) / float(asteroid[1]))] = [self.relative_to_absolute(asteroid)]
+                        asteroids_found[('I', ratio)] = [self.relative_to_absolute(asteroid)]
                 else:
-                    if float(asteroid[0]) / float(asteroid[1]) in asteroids_found:
-                        asteroids_found[('II', float(asteroid[0]) / float(asteroid[1]))].append(self.relative_to_absolute(asteroid))
+                    if ('II', ratio) in asteroids_found:
+                        asteroids_found[('II', ratio)].append(self.relative_to_absolute(asteroid))
                     else:
-                        asteroids_found[('II', float(asteroid[0]) / float(asteroid[1]))] = [self.relative_to_absolute(asteroid)]
+                        asteroids_found[('II', ratio)] = [self.relative_to_absolute(asteroid)]
         return asteroids_found
 
     # for i in range(200):
