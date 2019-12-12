@@ -122,7 +122,7 @@ def run_one(time_steps, locations):
 locations = file_to_string('ten_steps.txt')    # change file name here
 locations = formatter(locations)
 
-answer = run_one(100, locations)                # change steps here
+answer = run_one(1000, locations)                # change steps here
 print(answer)
 
 
