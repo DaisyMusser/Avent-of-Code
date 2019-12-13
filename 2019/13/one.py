@@ -241,7 +241,7 @@ def opcode_processor(pointer, program, relative_base, outputs):
     return pointer, program, relative_base, outputs
 
 
-# runs program until outputs has 2 items or program returns END
+# runs program until program returns END, then returns outputs
 def run_program(program):
     outputs = []
     pointer = 0
@@ -252,15 +252,17 @@ def run_program(program):
             return outputs
 
 
+# tidies up output into tuples
 def output_processor(dirty_output):
     clean_output = []
     iii = 0
-    for _ in range(len(dirty_output)//3):
+    for _ in range(len(dirty_output)//3):   # _ is idiomatic
         clean_output.append((dirty_output[iii], dirty_output[iii+1], dirty_output[iii+2]))
         iii += 3
     return clean_output
 
 
+# processes output into a complete askii_map and also counts blocks to answer one
 def map_maker(output):
     x_min = 10000000
     y_min = 10000000
@@ -281,16 +283,16 @@ def map_maker(output):
     length = x_max - x_min
     height = y_max - y_min
 
-    askii_map = []              # makes an empty map the size of the screen
-    for i in range(height + 1): # not sure why these two +1s are needed?
+    askii_map = []               # makes an empty map the size of the screen
+    for i in range(height + 1):  # not sure why these two +1s are needed?
         line = []
         for ii in range(length + 1):
             line.append(0)
         askii_map.append(line)
 
     block_count = 0
-    for elem in output:   # fills map with tile_ids
-        x = elem[0]       # symbolic
+    for elem in output:          # fills map with tile_ids
+        x = elem[0]              # symbolic
         y = elem[1]
         tile_id = elem[2]
         if tile_id == 0:
@@ -320,7 +322,7 @@ output = run_program(program)
 output = output_processor(output)
 askii_map, block_count = map_maker(output)
 
-print(block_count)
+print(block_count)   # answer
 
 
 

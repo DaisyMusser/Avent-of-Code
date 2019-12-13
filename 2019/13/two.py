@@ -86,7 +86,8 @@ def opcode_checker(number):
 
 
 # given a pointer and a program, executes instructions and returns modified program + pointer
-def opcode_processor(pointer, program, relative_base, outputs):
+def opcode_processor(pointer, program, relative_base, inputs):
+    outputs = []
     opcode = program[pointer]         # purely symbolic
     if opcode_checker(opcode):        # this is only helpful for debugging
         yarn = yarnifier(opcode)
@@ -133,7 +134,7 @@ def opcode_processor(pointer, program, relative_base, outputs):
             pointer += 4
 
         elif int(yarn[4]) == 3:  # get input rule
-            x = input('~INPUT: ')
+            x = inputs
             if first == 0:
                 program[program[pointer + 1]] = x
             elif first == 2:
@@ -243,13 +244,24 @@ def opcode_processor(pointer, program, relative_base, outputs):
 
 # runs program until outputs has 2 items or program returns END
 def run_program(program):
-    outputs = []
     pointer = 0
     relative_base = 0
     while True:
-        pointer, program, relative_base, outputs = opcode_processor(pointer, program, relative_base, outputs)
-        if pointer == 'END':                   # both can be fed back in to restart program at same spot
-            return outputs
+        inputs = generate_inputs()
+        pointer, program, relative_base, outputs = opcode_processor(pointer, program, relative_base, inputs)
+        render_screen(outputs)
+        if pointer == 'END':
+            return
+
+
+def generate_inputs():
+    x = input('MOVE: ')
+    if x == 'a':
+        return -1
+    elif x == 'd':
+        return 1
+    elif x == 'w':
+        return 0
 
 
 def output_processor(dirty_output):
@@ -267,6 +279,10 @@ def map_maker(output):
     x_max = 0
     y_max = 0
 
+    for elem in output:
+        if elem[0] == -1:
+            print(elem)
+
     for elem in output:   # finds bounds of the screen
         x = elem[0]       # symbolic
         y = elem[1]
@@ -278,6 +294,7 @@ def map_maker(output):
             x_min = x
         if y < y_min:
             y_min = y
+
     length = x_max - x_min
     height = y_max - y_min
 
@@ -308,6 +325,7 @@ def map_maker(output):
 
 
 def render_screen(output):
+    output = output_processor(output)
     askii_map, l, h = map_maker(output)
     for i in range(h):
         string = ''
@@ -318,7 +336,7 @@ def render_screen(output):
 
 
 # main program:
-program = file_to_string('input.txt')  # change file name here!
+program = file_to_string('hacked_input.txt')  # change file name here!
 all_commas = comma_finder(program)
 program = string_to_array(program, all_commas)
 program = add_memory(program)
@@ -326,7 +344,6 @@ program = add_memory(program)
 
 # these steps need to be changed for inputs
 output = run_program(program)
-output = output_processor(output)
 
 render_screen(output)
 
