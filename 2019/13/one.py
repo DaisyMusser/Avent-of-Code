@@ -261,7 +261,52 @@ def output_processor(dirty_output):
     return clean_output
 
 
-def 
+def map_maker(output):
+    x_min = 10000000
+    y_min = 10000000
+    x_max = 0
+    y_max = 0
+
+    for elem in output:   # finds bounds of the screen
+        x = elem[0]       # symbolic
+        y = elem[1]
+        if x > x_max:
+            x_max = x
+        if y > y_max:
+            y_max = y
+        if x < x_min:
+            x_min = x
+        if y < y_min:
+            y_min = y
+    length = x_max - x_min
+    height = y_max - y_min
+
+    map = []              # makes an empty map the size of the screen
+    for i in range(height):
+        line = []
+        for ii in range(length):
+            line.append(0)
+        map.append(line)
+
+    for elem in output:   # fills map with tile_ids
+        x = elem[0]       # symbolic
+        y = elem[1]
+        tile_id = elem[2]
+        if tile_id == 0:
+            tile = ' '
+        if tile_id == 1:
+            tile = '&'
+        if tile_id == 2:
+            tile = '#'
+        if tile_id == 3:
+            tile = '-'
+        if tile_id == 4:
+            tile = '@'
+            
+
+
+
+
 # main program:
 program = file_to_string('input.txt')  # change file name here!
 all_commas = comma_finder(program)
