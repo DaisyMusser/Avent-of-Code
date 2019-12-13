@@ -1,6 +1,6 @@
 # day 12: tracking the moons
-import math
 
+# basic file io
 def file_to_string(file_name):
     locations = []
     with open(file_name) as fp:
@@ -12,6 +12,7 @@ def file_to_string(file_name):
     return locations
 
 
+# turns a list of strings into one int
 def int_maker(list_of_strings):
     x = ''
     for string in list_of_strings:
@@ -19,6 +20,7 @@ def int_maker(list_of_strings):
     return int(x)
 
 
+# processes the file data conveniently
 def formatter(locations):
     formatted_loc = []
     for i in range(4):
@@ -53,6 +55,7 @@ def formatter(locations):
     return formatted_loc
 
 
+# class of moon objects
 class JupMoon(object):
     def __init__(self, loc):
         self.loc = loc
@@ -62,6 +65,7 @@ class JupMoon(object):
         self.velocity = [0, 0, 0]  # does velocity need to be reset every time step? edit: no
         return
 
+    # applies gravity to update velocity
     def apply_gravity(self, moon_one, moon_two, moon_three):   # pass in loc of other three moons
         for i in range(3):
             if self.loc[i] > moon_one[i]:       # rel one
@@ -80,11 +84,13 @@ class JupMoon(object):
                 self.velocity[i] += 1
         return
 
+    # applies velocity to update location
     def apply_velocity(self):
         for i in range(3):
             self.loc[i] += self.velocity[i]
         return
 
+    # calculates total energy for one moon
     def calc_total_energy(self):
         kinetic = abs(self.loc[0]) + abs(self.loc[1]) + abs(self.loc[2])
         potential = abs(self.velocity[0]) + abs(self.velocity[1]) + abs(self.velocity[2])
