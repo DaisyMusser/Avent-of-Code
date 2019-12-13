@@ -1,3 +1,4 @@
+
 # Reads file into string, code adapted from ( https://github.com/imhoffman/advent/blob/master/2015/01/one.py )
 def file_to_string(file_name):
     with open(file_name) as fp:
@@ -240,7 +241,7 @@ def opcode_processor(pointer, program, relative_base, inputs, outputs):
     return pointer, program, relative_base, outputs
 
 
-# runs program until END
+# runs program until outputs has 2 items or program returns END
 def run_program(pointer, program, relative_base, inputs, outputs):
     while True:
         pointer, program, relative_base, outputs = opcode_processor(pointer, program, relative_base, inputs, outputs)
@@ -252,36 +253,39 @@ def run_program(pointer, program, relative_base, inputs, outputs):
 
 class Robot(object):
     def __init__(self, panels):
-        self.location = (0, 0)
+        self.location = (0, 0)   # starting location
         self.facing = 0
         self.panels = panels
 
+    # moves location of robot one in the direction robot was facing
     def move(self):
         new_location = []
         new_location.append(self.location[0])
         new_location.append(self.location[1])
-        if self.facing == 0:        # up
+        if self.facing == 0:        # north
             new_location[1] += 1
-        elif self.facing == 1:      # right
+        elif self.facing == 1:      # east
             new_location[0] += 1
-        elif self.facing == 2:      # down
+        elif self.facing == 2:      # south
             new_location[1] -= 1
-        elif self.facing == 3:      # left
+        elif self.facing == 3:      # west
             new_location[0] -= 1
         self.location = tuple(new_location)
         return
 
+    # takes a turn output as input and updates direction robot is facing
     def turning(self, turn):
         if turn == 1:
             self.facing += 1
         else:
             self.facing -= 1
-        if self.facing == 4:
+        if self.facing == 4:     # to stop overflow
             self.facing = 0
-        elif self.facing == -1:
+        elif self.facing == -1:  # to stop overflow
             self.facing = 3
         return
 
+    # will run intcode brain and output a dictionary of all visited xys as keys and 0 or 1 as value showing color
     def paint(self, abs_program):
         pointer = 0
         rel_program = abs_program[:]
@@ -305,14 +309,16 @@ class Robot(object):
             else:
                 inputs = 0
 
+    # gets a pigment dictionary, generates a map of appropriate size and fills map according to pigment, then prints
     def render_panels(self, program):
         pigment = self.paint(program)      # pigment is a dictionary w/ all visited xys as keys and 0 or 1 as values
+
         x_min = 0
         x_max = 0
         y_min = 0
         y_max = 0
-        print(len(pigment))
-        for panel in pigment:         # could also try this with elifs
+
+        for panel in pigment:
             if panel[0] < x_min:
                 x_min = panel[0]
             if panel[0] > x_max:
@@ -325,15 +331,16 @@ class Robot(object):
         height = y_max - y_min
         x_start = x_min
         y_start = y_max
-        map = []
+
+        map = []           # this snippet makes empty map of needed size
         for i in range(height + 1):
             line = []
             y = y_start - i
             for ii in range(length):
                 line.append((x_start + ii, y))
             map.append(line)
-        print(len(map[0]))
-        color_map = []
+
+        color_map = []     # this snippet populates map with color
         for i in range(len(map)):
             color_line = []
             for xy in map[i]:
@@ -342,9 +349,11 @@ class Robot(object):
                 else:
                     color_line.append(0)
             color_map.append(color_line)
-        self.renderer(color_map)
+
+        self.renderer(color_map)       # this is what actually prints
         return
 
+    # takes a complete color map and coverts to fun askii, then prints to screen
     def renderer(self, color_map):
         fancy_map = []
         for i in color_map:
@@ -358,7 +367,7 @@ class Robot(object):
         for line in fancy_map:
             for x in line:
                 print(x, end=' ')
-            print('')
+            print('')     # just for the line return
         return
 
 
@@ -371,4 +380,4 @@ panels = {}
 # done with file io / formatting
 
 robot = Robot(panels)
-robot.render_panels(program)
+robot.render_panels(program)   # prints answer
