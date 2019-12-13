@@ -66,7 +66,7 @@ def path_finder(directions):
 
 
 # returns the gaps between two spots
-def baby_phil(old_spot, new_spot):
+def find_single_gap(old_spot, new_spot):
     gaps = []
 
     old_x = old_spot[0]     # symbolic
@@ -94,44 +94,27 @@ def baby_phil(old_spot, new_spot):
     return gaps
 
 
-def teen_phil(path):
+# returns path with all gaps filled
+def find_all_gaps(path):
     all_gaps = []
     for i in range(len(path) - 1):
-        gaps = baby_phil(path[i], path[i + 1])
+        gaps = find_single_gap(path[i], path[i + 1])
         for xy in gaps:
             all_gaps.append(xy)
-    return all_gaps
-
-
-# needs to fill the gaps in red and green wire paths
-def grown_ass_man_fill(green_path, red_path):
-
-    all_green_gaps = teen_fill(green_path)
-    print(all_green_gaps)
-    #for i in range(len(all_green_gaps)):
-    #    green_path.append(all_green_gaps[i])
-
-    all_red_gaps = teen_fill(red_path)
-    print(all_red_gaps)
-    #for i in range(len(all_red_gaps)):
-    #    red_path.append(all_red_gaps[i])
-
-    return red_path, green_path
+    for xy in all_gaps:
+        path.append(xy)
+    return path
 
 
 # find the intersections between red and green wires
 def spot_checker(red_path, green_path):
-    intersections = []
-    x = 0
-    for i in range(len(red_path)//2):
-        y = 0
-        for ii in range(len(green_path)//2):
-            if green_path[y] == red_path[x]:
-                if green_path[y+1] == red_path[x+1]:
-                    loc = [green_path[y], green_path[y+1]]
-                    intersections.append(loc)
-            y += 2
-        x += 2
+    r_set = set()
+    g_set = set()
+    for xy in red_path:
+        r_set.add(tuple(xy))
+    for xy in green_path:
+        g_set.add(tuple(xy))
+    intersections = g_set.intersection(r_set)
     return intersections
 
 
@@ -143,10 +126,9 @@ directions = formatter(directions)
 # converts directions into all red and green corners
 red_path, green_path = path_finder(directions)
 
-print(teen_phil(green_path))
+# fills gaps of red and green paths
+red_path = find_all_gaps(red_path)
+green_path = find_all_gaps(green_path)
 
-# red_path, green_path = grown_ass_man_fill(green_path, red_path, teen_fill, baby_fill)
-
-# intersections = spot_checker(red_path, green_path)
-
-
+# finds intersections
+intersections = spot_checker(red_path, green_path)
