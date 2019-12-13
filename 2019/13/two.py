@@ -288,7 +288,6 @@ def map_maker(output):
             line.append(0)
         askii_map.append(line)
 
-    block_count = 0
     for elem in output:   # fills map with tile_ids
         x = elem[0]       # symbolic
         y = elem[1]
@@ -299,14 +298,13 @@ def map_maker(output):
             tile = '&'
         elif tile_id == 2:
             tile = '#'
-            block_count += 1
         elif tile_id == 3:
             tile = '-'
         elif tile_id == 4:
             tile = '@'
 
         askii_map[y][x] = tile
-    return askii_map, block_count
+    return askii_map
 
 
 # main program:
@@ -318,9 +316,9 @@ program = add_memory(program)
 
 output = run_program(program)
 output = output_processor(output)
-askii_map, block_count = map_maker(output)
+askii_map = map_maker(output)
 
-print(block_count)
+print(askii_map)
 
 
 
