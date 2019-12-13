@@ -66,7 +66,7 @@ def path_finder(directions):
 
 
 # returns the gaps between two spots
-def baby_fill(old_spot, new_spot):
+def baby_phil(old_spot, new_spot):
     gaps = []
 
     old_x = old_spot[0]     # symbolic
@@ -94,8 +94,12 @@ def baby_fill(old_spot, new_spot):
     return gaps
 
 
-def teen_fill(path):
+def teen_phil(path):
     all_gaps = []
+    for i in range(len(path) - 1):
+        gaps = baby_phil(path[i], path[i + 1])
+        for xy in gaps:
+            all_gaps.append(xy)
     return all_gaps
 
 
@@ -139,7 +143,7 @@ directions = formatter(directions)
 # converts directions into all red and green corners
 red_path, green_path = path_finder(directions)
 
-print(baby_fill([0, 0], [100, 0]))
+print(teen_phil(green_path))
 
 # red_path, green_path = grown_ass_man_fill(green_path, red_path, teen_fill, baby_fill)
 
