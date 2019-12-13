@@ -282,9 +282,9 @@ def map_maker(output):
     height = y_max - y_min
 
     askii_map = []              # makes an empty map the size of the screen
-    for i in range(height + 1): # not sure why these two +1s are needed?
+    for _ in range(height + 1): # not sure why these two +1s are needed?
         line = []
-        for ii in range(length + 1):
+        for _ in range(length + 1):
             line.append(0)
         askii_map.append(line)
 
@@ -295,16 +295,26 @@ def map_maker(output):
         if tile_id == 0:
             tile = ' '
         elif tile_id == 1:
-            tile = '&'
-        elif tile_id == 2:
             tile = '#'
+        elif tile_id == 2:
+            tile = 'u'
         elif tile_id == 3:
-            tile = '-'
+            tile = '='
         elif tile_id == 4:
             tile = '@'
 
         askii_map[y][x] = tile
-    return askii_map
+    return askii_map, length, height
+
+
+def render_screen(output):
+    askii_map, l, h = map_maker(output)
+    for i in range(h):
+        string = ''
+        for ii in range(l):
+            string += askii_map[i][ii]
+        print(string)
+    return
 
 
 # main program:
@@ -314,11 +324,11 @@ program = string_to_array(program, all_commas)
 program = add_memory(program)
 # done with file io / formatting
 
+# these steps need to be changed for inputs
 output = run_program(program)
 output = output_processor(output)
-askii_map = map_maker(output)
 
-print(askii_map)
+render_screen(output)
 
 
 
