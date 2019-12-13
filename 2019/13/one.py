@@ -46,7 +46,7 @@ def string_to_array(opcode_string, comma_index):
 # MIGHT NEED MORE MEMORY
 def add_memory(program):
     # for _ in range(math.floor(len(program)/2)):
-    for _ in range(3000):
+    for _ in range(5000):
         program.append(0)
     return program
 
@@ -86,7 +86,7 @@ def opcode_checker(number):
 
 
 # given a pointer and a program, executes instructions and returns modified program + pointer
-def opcode_processor(pointer, program, relative_base, inputs, outputs):
+def opcode_processor(pointer, program, relative_base, outputs):
     opcode = program[pointer]         # purely symbolic
     if opcode_checker(opcode):        # this is only helpful for debugging
         yarn = yarnifier(opcode)
@@ -133,7 +133,7 @@ def opcode_processor(pointer, program, relative_base, inputs, outputs):
             pointer += 4
 
         elif int(yarn[4]) == 3:  # get input rule
-            x = inputs
+            x = input('~INPUT: ')
             if first == 0:
                 program[program[pointer + 1]] = x
             elif first == 2:
@@ -242,13 +242,23 @@ def opcode_processor(pointer, program, relative_base, inputs, outputs):
 
 
 # runs program until outputs has 2 items or program returns END
-def run_program(pointer, program, relative_base, inputs, outputs):
+def run_program(program):
+    outputs = []
+    pointer = 0
+    relative_base = 0
     while True:
-        pointer, program, relative_base, outputs = opcode_processor(pointer, program, relative_base, inputs, outputs)
-        if len(outputs) == 2:
-            return pointer, program, relative_base, outputs   # this is the modified pointer and program,
+        pointer, program, relative_base, outputs = opcode_processor(pointer, program, relative_base, outputs)
         if pointer == 'END':                   # both can be fed back in to restart program at same spot
-            return pointer, program, relative_base, outputs
+            return outputs
+
+
+def output_processor(dirty_output):
+    clean_output = []
+    iii = 0
+    for _ in range(len(dirty_output)//3):
+        clean_output.append((dirty_output[iii], dirty_output[iii+1], dirty_output[iii+2]))
+        iii += 3
+    return clean_output
 
 
 class Robot(object):
@@ -376,9 +386,12 @@ program = file_to_string('input.txt')  # change file name here!
 all_commas = comma_finder(program)
 program = string_to_array(program, all_commas)
 program = add_memory(program)
-panels = {}
 # done with file io / formatting
 
-robot = Robot(panels)
-robot.render_panels(program)   # prints answer
+output = run_program(program)
+output = output_processor(output)
+print(output)
+
+
+
 
