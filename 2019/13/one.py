@@ -261,126 +261,7 @@ def output_processor(dirty_output):
     return clean_output
 
 
-class Robot(object):
-    def __init__(self, panels):
-        self.location = (0, 0)   # starting location
-        self.facing = 0
-        self.panels = panels
-
-    # moves location of robot one in the direction robot was facing
-    def move(self):
-        new_location = []
-        new_location.append(self.location[0])
-        new_location.append(self.location[1])
-        if self.facing == 0:        # north
-            new_location[1] += 1
-        elif self.facing == 1:      # east
-            new_location[0] += 1
-        elif self.facing == 2:      # south
-            new_location[1] -= 1
-        elif self.facing == 3:      # west
-            new_location[0] -= 1
-        self.location = tuple(new_location)
-        return
-
-    # takes a turn output as input and updates direction robot is facing
-    def turning(self, turn):
-        if turn == 1:
-            self.facing += 1
-        else:
-            self.facing -= 1
-        if self.facing == 4:     # to stop overflow
-            self.facing = 0
-        elif self.facing == -1:  # to stop overflow
-            self.facing = 3
-        return
-
-    # will run intcode brain and output a dictionary of all visited xys as keys and 0 or 1 as value showing color
-    def paint(self, abs_program):
-        pointer = 0
-        rel_program = abs_program[:]
-        relative_base = 0
-        inputs = 1
-        while True:
-            outputs = []
-            pointer, rel_program, relative_base, outputs = run_program(pointer, rel_program, relative_base, inputs, outputs)
-            if pointer == 'END':
-                return self.panels
-            # add self.location as a key to the dict self.panels, then set outputs[0] to the value for that key
-            self.panels[self.location] = outputs[0]
-
-            # updates self.facing and then moves self.loctation
-            self.turning(outputs[1])
-            self.move()
-
-            # now we need to change inputs to be right
-            if self.location in self.panels:
-                inputs = self.panels[self.location]
-            else:
-                inputs = 0
-
-    # gets a pigment dictionary, generates a map of appropriate size and fills map according to pigment, then prints
-    def render_panels(self, program):
-        pigment = self.paint(program)      # pigment is a dictionary w/ all visited xys as keys and 0 or 1 as values
-
-        x_min = 0
-        x_max = 0
-        y_min = 0
-        y_max = 0
-
-        for panel in pigment:
-            if panel[0] < x_min:
-                x_min = panel[0]
-            if panel[0] > x_max:
-                x_max = panel[0]
-            if panel[1] < y_min:
-                y_min = panel[1]
-            if panel[1] > y_max:
-                y_max = panel[1]
-        length = x_max - x_min
-        height = y_max - y_min
-        x_start = x_min
-        y_start = y_max
-
-        map = []           # this snippet makes empty map of needed size
-        for i in range(height + 1):
-            line = []
-            y = y_start - i
-            for ii in range(length):
-                line.append((x_start + ii, y))
-            map.append(line)
-
-        color_map = []     # this snippet populates map with color
-        for i in range(len(map)):
-            color_line = []
-            for xy in map[i]:
-                if xy in pigment:
-                    color_line.append(pigment[xy])
-                else:
-                    color_line.append(0)
-            color_map.append(color_line)
-
-        self.renderer(color_map)       # this is what actually prints
-        return
-
-    # takes a complete color map and coverts to fun askii, then prints to screen
-    def renderer(self, color_map):
-        fancy_map = []
-        for i in color_map:
-            fancy_line = []
-            for ii in i:
-                if ii == 1:
-                    fancy_line.append('#')
-                elif ii == 0:
-                    fancy_line.append(' ')
-            fancy_map.append(fancy_line)
-        for line in fancy_map:
-            for x in line:
-                print(x, end=' ')
-            print('')     # just for the line return
-        return
-
-
+def 
 # main program:
 program = file_to_string('input.txt')  # change file name here!
 all_commas = comma_finder(program)
@@ -390,7 +271,7 @@ program = add_memory(program)
 
 output = run_program(program)
 output = output_processor(output)
-print(output)
+
 
 
 
