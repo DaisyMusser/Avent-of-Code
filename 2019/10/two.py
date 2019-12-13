@@ -44,6 +44,16 @@ class Asteroid:
         relative_map.remove((0, 0))
         self.relative_map = relative_map
         self.asteroids_found = 'NULL'
+
+        # I fill these later, but they need to be some value, hence the zeros
+        self.up = 0
+        self.right = 0
+        self.down = 0
+        self.left = 0
+        self.i = 0
+        self.ii = 0
+        self.iii = 0
+        self.iv = 0
         return
 
     # turns a relative xy into an absolute xy
@@ -54,63 +64,91 @@ class Asteroid:
         abs_xy = (dummy[0], dummy[1])
         return abs_xy
 
-    # counts the number of other asteroids that can be seen from the spec Asteroid object
+    # returns how many asteroids can be seen from a given asteroid
     def look_for_asteroids(self):
+        asteroids_found = set()
+        for asteroid in self.relative_map:
+            x = asteroid[0]
+            y = asteroid[1]
+            if x == 0:
+                if y > 0:
+                    asteroids_found.add('UP')
+                else:
+                    asteroids_found.add('DOWN')
+            elif y == 0:
+                if x > 0:
+                    asteroids_found.add('RIGHT')
+                else:
+                    asteroids_found.add('LEFT')
+            elif y < 0:
+                if x < 0:
+                    asteroids_found.add(('III', float(asteroid[0])/float(asteroid[1])))
+                else:
+                    asteroids_found.add(('IV', float(asteroid[0])/float(asteroid[1])))
+            else:
+                asteroids_found.add(float(asteroid[0])/float(asteroid[1]))
+        return len(asteroids_found)
+
+    # similar to look_for_asteroids, but formats data so as to be more conveniently zapped
+    def generate_zappable_asteroids(self):
         up = []
         right = []
         down = []
         left = []
-        for asteroid in self.relative_map:     # there is no 0,0 in rel_map
+        i = {}      # these are the quadrants
+        ii = {}
+        iii = {}
+        iv = {}
+        for asteroid in self.relative_map:     # there is no 0,0 in rel_map, also all tuples
+            rel_rock = self.relative_to_absolute(asteroid)
             x = asteroid[0]
             y = asteroid[1]
+
             if x == 0:
                 if y > 0:      # MAKE ALL OF 'UP' 'DOWN' 'II'... SEPARATE DICTIONARIES W/ KEY: RATIO, VALUE: TUPLE(XY)ZZ
-                    if UP in asteroids_found:
-                        UP.append(self.relative_to_absolute(asteroid))
-                    else:
-                        asteroids_found['UP'] = [self.relative_to_absolute(asteroid)]
+                    up.append(rel_rock)
                 else:
-                    if 'DOWN' in asteroids_found:
-                        asteroids_found['DOWN'].append(self.relative_to_absolute(asteroid))
-                    else:
-                        asteroids_found['DOWN'] = [self.relative_to_absolute(asteroid)]
+                    down.append(rel_rock)
             elif y == 0:
                 if x > 0:
-                    if 'RIGHT' in asteroids_found:
-                        asteroids_found['RIGHT'].append(self.relative_to_absolute(asteroid))
-                    else:
-                        asteroids_found['RIGHT'] = [self.relative_to_absolute(asteroid)]
+                    right.append(rel_rock)
                 else:
-                    if 'LEFT' in asteroids_found:
-                        asteroids_found['LEFT'].append(self.relative_to_absolute(asteroid))
-                    else:
-                        asteroids_found['LEFT'] = [self.relative_to_absolute(asteroid)]
-            else:
+                    left.append(rel_rock)
+            else:   # needs the separate branch to avoid dividing by zero
                 ratio = float(asteroid[0])/float(asteroid[1])  # ratio is x/y
                 if y < 0:
                     if x < 0:
-                        if ('III', ratio) in asteroids_found:
-                            asteroids_found[('III', ratio)].append(self.relative_to_absolute(asteroid))
+                        if ratio in iii:
+                            iii[ratio].append(rel_rock)
                         else:
-                            asteroids_found[('III', ratio)] = [self.relative_to_absolute(asteroid)]
+                            iii[ratio] = [rel_rock]
                     else:
-                        if ('IV', ratio) in asteroids_found:
-                            asteroids_found[('IV', ratio)].append(self.relative_to_absolute(asteroid))
+                        if ratio in iv:
+                            iv[ratio].append(rel_rock)
                         else:
-                           asteroids_found[('IV', ratio)] = [self.relative_to_absolute(asteroid)]
+                            iv[ratio] = [rel_rock]
                 if y > 0:
                     if x > 0:
-                        if ('I', ratio) in asteroids_found:
-                            asteroids_found[('I', ratio)].append(self.relative_to_absolute(asteroid))
+                        if ratio in i:
+                            i[ratio].append(rel_rock)
                         else:
-                            asteroids_found[('I', ratio)] = [self.relative_to_absolute(asteroid)]
+                            i[ratio] = [rel_rock]
                     else:
-                        if ('II', ratio) in asteroids_found:
-                            asteroids_found[('II', ratio)].append(self.relative_to_absolute(asteroid))
+                        if ratio in ii:
+                            ii[ratio].append(rel_rock)
                         else:
-                            asteroids_found[('II', ratio)] = [self.relative_to_absolute(asteroid)]
-        self.asteroids_found = asteroids_found
-        return asteroids_found
+                            ii[ratio] = [rel_rock]
+
+        # saves all asteroids into self
+        self.up = up
+        self.right = right
+        self.down = down
+        self.left = left
+        self.i = i
+        self.ii = ii
+        self.iii = iii
+        self.iv = iv
+        return
 
     def zap_one_asteroid(self, rocks, last_rock, end):   # i think last_asteroid should be the tuple key
         if last_rock == 'FIRST':
@@ -128,13 +166,11 @@ class Asteroid:
 most_seen = ['xy', 0]
 for xy in asteroid_xy:
     spot = Asteroid(xy)
-    seen = len(spot.look_for_asteroids())
+    seen = spot.look_for_asteroids()
     if seen > most_seen[1]:
         most_seen = [xy, seen]
 
 base = Asteroid(most_seen[0])          # correct asteroid to build a base on
-base.look_for_asteroids()
-for i in base.asteroids_found:
-    print('KEY:', i, ' VALUE:', base.asteroids_found[i])
+
 
 
