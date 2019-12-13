@@ -28,40 +28,39 @@ def path_finder(directions):
     green_path = []
     red_path = []
 
+    # fills green_path with all the corners of the green path
     green = [0, 0]
-    x = green[0]
+    x = green[0]     # symbolic
     y = green[1]
     green_directions = directions[0]
-    for inst in green_directions:        # have to deal with last specail
-        if inst[len(inst)-1] != 'n':     # if not at last inst
-            if directions[0][i][0] == 'R':
-                green[0] += int(directions[0][i][1:len(directions[0][i])])
-            elif directions[0][i][0] == 'U':
-                green[1] += int(directions[0][i][1:len(directions[0][i])])
-            elif directions[0][i][0] == 'L':
-                green[0] -= int(directions[0][i][1:len(directions[0][i])])
-            elif directions[0][i][0] == 'D':
-                green[1] -= int(directions[0][i][1:len(directions[0][i])])
-            green_path.append(green[0])
-            green_path.append(green[1])
-        else:
-            break
+    for inst in green_directions:
+        value = int(inst[1:len(inst)])   # symbolic again
+        if inst[0] == 'R':
+            x += value
+        elif inst[0] == 'U':
+            y += value
+        elif inst[0] == 'L':
+            x -= value
+        elif inst[0] == 'D':
+            y -= value
+        green_path.append([x, y])
 
+    # fills red_path with all the corner of the red path
     red = [0, 0]
-    for i in range(len(directions[1])):
-        if directions[1][i][len(directions[1][i]) - 1] != 'n':        # so much easier jesus christ
-            if directions[1][i][0] == 'R':
-                red[0] += int(directions[1][i][1:len(directions[1][i])])
-            elif directions[1][i][0] == 'U':
-                red[1] += int(directions[1][i][1:len(directions[1][i])])
-            elif directions[1][i][0] == 'L':
-                red[0] -= int(directions[1][i][1:len(directions[1][i])])
-            elif directions[1][i][0] == 'D':
-                red[1] -= int(directions[1][i][1:len(directions[1][i])])
-            red_path.append(red[0])
-            red_path.append(red[1])
-        else:
-            break
+    x = red[0]
+    y = red[1]
+    red_directions = directions[1]
+    for inst in red_directions:
+        value = int(inst[1:len(inst)])
+        if inst[0] == 'R':
+            x += value
+        elif inst[0] == 'U':
+            y += value
+        elif inst[0] == 'L':
+            x -= value
+        elif inst[0] == 'D':
+            y -= value
+        red_path.append([x, y])
 
     return red_path, green_path
 
@@ -156,7 +155,7 @@ directions = file_reader('input.txt')    # change here for different file names
 directions = formatter(directions)
 print(directions)
 
-# red_path, green_path = path_finder(directions)
+red_path, green_path = path_finder(directions)
 # red_path, green_path = grown_ass_man_fill(green_path, red_path, teen_fill, baby_fill)
 
 # intersections = spot_checker(red_path, green_path)
