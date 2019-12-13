@@ -46,7 +46,7 @@ def string_to_array(opcode_string, comma_index):
 # MIGHT NEED MORE MEMORY
 def add_memory(program):
     # for _ in range(math.floor(len(program)/2)):
-    for _ in range(3000):
+    for _ in range(5000):
         program.append(0)
     return program
 
@@ -258,6 +258,6 @@ program = string_to_array(program, all_commas)
 program = add_memory(program)
 # done with file io / formatting
 
-run_program(program)
+run_program(program)    # will print from opcode_processor
 
 
