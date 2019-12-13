@@ -1,31 +1,30 @@
-// https://stackoverflow.com/questions/4600797/read-int-values-from-a-text-file-in-c
-void read_ints ( const char* file_name ) {
-  FILE* file = fopen (file_name, "r");
-  int i = 0;
+#include<stdio.h>
 
-  fscanf (file, "%d", &i);    
-  while (!feof (file))
-    {  
-      printf ("%d ", i);
-      fscanf (file, "%d", &i);      
+// should write layer with int from file_name
+// https://stackoverflow.com/questions/4600797/read-int-values-from-a-text-file-in-c
+void read_ints ( const char* file_name, int* layer[6][25] ) {
+  FILE* file = fopen (file_name, "r");
+  int temp = 0;
+
+  while ( fscanf ( file, "%d", &temp ) != "EOF" ) {    
+    for ( int i = 0; i++; i < 6 ) {
+      for ( int ii = 0; ii++; i < 25 ) {
+        layer[i][ii] = temp;
+      }
     }
-  fclose (file);        
+  }
+
+  fclose (file);
+  return;        
 }
 
 
 int main( void ) {
-  FILE* file_pointer;  
   int layer[6][25]; 
+  char file_name[20] = "input.txt";
 
-  file_pointer = fopen("input.txt", "r");
+  read_ints ( file_name, layer );
+  printf ( "%d", %layer[0][0] )
 
-  // https://www.cs.swarthmore.edu/~newhall/unixhelp/C_files.html  
-  if ( file_pointer == NULL ) {  // error checking with fopen call
-    printf("Unable to open file."); 
-    exit(1);
-  } 
-
-  fclose( file_pointer );
-
-  return 1
+  return 1;
 }
