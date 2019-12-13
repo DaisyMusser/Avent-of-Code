@@ -65,75 +65,6 @@ def path_finder(directions):
     return red_path, green_path
 
 
-# finds the gaps between two spots
-def baby_fill(two_spots):
-    old_x = two_spots[0]     # this is totally nuts but i'm bad at reading code so i need it
-    old_y = two_spots[1]
-    new_x = two_spots[2]
-    new_y = two_spots[3]
-
-    if old_x != new_x:
-
-        difference = abs(old_x - new_x)
-
-        if old_x > new_x:
-            counter = 1
-            for i in range(difference-1):
-                gaps = [old_x-counter, old_y]
-                counter += 1
-
-        elif old_x < new_x:
-            counter = 1
-            for i in range(difference-1):
-                gaps = [old_x+counter, old_y]
-                counter += 1
-
-    elif old_y != new_y:
-
-        difference = abs(old_y - new_y)
-
-        if old_y > new_y:
-            counter = 1
-            for i in range(difference - 1):
-                gaps = [old_x, old_y - counter]
-                counter += 1
-
-        elif old_y < new_y:
-            counter = 1
-            for i in range(difference - 1):
-                gaps = [old_x, old_y + counter]
-                counter += 1
-
-    return gaps
-
-
-def teen_fill(path, baby_fill):
-    all_gaps = []
-    counter = 0
-    for i in range((len(path)//2)-1):
-        two_spots = path[counter:counter+4]       # remember +4 because ranges need to go one further
-        for i in range(2):
-            all_gaps.append(baby_fill(two_spots)[i])
-        counter += 2
-    return all_gaps
-
-
-# needs to fill the gaps in red and green wire paths
-def grown_ass_man_fill(green_path, red_path, teen_fill, baby_fill):
-
-    all_green_gaps = teen_fill(green_path, baby_fill)
-    print(all_green_gaps)
-    #for i in range(len(all_green_gaps)):
-    #    green_path.append(all_green_gaps[i])
-
-    all_red_gaps = teen_fill(red_path, baby_fill)
-    print(all_red_gaps)
-    #for i in range(len(all_red_gaps)):
-    #    red_path.append(all_red_gaps[i])
-
-    return red_path, green_path
-
-
 # find the intersections between red and green wires
 def spot_checker(red_path, green_path):
     intersections = []
@@ -151,11 +82,14 @@ def spot_checker(red_path, green_path):
 
 
 # main program
+# file io / formatting
 directions = file_reader('input.txt')    # change here for different file names
 directions = formatter(directions)
-print(directions)
 
+# converts directions into all red and green corners
 red_path, green_path = path_finder(directions)
+print(green_path)
+
 # red_path, green_path = grown_ass_man_fill(green_path, red_path, teen_fill, baby_fill)
 
 # intersections = spot_checker(red_path, green_path)
