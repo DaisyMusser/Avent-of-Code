@@ -65,6 +65,60 @@ def path_finder(directions):
     return red_path, green_path
 
 
+# returns the gaps between two spots
+def baby_fill(old_spot, new_spot):
+    gaps = []
+
+    old_x = old_spot[0]     # symbolic
+    old_y = old_spot[1]
+    new_x = new_spot[0]
+    new_y = new_spot[1]
+
+    if old_x != new_x:
+        difference = abs(old_x - new_x)
+        if old_x > new_x:
+            for i in range(difference):
+                gaps.append([old_x - i, old_y])
+        elif old_x < new_x:
+            for i in range(difference-1):
+                gaps.append([old_x + i, old_y])
+    elif old_y != new_y:
+        difference = abs(old_y - new_y)
+        if old_y > new_y:
+            for i in range(difference):
+                gaps.append([old_x, old_y - i])
+        elif old_y < new_y:
+            for i in range(difference):
+                gaps.append([old_x, old_y + i])
+
+    return gaps
+
+
+def teen_fill(path):
+    all_gaps = []
+    counter = 0
+    for i in range((len(path)//2)-1):
+        two_spots = path[counter:counter+4]       # remember +4 because ranges need to go one further
+        for i in 
+    return all_gaps
+
+
+# needs to fill the gaps in red and green wire paths
+def grown_ass_man_fill(green_path, red_path):
+
+    all_green_gaps = teen_fill(green_path)
+    print(all_green_gaps)
+    #for i in range(len(all_green_gaps)):
+    #    green_path.append(all_green_gaps[i])
+
+    all_red_gaps = teen_fill(red_path)
+    print(all_red_gaps)
+    #for i in range(len(all_red_gaps)):
+    #    red_path.append(all_red_gaps[i])
+
+    return red_path, green_path
+
+
 # find the intersections between red and green wires
 def spot_checker(red_path, green_path):
     intersections = []
