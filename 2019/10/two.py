@@ -157,9 +157,10 @@ class Asteroid:
             # fuck i don't know how to do this
 
 
-    #def zap_asteroids(self):
-    #    rocks = self.asteroids_found
-    #    for i in range(200):
+    def zap_asteroids(self):
+        rocks = self.asteroids_found
+        for i in range(200):
+            return
 
 
 # main program two: does other stuff...
@@ -171,6 +172,6 @@ for xy in asteroid_xy:
         most_seen = [xy, seen]
 
 base = Asteroid(most_seen[0])          # correct asteroid to build a base on
-
+base.generate_zappable_asteroids()
 
 
