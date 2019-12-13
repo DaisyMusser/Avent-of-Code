@@ -280,18 +280,15 @@ def map_maker(output):
             y_min = y
     length = x_max - x_min
     height = y_max - y_min
-    print(length)
-    print(height, '\n')
 
     askii_map = []              # makes an empty map the size of the screen
-    for i in range(height):
+    for i in range(height + 1): # not sure why these two +1s are needed?
         line = []
-        for ii in range(length):
+        for ii in range(length + 1):
             line.append(0)
         askii_map.append(line)
-    print(len(askii_map[0]))
-    print(len(askii_map))
 
+    block_count = 0
     for elem in output:   # fills map with tile_ids
         x = elem[0]       # symbolic
         y = elem[1]
@@ -302,12 +299,14 @@ def map_maker(output):
             tile = '&'
         elif tile_id == 2:
             tile = '#'
+            block_count += 1
         elif tile_id == 3:
             tile = '-'
         elif tile_id == 4:
             tile = '@'
+
         askii_map[y][x] = tile
-    return askii_map
+    return askii_map, block_count
 
 
 # main program:
@@ -319,10 +318,9 @@ program = add_memory(program)
 
 output = run_program(program)
 output = output_processor(output)
-askii_map = map_maker(output)
+askii_map, block_count = map_maker(output)
 
-print(askii_map)
-
+print(block_count)
 
 
 
