@@ -80,7 +80,7 @@ def baby_fill(old_spot, new_spot):
             for i in range(difference):
                 gaps.append([old_x - i, old_y])
         elif old_x < new_x:
-            for i in range(difference-1):
+            for i in range(difference):
                 gaps.append([old_x + i, old_y])
     elif old_y != new_y:
         difference = abs(old_y - new_y)
@@ -96,10 +96,6 @@ def baby_fill(old_spot, new_spot):
 
 def teen_fill(path):
     all_gaps = []
-    counter = 0
-    for i in range((len(path)//2)-1):
-        two_spots = path[counter:counter+4]       # remember +4 because ranges need to go one further
-        for i in 
     return all_gaps
 
 
@@ -142,7 +138,8 @@ directions = formatter(directions)
 
 # converts directions into all red and green corners
 red_path, green_path = path_finder(directions)
-print(green_path)
+
+print(baby_fill([0, 0], [100, 0]))
 
 # red_path, green_path = grown_ass_man_fill(green_path, red_path, teen_fill, baby_fill)
 
