@@ -118,14 +118,12 @@ def spot_checker(red_path, green_path):
     return intersections
 
 
-# returns closest to (0, 0)
-def manhattan_distance_checker(intersections):
-    closest = 99999999999999
-    for xy in intersections:
-        man_dis = abs(xy[0]) + abs(xy[1])
-        if man_dis < closest:
-            closest = man_dis
-    return closest
+def path_sorter(path):
+
+
+# checks relative length
+def rel_length_checker(xy):
+    return
 
 
 # main program
@@ -143,6 +141,3 @@ green_path = find_all_gaps(green_path)
 # finds intersections
 intersections = spot_checker(red_path, green_path)
 
-# finds answer
-answer = manhattan_distance_checker(intersections)
-print(answer)
