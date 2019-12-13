@@ -1,4 +1,5 @@
-import re
+# day 10 part two:
+# with station build on asteroid (part one) zap asteroids counter clockwise, and report xy of 200th asteroid
 
 # reads each line as a separate item onto raw_map ll
 def file_reader(file_name):
@@ -55,14 +56,17 @@ class Asteroid:
 
     # counts the number of other asteroids that can be seen from the spec Asteroid object
     def look_for_asteroids(self):
-        asteroids_found = {}
+        up = []
+        right = []
+        down = []
+        left = []
         for asteroid in self.relative_map:     # there is no 0,0 in rel_map
             x = asteroid[0]
             y = asteroid[1]
             if x == 0:
-                if y > 0:
-                    if 'UP' in asteroids_found:
-                        asteroids_found['UP'].append(self.relative_to_absolute(asteroid))
+                if y > 0:      # MAKE ALL OF 'UP' 'DOWN' 'II'... SEPARATE DICTIONARIES W/ KEY: RATIO, VALUE: TUPLE(XY)ZZ
+                    if UP in asteroids_found:
+                        UP.append(self.relative_to_absolute(asteroid))
                     else:
                         asteroids_found['UP'] = [self.relative_to_absolute(asteroid)]
                 else:
@@ -82,7 +86,7 @@ class Asteroid:
                     else:
                         asteroids_found['LEFT'] = [self.relative_to_absolute(asteroid)]
             else:
-                ratio = float(asteroid[0])/float(asteroid[1])
+                ratio = float(asteroid[0])/float(asteroid[1])  # ratio is x/y
                 if y < 0:
                     if x < 0:
                         if ('III', ratio) in asteroids_found:
@@ -111,17 +115,16 @@ class Asteroid:
     def zap_one_asteroid(self, rocks, last_rock, end):   # i think last_asteroid should be the tuple key
         if last_rock == 'FIRST':
             if 'UP' in rocks:
-                if len(rocks['UP']) > 0:
-                    rocks['UP'].remove(min(rocks['UP']))
+                return
             # fuck i don't know how to do this
 
 
-    def zap_asteroids(self):
-        rocks = self.asteroids_found
-        for i in range(200):
+    #def zap_asteroids(self):
+    #    rocks = self.asteroids_found
+    #    for i in range(200):
 
 
-# main program two:
+# main program two: does other stuff...
 most_seen = ['xy', 0]
 for xy in asteroid_xy:
     spot = Asteroid(xy)
@@ -130,5 +133,8 @@ for xy in asteroid_xy:
         most_seen = [xy, seen]
 
 base = Asteroid(most_seen[0])          # correct asteroid to build a base on
+base.look_for_asteroids()
+for i in base.asteroids_found:
+    print('KEY:', i, ' VALUE:', base.asteroids_found[i])
 
 
