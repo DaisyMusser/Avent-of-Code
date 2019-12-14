@@ -2,7 +2,7 @@
 #include<stdlib.h>
 #include<string.h>
 
-#define MAXCHARS 65536
+#define MAXCHARS 99999999
 
 // file-reader subroutine to determine dynamic lengths
 // from https://gitlab.com/imhoffman/fa19b4-mat3006/blob/master/code/day15/single_line.c
@@ -20,6 +20,7 @@ void reader( FILE *f, int *n, char file_contents[] ) {
   if ( num_lines > 1 ) {
 	  printf( "\n PROBLEM: more than one line in file\n" );
 	  *n = -1;
+          printf( "%d\n", num_lines );
 	  return;
   }
 
