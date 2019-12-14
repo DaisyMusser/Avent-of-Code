@@ -118,6 +118,7 @@ def find_intersections(red_path, green_path):
     return intersections
 
 
+# fuck this is not going to work at all
 def place_inter_on_string(intersection, corners):
     x = intersection[0]
     y = intersection[1]
@@ -127,13 +128,17 @@ def place_inter_on_string(intersection, corners):
         new = corners[i + 1]
         if old[0] != new[0]:  # if change in x
             if old[0] < x < new[0]:
+                print('in')
                 spot.append(old)
             elif old[0] > x > new[0]:
+                print('in')
                 spot.append(old)
         elif old[1] != new[1]:  # if change in y
             if old[1] < y < new[1]:
+                print('in')
                 spot.append(old)
             if old[1] > y > new[1]:
+                print('in')
                 spot.append(old)
     return spot
 
