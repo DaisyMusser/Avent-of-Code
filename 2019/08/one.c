@@ -38,7 +38,7 @@ int main( int argc, char *argv[] ) {
   int nchars;
   char *temp;
   temp =(char *) malloc( MAXCHARS * sizeof( char ) );
-  fp = fopen("puzzle.txt","r");
+  fp = fopen("input.txt","r");     // change file name here!
   reader( fp, &nchars, temp);
   fclose(fp);
 
@@ -47,7 +47,6 @@ int main( int argc, char *argv[] ) {
   free( temp );     // free the huge temporary file-read buffer
   input[nchars+1] = '\0';    // is this really needed ?
   printf( "\n read in %d characters from one line\n\n", nchars);
-
  
   return 0;
 }
