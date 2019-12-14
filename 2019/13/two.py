@@ -1,3 +1,4 @@
+# day 13: playing intcode breakout game
 
 # Reads file into string, code adapted from ( https://github.com/imhoffman/advent/blob/master/2015/01/one.py )
 def file_to_string(file_name):
@@ -86,8 +87,7 @@ def opcode_checker(number):
 
 
 # given a pointer and a program, executes instructions and returns modified program + pointer
-def opcode_processor(pointer, program, relative_base, inputs):
-    outputs = []
+def opcode_processor(pointer, program, relative_base, outputs, stick):
     opcode = program[pointer]         # purely symbolic
     if opcode_checker(opcode):        # this is only helpful for debugging
         yarn = yarnifier(opcode)
@@ -134,11 +134,12 @@ def opcode_processor(pointer, program, relative_base, inputs):
             pointer += 4
 
         elif int(yarn[4]) == 3:  # get input rule
-            x = inputs
+            x = stick
             if first == 0:
                 program[program[pointer + 1]] = x
             elif first == 2:
                 program[program[pointer + 1] + relative_base] = x
+            stick = 'NULL'
             pointer += 2
 
         elif int(yarn[4]) == 4:  # print rule
@@ -233,23 +234,26 @@ def opcode_processor(pointer, program, relative_base, inputs):
             pointer += 2
 
         elif int(yarn[3:5]) == 99:
-            return 'END', program, relative_base, outputs
+            return 'END', program, relative_base, outputs, stick
     else:
         print("--- ERORR ---")
         print("@ adress: ", pointer, "which is int: ", opcode)
-        return 'DONE', 'ERROR', 0, 0
+        return 'DONE', 'ERROR', 0, 0, 0
 
-    return pointer, program, relative_base, outputs
+    return pointer, program, relative_base, outputs, stick
 
 
 # runs program until outputs has 2 items or program returns END
-def run_program(program):
+def run_program(ram):
     pointer = 0
-    relative_base = 0
+    rel_base = 0
+    stick = 0
+    outputs = []
     while True:
-        inputs = generate_inputs()
-        pointer, program, relative_base, outputs = opcode_processor(pointer, program, relative_base, inputs)
-        render_screen(outputs)
+        if stick == 'NULL':
+            stick = generate_inputs()
+            render_screen(outputs)
+        pointer, ram, rel_base, outputs, stick = opcode_processor(pointer, ram, rel_base, outputs, stick)
         if pointer == 'END':
             return
 
@@ -260,8 +264,18 @@ def generate_inputs():
         return -1
     elif x == 'd':
         return 1
-    elif x == 'w':
-        return 0
+    return 0
+
+
+def render_screen(output):
+    output = output_processor(output)
+    askii_map, l, h = map_maker(output)
+    for i in range(h):
+        string = ''
+        for ii in range(l):
+            string += askii_map[i][ii]
+        print(string)
+    return
 
 
 def output_processor(dirty_output):
@@ -324,17 +338,6 @@ def map_maker(output):
     return askii_map, length, height
 
 
-def render_screen(output):
-    output = output_processor(output)
-    askii_map, l, h = map_maker(output)
-    for i in range(h):
-        string = ''
-        for ii in range(l):
-            string += askii_map[i][ii]
-        print(string)
-    return
-
-
 # main program:
 program = file_to_string('hacked_input.txt')  # change file name here!
 all_commas = comma_finder(program)
@@ -344,9 +347,4 @@ program = add_memory(program)
 
 # these steps need to be changed for inputs
 output = run_program(program)
-
-render_screen(output)
-
-
-
 
