@@ -295,7 +295,8 @@ def map_maker(output):
 
     for elem in output:
         if elem[0] == -1:
-            print(elem)
+            print('SCORE: ', elem[2])
+            output.remove(elem)
 
     for elem in output:   # finds bounds of the screen
         x = elem[0]       # symbolic
