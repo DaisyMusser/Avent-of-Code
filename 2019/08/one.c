@@ -1,30 +1,53 @@
 #include<stdio.h>
+#include<stdlib.h>
+#include<string.h>
 
-// should write layer with int from file_name
-// https://stackoverflow.com/questions/4600797/read-int-values-from-a-text-file-in-c
-void read_ints ( const char* file_name, int* layer[6][25] ) {
-  FILE* file = fopen (file_name, "r");
-  int temp = 0;
+#define MAXCHARS 65536
 
-  while ( fscanf ( file, "%d", &temp ) != "EOF" ) {    
-    for ( int i = 0; i++; i < 6 ) {
-      for ( int ii = 0; ii++; i < 25 ) {
-        layer[i][ii] = temp;
-      }
-    }
+// file-reader subroutine to determine dynamic lengths
+// from https://gitlab.com/imhoffman/fa19b4-mat3006/blob/master/code/day15/single_line.c
+void reader( FILE *f, int *n, char file_contents[] ) {
+  char buffer[MAXCHARS] = { '\0' };
+  int num_lines = 0;
+  char *qnull;
+  size_t file_length;
+
+  while ( fgets( buffer, MAXCHARS, f ) != NULL ) {
+    strncpy( file_contents, buffer, MAXCHARS );
+    num_lines = num_lines + 1;
   }
 
-  fclose (file);
-  return;        
+  if ( num_lines > 1 ) {
+	  printf( "\n PROBLEM: more than one line in file\n" );
+	  *n = -1;
+	  return;
+  }
+
+  qnull = strchr( file_contents, '\0' );
+  file_length = qnull - &file_contents[0];   // difference of size_t's
+  *n =(int) file_length;
+
+  return;
 }
 
 
-int main( void ) {
-  int layer[6][25]; 
-  char file_name[20] = "input.txt";
+int main( int argc, char *argv[] ) {
+  // https://gitlab.com/imhoffman/fa19b4-mat3006/blob/master/code/day15/single_line.c
+  //  file I/O
+  FILE* fp;
+  int nchars;
+  char *temp;
+  temp =(char *) malloc( MAXCHARS * sizeof( char ) );
+  fp = fopen("puzzle.txt","r");
+  reader( fp, &nchars, temp);
+  fclose(fp);
 
-  read_ints ( file_name, layer );
-  printf ( "%d", %layer[0][0] )
+  char *input = malloc( (nchars+1) * sizeof( char ) );
+  strncpy( input, temp, nchars );
+  free( temp );     // free the huge temporary file-read buffer
+  input[nchars+1] = '\0';    // is this really needed ?
+  printf( "\n read in %d characters from one line\n\n", nchars);
 
-  return 1;
+ 
+  return 0;
 }
