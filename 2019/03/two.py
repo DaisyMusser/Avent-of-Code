@@ -107,7 +107,7 @@ def find_all_gaps(path):
 
 
 # find the intersections between red and green wires
-def spot_checker(red_path, green_path):
+def find_intersections(red_path, green_path):
     r_set = set()
     g_set = set()
     for xy in red_path:
@@ -118,12 +118,24 @@ def spot_checker(red_path, green_path):
     return intersections
 
 
-def path_sorter(path):
-
-
-# checks relative length
-def rel_length_checker(xy):
-    return
+def place_inter_on_string(intersection, corners):
+    x = intersection[0]
+    y = intersection[1]
+    spot = []
+    for i in range(len(corners) - 1):
+        old = corners[i]  # symbolic
+        new = corners[i + 1]
+        if old[0] != new[0]:  # if change in x
+            if old[0] < x < new[0]:
+                spot.append(old)
+            elif old[0] > x > new[0]:
+                spot.append(old)
+        elif old[1] != new[1]:  # if change in y
+            if old[1] < y < new[1]:
+                spot.append(old)
+            if old[1] > y > new[1]:
+                spot.append(old)
+    return spot
 
 
 # main program
@@ -132,12 +144,15 @@ directions = file_reader('input.txt')    # change here for different file names
 directions = formatter(directions)
 
 # converts directions into all red and green corners
-red_path, green_path = path_finder(directions)
+red_corners, green_corners = path_finder(directions)
 
 # fills gaps of red and green paths
-red_path = find_all_gaps(red_path)
-green_path = find_all_gaps(green_path)
+red_path = find_all_gaps(red_corners)
+green_path = find_all_gaps(green_corners)
 
 # finds intersections
-intersections = spot_checker(red_path, green_path)
+intersections = find_intersections(red_path, green_path)
+
+intersections = list(intersections)
+print(place_inter_on_string(intersections[0], red_corners))
 
