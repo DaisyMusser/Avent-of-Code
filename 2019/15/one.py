@@ -1,4 +1,4 @@
-# day 13: playing intcode breakout game
+# day 15: playing intcode breakout game
 import time
 start_time = time.time()
 
@@ -11,6 +11,7 @@ def file_to_string(file_name):
                 break
             string_opcode = line
     return string_opcode
+
 
 # finds commas in string
 # could be done with .split(), but oh well
@@ -145,11 +146,11 @@ def opcode_processor(pointer, program, relative_base):
 
         elif int(yarn[4]) == 4:  # print rule
             if first == 0:
-                outputs.append(program[program[pointer + 1]])
+                outputs = program[program[pointer + 1]]
             if first == 1:
-                outputs.append(program[pointer + 1])
+                outputs = program[pointer + 1]
             elif first == 2:
-                outputs.append(program[program[pointer + 1] + relative_base])
+                outputs = program[program[pointer + 1] + relative_base]
             pointer += 2
 
         elif int(yarn[4]) == 5:   # jump-if-true
@@ -243,11 +244,18 @@ def opcode_processor(pointer, program, relative_base):
     return pointer, program, relative_base, outputs
 
 
+# runs program (no shit)
 def run_program(ram):
     rel_base = 0
     pointer = 0
     while True:
         pointer, program, rel_base, outputs = opcode_processor(pointer, ram, rel_base)    
+        if outputs != 'null':
+            print(outputs)
+        if pointer == 'END':
+            print('END OF PROGRAM')
+            return
+
 
 # grabs those inputs from a human user
 def get_inputs():
@@ -260,15 +268,18 @@ def get_inputs():
         move = 4
     if move == 's':
         move = 2
-    else:
+    if not move in [1, 2, 3, 4]:
        print('Whoopsie, only use w a s d')
        return get_inputs()    # not propperly tail called 
     return move
 
 
 # main program:
-program = file_to_string('hacked_input.txt')  # change file name here!
+program = file_to_string('input.txt')  # change file name here!
 all_commas = comma_finder(program)
 program = string_to_array(program, all_commas)
 program = add_memory(program)
 # done with file io / formatting
+
+run_program(program)
+
