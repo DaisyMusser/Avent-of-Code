@@ -10,7 +10,6 @@ def file_to_string(file_name):
             string_opcode = line
     return string_opcode
 
-
 # finds commas in string
 # could be done with .split(), but oh well
 def comma_finder(string_opcode):
@@ -47,7 +46,7 @@ def string_to_array(opcode_string, comma_index):
 # MIGHT NEED MORE MEMORY
 def add_memory(program):
     # for _ in range(math.floor(len(program)/2)):
-    for _ in range(5000):
+    for _ in range(7000):
         program.append(0)
     return program
 
@@ -87,7 +86,7 @@ def opcode_checker(number):
 
 
 # given a pointer and a program, executes instructions and returns modified program + pointer
-def opcode_processor(pointer, program, relative_base, outputs, stick):
+def opcode_processor(pointer, program, relative_base, outputs, ball, paddle):
     opcode = program[pointer]         # purely symbolic
     if opcode_checker(opcode):        # this is only helpful for debugging
         yarn = yarnifier(opcode)
@@ -134,12 +133,12 @@ def opcode_processor(pointer, program, relative_base, outputs, stick):
             pointer += 4
 
         elif int(yarn[4]) == 3:  # get input rule
-            x = stick
+            x = generate_inputs(ball, paddle)
             if first == 0:
                 program[program[pointer + 1]] = x
             elif first == 2:
                 program[program[pointer + 1] + relative_base] = x
-            stick = 'NULL'
+            # stick = 'NULL'
             pointer += 2
 
         elif int(yarn[4]) == 4:  # print rule
@@ -234,48 +233,51 @@ def opcode_processor(pointer, program, relative_base, outputs, stick):
             pointer += 2
 
         elif int(yarn[3:5]) == 99:
-            return 'END', program, relative_base, outputs, stick
+            return 'END', program, relative_base, outputs
     else:
         print("--- ERORR ---")
         print("@ adress: ", pointer, "which is int: ", opcode)
-        return 'DONE', 'ERROR', 0, 0, 0
+        return 'DONE', 'ERROR', 0, 0
 
-    return pointer, program, relative_base, outputs, stick
+    return pointer, program, relative_base, outputs
 
 
 # runs program until outputs has 2 items or program returns END
 def run_program(ram):
     pointer = 0
     rel_base = 0
-    stick = 0
     outputs = []
+    ball = 'null'
+    paddle = 'null'
     while True:
-        if stick == 'NULL':
-            stick = generate_inputs()
-            render_screen(outputs)
-        pointer, ram, rel_base, outputs, stick = opcode_processor(pointer, ram, rel_base, outputs, stick)
+        pointer, ram, rel_base, outputs = opcode_processor(pointer, ram, rel_base, outputs, ball, paddle)
+        ball, paddle, score = render_screen(outputs, ball, paddle)   # should work now
         if pointer == 'END':
+            print('FINAL SCORE: ', score)
             return
 
 
-def generate_inputs():
-    x = input('MOVE: ')
-    if x == 'a':
-        return -1
-    elif x == 'd':
-        return 1
-    return 0
+# generates inputs such that paddle is always under ball
+def generate_inputs(ball, paddle):
+    if ball == paddle:
+        move = 0
+    else:
+        if ball > paddle:
+            move = 1
+        elif ball < paddle:
+            move = -1
+    return move
 
 
-def render_screen(output):
+def render_screen(output, ball, paddle):
     output = output_processor(output)
-    askii_map, l, h = map_maker(output)
-    for i in range(h):
-        string = ''
-        for ii in range(l):
-            string += askii_map[i][ii]
-        print(string)
-    return
+    askii_map, l, h, ball, paddle, score = map_maker(output, ball, paddle)
+    # for i in range(h):
+    #    string = ''
+    #    for ii in range(l):
+    #        string += askii_map[i][ii]
+    #    print(string)
+    return ball, paddle, score
 
 
 def output_processor(dirty_output):
@@ -287,15 +289,17 @@ def output_processor(dirty_output):
     return clean_output
 
 
-def map_maker(output):
+def map_maker(output, ball, paddle):
     x_min = 10000000
     y_min = 10000000
     x_max = 0
     y_max = 0
+    score = 0
 
-    for elem in output:
+    for elem in output:   # find score, print and remove
         if elem[0] == -1:
-            print('SCORE: ', elem[2])
+            # print('SCORE: ', elem[2])
+            score = elem[2]
             output.remove(elem)
 
     for elem in output:   # finds bounds of the screen
@@ -313,8 +317,8 @@ def map_maker(output):
     length = x_max - x_min
     height = y_max - y_min
 
-    askii_map = []              # makes an empty map the size of the screen
-    for _ in range(height + 1): # not sure why these two +1s are needed?
+    askii_map = []                   # makes an empty map the size of the screen
+    for _ in range(height + 1):      # not sure why these two +1s are needed?
         line = []
         for _ in range(length + 1):
             line.append(0)
@@ -332,11 +336,13 @@ def map_maker(output):
             tile = 'u'
         elif tile_id == 3:
             tile = '='
+            paddle = x
         elif tile_id == 4:
             tile = '@'
+            ball = x      # so ball can be tracked
 
         askii_map[y][x] = tile
-    return askii_map, length, height
+    return askii_map, length, height, ball, paddle, score
 
 
 # main program:
