@@ -2,7 +2,7 @@
 #include<stdlib.h>
 #include<string.h>
 
-#define MAXCHARS 99999999
+#define MAXCHARS 999999
 
 // file-reader subroutine to determine dynamic lengths
 // from https://gitlab.com/imhoffman/fa19b4-mat3006/blob/master/code/day15/single_line.c
@@ -11,14 +11,15 @@ void reader( FILE *f, int *n, char file_contents[] ) {
   int num_lines = 0;
   char *qnull;
   size_t file_length;
-
+  
+  printf( "into reader" );
   while ( fgets( buffer, MAXCHARS, f ) != NULL ) {
     strncpy( file_contents, buffer, MAXCHARS );
     num_lines = num_lines + 1;
   }
 
   if ( num_lines > 1 ) {
-	  printf( "\n PROBLEM: more than one line in file\n" );
+	  printf( "\n PROBLEM: more than one line in file\n number of lines == %d", num_lines );
 	  *n = -1;
           printf( "%d\n", num_lines );
 	  return;
