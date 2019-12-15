@@ -244,16 +244,21 @@ def opcode_processor(pointer, program, relative_base, outputs, ball, paddle):
     return pointer, program, relative_base, outputs
 
 
-# runs program until outputs has 2 items or program returns END
+# runs program until END, then prints final score and returns
 def run_program(ram):
     pointer = 0
     rel_base = 0
+    block_count = 0
     outputs = []
     ball = 'null'
     paddle = 'null'
     while True:
         pointer, ram, rel_base, outputs = opcode_processor(pointer, ram, rel_base, outputs, ball, paddle)
-        ball, paddle, score = render_screen(outputs, ball, paddle)   # should work now
+        ball, paddle, score, new_block_count = render_screen(outputs, ball, paddle)   # should work now
+        if new_block_count != 0:
+            if new_block_count != block_count:
+                render_block_count(new_block_count, score)
+                block_count = new_block_count
         if pointer == 'END':
             print('FINAL SCORE: ', score)
             return
@@ -271,17 +276,21 @@ def generate_inputs(ball, paddle):
     return move
 
 
+# prints the number of blocks destroyed and score
+def render_block_count(blocks, score):
+    print('%d blocks left,' %blocks, ' score: ', score)
+    print('--- %s minuets ---' %((time.time() - start_time)//60))
+    return
+
+
+# actually printing the screen takes too long, so this just prints when block are destroyed
 def render_screen(output, ball, paddle):
     output = output_processor(output)
-    askii_map, l, h, ball, paddle, score = map_maker(output, ball, paddle)
-    for i in range(h):
-        string = ''
-        for ii in range(l):
-            string += askii_map[i][ii]
-        print(string)
-    return ball, paddle, score
+    ball, paddle, score, block_count = object_tracker(output, ball, paddle)
+    return ball, paddle, score, block_count
 
 
+# tides up output to make processing easier
 def output_processor(dirty_output):
     clean_output = []
     iii = 0
@@ -291,59 +300,22 @@ def output_processor(dirty_output):
     return clean_output
 
 
-def map_maker(output, ball, paddle):
-    x_min = 10000000
-    y_min = 10000000
-    x_max = 0
-    y_max = 0
+# finds ball, paddle, and counts blocks
+def object_tracker(output, ball, paddle):
     score = 0
+    block_count = 0
 
-    for elem in output:   # find score, print and remove
-        if elem[0] == -1:
-            score = elem[2]
+    for elem in output:
+        x = elem[0]               # symbolic
+        y = elem[1]
+        tile_id = elem[2]        
+        if x == -1:         # find score, print and remove
+            score = tile_id
             output.remove(elem)
+        if tile_id == 1:
+            block_count += 1
 
-    for elem in output:   # finds bounds of the screen
-        x = elem[0]       # symbolic
-        y = elem[1]
-        if x > x_max:
-            x_max = x
-        if y > y_max:
-            y_max = y
-        if x < x_min:
-            x_min = x
-        if y < y_min:
-            y_min = y
-
-    length = x_max - x_min
-    height = y_max - y_min
-
-    askii_map = []                   # makes an empty map the size of the screen
-    for _ in range(height + 1):      # not sure why these two +1s are needed?
-        line = []
-        for _ in range(length + 1):
-            line.append(0)
-        askii_map.append(line)
-
-    for elem in output:   # fills map with tile_ids
-        x = elem[0]       # symbolic
-        y = elem[1]
-        tile_id = elem[2]
-        if tile_id == 0:
-            tile = ' '
-        elif tile_id == 1:
-            tile = '#'
-        elif tile_id == 2:
-            tile = 'u'
-        elif tile_id == 3:
-            tile = '='
-            paddle = x
-        elif tile_id == 4:
-            tile = '@'
-            ball = x      # so ball can be tracked
-
-        askii_map[y][x] = tile
-    return askii_map, length, height, ball, paddle, score
+    return ball, paddle, score, block_count
 
 
 # main program:
@@ -357,5 +329,5 @@ program = add_memory(program)
 output = run_program(program)
 
 # just out of interest
-print("--- %s seconds ---" % (time.time() - start_time))
+print("--- %s hours ---" % ((time.time() - start_time)//60//60))  # print hours at the end
 
