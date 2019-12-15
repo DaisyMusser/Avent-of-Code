@@ -1,6 +1,4 @@
 # day 13: playing intcode breakout game
-import time
-start_time = time.time()
 
 # Reads file into string, code adapted from ( https://github.com/imhoffman/advent/blob/master/2015/01/one.py )
 def file_to_string(file_name):
@@ -11,6 +9,7 @@ def file_to_string(file_name):
                 break
             string_opcode = line
     return string_opcode
+
 
 # finds commas in string
 # could be done with .split(), but oh well
@@ -248,32 +247,37 @@ def opcode_processor(pointer, program, relative_base, outputs, ball, paddle):
 def run_program(ram):
     pointer = 0
     rel_base = 0
+    score = 0
     outputs = []
     ball = 'null'
     paddle = 'null'
     while True:
         pointer, ram, rel_base, outputs = opcode_processor(pointer, ram, rel_base, outputs, ball, paddle)
-        ball, paddle, score = render_screen(outputs, ball, paddle)   # should work now
+        ball, paddle, score = render_screen(outputs, ball, paddle, score)   # should work now
         if pointer == 'END':
             print('FINAL SCORE: ', score)
             return
 
 
-# generates inputs such that paddle is always under ball
-def generate_inputs(ball, paddle):
-    if ball == paddle:
-        move = 0
-    else:
-        if ball > paddle:
-            move = 1
-        elif ball < paddle:
+# generates inputs via user intputs
+def generate_inputs(b, p):     # ball and paddle are not needed in this version 
+    move = 0
+    key = input('MOVE: ')
+    if key in ['a', 'd', 'w', 's', '']:    
+        if key == 'a':
             move = -1
-    return move
+        elif key == 'd':
+            move = 1
+        print('\n\n\n\n\n\n\n\n\n\n\n\n\n')
+        return move
+    else:
+        print('Move with the a, w, s, and d keys')
+        return generate_inputs(b, p)       # not proper tail call in python, but if they enter the wrong thing 100x thats on them       
 
 
-def render_screen(output, ball, paddle):
+def render_screen(output, ball, paddle, score):
     output = output_processor(output)
-    askii_map, l, h, ball, paddle, score = map_maker(output, ball, paddle)
+    askii_map, l, h, ball, paddle, score = map_maker(output, ball, paddle, score)
     for i in range(h):
         string = ''
         for ii in range(l):
@@ -291,15 +295,16 @@ def output_processor(dirty_output):
     return clean_output
 
 
-def map_maker(output, ball, paddle):
+def map_maker(output, ball, paddle, score):
     x_min = 10000000
     y_min = 10000000
     x_max = 0
     y_max = 0
-    score = 0
 
     for elem in output:   # find score, print and remove
         if elem[0] == -1:
+            print('\n\n\n\n\n\n\n')
+            print('SCORE: ', elem[2])
             score = elem[2]
             output.remove(elem)
 
@@ -355,7 +360,4 @@ program = add_memory(program)
 
 # these steps need to be changed for inputs
 output = run_program(program)
-
-# just out of interest
-print("--- %s seconds ---" % (time.time() - start_time))
 
