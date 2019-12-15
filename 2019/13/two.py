@@ -258,9 +258,7 @@ def run_program(ram):
         if pointer == 'END':
             print('FINAL SCORE: ', score)
             return
-        if new_block_count > block_count:
-            print('--- loading screen ---')
-        if new_block_count < block_count:
+        elif new_block_count < block_count:
             render_block_count(new_block_count, score)
             block_count = new_block_count
 
@@ -308,11 +306,9 @@ def object_tracker(output, ball, paddle):
 
     for elem in output:
         x = elem[0]               # symbolic
-        y = elem[1]
         tile_id = elem[2]        
         if x == -1:         # find score, print and remove
             score = tile_id
-            output.remove(elem)
         if tile_id == 1:
             block_count += 1
         if tile_id == 3:
