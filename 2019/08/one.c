@@ -12,7 +12,6 @@ void reader( FILE *f, int *n, char file_contents[] ) {
   char *qnull;
   size_t file_length;
   
-  printf( "into reader" );
   while ( fgets( buffer, MAXCHARS, f ) != NULL ) {
     strncpy( file_contents, buffer, MAXCHARS );
     num_lines = num_lines + 1;
@@ -52,3 +51,4 @@ int main( int argc, char *argv[] ) {
  
   return 0;
 }
+
