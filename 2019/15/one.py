@@ -304,7 +304,6 @@ class MazeMap(object):
         return
 
     # needs to read history and determine: h, l, loc, walls, then print all
-    # it's gunna go i o i o i o ...
     def render_maze(self):
         loc = (0, 0)
         walls = []
@@ -332,64 +331,65 @@ class MazeMap(object):
                 elif number == 2:    # spot is oxy, loc = spot
                     loc = (self.spot[0], self.spot[1])
                     oxy = (loc[0], loc[1])
+        print(walls)
 
         # finds l and h, x_max _min , y_max _min
-        x_min = 9999
-        x_max = 0
-        y_min = 9999
-        y_max = 0
-        for wall in walls:
-            if wall[0] > x_max:
-                x_max = wall[0]
-            if wall[0] < x_min:
-                x_min = wall[0]
-            if wall[1] > y_max:
-                y_max = wall[1]
-            if wall[1] < y_min:
-                y_min = wall[1]
-        for space in spaces:
-            if space[0] > x_max:
-                x_max = space[0]
-            if space[0] < x_min:
-                x_min = space[0]
-            if space[1] > y_max:
-                y_max = space[1]
-            if space[1] < y_min:
-                y_min = space[1]
-        l = abs(x_min - x_max)
-        h = abs(y_min - y_max)
+#        x_min = 9999
+ #       x_max = 0
+  #      y_min = 9999
+   #     y_max = 0
+    #    for wall in walls:
+     #       if wall[0] > x_max:
+      #          x_max = wall[0]
+       #     if wall[0] < x_min:
+        #        x_min = wall[0]
+         #   if wall[1] > y_max:
+          #      y_max = wall[1]
+           # if wall[1] < y_min:
+            #    y_min = wall[1]
+#        for space in spaces:
+ #           if space[0] > x_max:
+  #              x_max = space[0]
+   #         if space[0] < x_min:
+    #            x_min = space[0]
+     #       if space[1] > y_max:
+      #          y_max = space[1]
+       #     if space[1] < y_min:
+        #        y_min = space[1]
+#        l = abs(x_min - x_max)
+ #       h = abs(y_min - y_max)
 
     # print maze
         # vv makes a blank map that's the right size
-        blank_map = []
-        for _ in range(h):
-            line = []
-            for _ in range(l):
-                line.append('.')
-            blank_map.append(line)
+#        blank_map = []
+ #       for _ in range(h):
+  #          line = []
+   #         for _ in range(l):
+    #            line.append('.')
+     #       blank_map.append(line)
 
         # converts to address
-        x_shift = -1 * x_min
-        y_shift = -1 * y_max
-        walls = convert(walls, x_shift, y_shift)
-        spaces = convert(spaces, x_shift, y_shift)
-        if oxy != 'null':
-            oxy = (oxy[0] + x_shift, oxy[1] + y_shift)
-        loc = (loc[0] + x_shift, loc[1] + y_shift)
+#        x_shift = -1 * x_min
+ #       y_shift = -1 * y_max
+  #      walls = convert(walls, x_shift, y_shift)
+   #     spaces = convert(spaces, x_shift, y_shift)
+    #    if oxy != 'null':
+     #       oxy = (oxy[0] + x_shift, oxy[1] + y_shift)
+      #  loc = (loc[0] + x_shift, loc[1] + y_shift)
 
         # fills blank_map
-        for wall in walls:
-            blank_map[wall[1]][wall[0]] = '#'
-        for space in spaces:
-            blank_map[space[1]][space[0]] = ' '
-        if oxy != 'null':
-            blank_map[oxy[1]][oxy[0]] = '*'
-        blank_map[loc[1]][loc[0]] = 'o'
-        color_map = blank_map    # just for fun
+#        for wall in walls:
+ #           blank_map[wall[1]][wall[0]] = '#'
+  #      for space in spaces:
+   #         blank_map[space[1]][space[0]] = ' '
+    #    if oxy != 'null':
+     #       blank_map[oxy[1]][oxy[0]] = '*'
+      #  blank_map[loc[1]][loc[0]] = 'o'
+       # color_map = blank_map    # just for fun
 
         # prints map
-        for line in color_map:
-            print(line)
+#        for line in color_map:
+ #           print(line)
         return
 
 
