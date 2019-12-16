@@ -369,12 +369,14 @@ class MazeMap(object):
 
     # print maze
         # vv makes a blank map that's the right size
-#        blank_map = []
- #       for _ in range(h):
-  #          line = []
-   #         for _ in range(l):
-    #            line.append('.')
-     #       blank_map.append(line)
+        blank_map = []
+        for _ in range(h):
+            line = []
+            for _ in range(l):
+                line.append('.')
+            blank_map.append(line)
+
+        print(blank_map)
 
         # converts to address
 #        x_shift = -1 * x_min
