@@ -369,16 +369,13 @@ class MazeMap(object):
             blank_map.append(line)
 
         # converts to address
-        walls = convert(walls, x_min, y_max)
-        spaces = convert(spaces, x_min, y_max)
-        if oxy != 'null':
-            oxy = (oxy[0] - x_min, oxy[1] - y_max)
-        loc = (loc[0] - x_min, loc[1] - y_max)
-
         print(x_min, y_max)
-        print('walls: ', walls)
-        print('spaces: ', spaces)
-        print('loc: ', loc)
+        print(walls)
+        #walls = convert(walls, x_min, y_max)
+        for elem in walls:
+            print(elem)
+        print(walls)
+
         # fills blank_map
 #        for wall in walls:
  #           blank_map[wall[1]][wall[0]] = '#'
@@ -395,12 +392,12 @@ class MazeMap(object):
         return
 
 
-# converts to address
+# converts to address, might work now??
 def convert(subject, x_min, y_max):
     for elem in subject:
         elem = list(elem)
-        elem[0] -= x_min
-        elem[1] -= y_max
+        elem[0] = abs(elem[0] - x_min)
+        elem[1] = abs(elem[1] - y_max)
     return subject
 
 
