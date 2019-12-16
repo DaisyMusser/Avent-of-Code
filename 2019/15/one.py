@@ -266,10 +266,11 @@ def program_io_manager(ram):
     while True:    # this will only return when outputs is full
         outputs, inputs, pointer, ram, rel_base = run_program(ram, pointer, rel_base)
         maze.update_history(outputs, inputs)
-        maze.render_maze()
-        counter += 1
+        if not counter % 2 == 0:
+            maze.render_maze()
         if counter == 100:
-            print('FYI: this program never ends. Hit ctrl c to terminate.')
+            print('FYI: this program never ends. Hit control-c to terminate.')
+        counter += 1
 
 
 # gets input from user
@@ -331,33 +332,37 @@ class MazeMap(object):
                 elif number == 2:    # spot is oxy, loc = spot
                     loc = (self.spot[0], self.spot[1])
                     oxy = (loc[0], loc[1])
-        print(spaces)
 
         # finds l and h, x_max _min , y_max _min
-#        x_min = 9999
- #       x_max = 0
-  #      y_min = 9999
-   #     y_max = 0
-    #    for wall in walls:
-     #       if wall[0] > x_max:
-      #          x_max = wall[0]
-       #     if wall[0] < x_min:
-        #        x_min = wall[0]
-         #   if wall[1] > y_max:
-          #      y_max = wall[1]
-           # if wall[1] < y_min:
-            #    y_min = wall[1]
-#        for space in spaces:
- #           if space[0] > x_max:
-  #              x_max = space[0]
-   #         if space[0] < x_min:
-    #            x_min = space[0]
-     #       if space[1] > y_max:
-      #          y_max = space[1]
-       #     if space[1] < y_min:
-        #        y_min = space[1]
-#        l = abs(x_min - x_max)
- #       h = abs(y_min - y_max)
+        x_min = 9999
+        x_max = 0
+        y_min = 9999
+        y_max = 0
+        for wall in walls:
+            if wall[0] > x_max:
+                x_max = wall[0]
+            if wall[0] < x_min:
+                x_min = wall[0]
+            if wall[1] > y_max:
+                y_max = wall[1]
+            if wall[1] < y_min:
+                y_min = wall[1]
+        for space in spaces:
+            if space[0] > x_max:
+                x_max = space[0]
+            if space[0] < x_min:
+                x_min = space[0]
+            if space[1] > y_max:
+                y_max = space[1]
+            if space[1] < y_min:
+                y_min = space[1]
+        l = abs(x_min - x_max)
+        h = abs(y_min - y_max)
+        print('length: ', l)
+        print('height: ', h)
+        print('x_min:  ', x_min, ' x_max: ', x_max)
+        print('y_min:  ', y_min, ' y_max: ', y_max)
+
 
     # print maze
         # vv makes a blank map that's the right size
