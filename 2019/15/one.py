@@ -275,7 +275,7 @@ def program_io_manager(ram):
 
 # gets input from user
 def get_inputs():
-    move = input('MOVE: ')
+    move = input('\n\n\n\n\nMOVE: ')
     if move in ['w', 'a', 's', 'd']:
         if move == 'w':
             move = 1
@@ -309,7 +309,7 @@ class MazeMap(object):
         loc = (0, 0)
         walls = []
         oxy = 'null'
-        spaces = []
+        spaces = [(0, 0)]
 
         # generates walls, loc, oxy
         for i in range(len(self.history)):
@@ -332,6 +332,9 @@ class MazeMap(object):
                 elif number == 2:    # spot is oxy, loc = spot
                     loc = (self.spot[0], self.spot[1])
                     oxy = (loc[0], loc[1])
+        print('Walls:  ', walls)
+        print('Spaces: ', spaces)
+        print('Loc:    ', loc)
 
         # finds l and h, x_max _min , y_max _min
         x_min = 9999
@@ -356,8 +359,8 @@ class MazeMap(object):
                 y_max = space[1]
             if space[1] < y_min:
                 y_min = space[1]
-        l = abs(x_min - x_max)
-        h = abs(y_min - y_max)
+        l = (abs(x_min - x_max)) + 1
+        h = (abs(y_min - y_max)) + 1
         print('length: ', l)
         print('height: ', h)
         print('x_min:  ', x_min, ' x_max: ', x_max)
