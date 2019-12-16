@@ -332,9 +332,6 @@ class MazeMap(object):
                 elif number == 2:    # spot is oxy, loc = spot
                     loc = (self.spot[0], self.spot[1])
                     oxy = (loc[0], loc[1])
-        print('Walls:  ', walls)
-        print('Spaces: ', spaces)
-        print('Loc:    ', loc)
 
         # finds l and h, x_max _min , y_max _min
         x_min = 9999
@@ -361,11 +358,6 @@ class MazeMap(object):
                 y_min = space[1]
         l = (abs(x_min - x_max)) + 1
         h = (abs(y_min - y_max)) + 1
-        print('length: ', l)
-        print('height: ', h)
-        print('x_min:  ', x_min, ' x_max: ', x_max)
-        print('y_min:  ', y_min, ' y_max: ', y_max)
-
 
     # print maze
         # vv makes a blank map that's the right size
@@ -376,17 +368,17 @@ class MazeMap(object):
                 line.append('.')
             blank_map.append(line)
 
-        print(blank_map)
-
         # converts to address
-#        x_shift = -1 * x_min
- #       y_shift = -1 * y_max
-  #      walls = convert(walls, x_shift, y_shift)
-   #     spaces = convert(spaces, x_shift, y_shift)
-    #    if oxy != 'null':
-     #       oxy = (oxy[0] + x_shift, oxy[1] + y_shift)
-      #  loc = (loc[0] + x_shift, loc[1] + y_shift)
+        walls = convert(walls, x_min, y_max)
+        spaces = convert(spaces, x_min, y_max)
+        if oxy != 'null':
+            oxy = (oxy[0] - x_min, oxy[1] - y_max)
+        loc = (loc[0] - x_min, loc[1] - y_max)
 
+        print(x_min, y_max)
+        print('walls: ', walls)
+        print('spaces: ', spaces)
+        print('loc: ', loc)
         # fills blank_map
 #        for wall in walls:
  #           blank_map[wall[1]][wall[0]] = '#'
@@ -404,11 +396,11 @@ class MazeMap(object):
 
 
 # converts to address
-def convert(subject, x_shift, y_shift):
+def convert(subject, x_min, y_max):
     for elem in subject:
         elem = list(elem)
-        elem[0] += x_shift
-        elem[1] += y_shift
+        elem[0] -= x_min
+        elem[1] -= y_max
     return subject
 
 
