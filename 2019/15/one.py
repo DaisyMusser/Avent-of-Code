@@ -1,6 +1,7 @@
-# day 15: playing intcode breakout game
+# day 15: the droid in the maze
 import time
 start_time = time.time()
+
 
 # Reads file into string, code adapted from ( https://github.com/imhoffman/advent/blob/master/2015/01/one.py )
 def file_to_string(file_name):
@@ -91,6 +92,7 @@ def opcode_checker(number):
 # given a pointer and a program, executes instructions and returns modified program + pointer
 def opcode_processor(pointer, program, relative_base):
     outputs = 'null'
+    inputs = 'null'
     opcode = program[pointer]         # purely symbolic
     if opcode_checker(opcode):        # this is only helpful for debugging
         yarn = yarnifier(opcode)
@@ -138,6 +140,7 @@ def opcode_processor(pointer, program, relative_base):
 
         elif int(yarn[4]) == 3:  # get input rule
             x = get_inputs()
+            inputs = x
             if first == 0:
                 program[program[pointer + 1]] = x
             elif first == 2:
@@ -236,42 +239,167 @@ def opcode_processor(pointer, program, relative_base):
             pointer += 2
 
         elif int(yarn[3:5]) == 99:
-            return 'END', program, relative_base, outputs
+            return 'END', program, relative_base, outputs, inputs
     else:
         print("--- ERORR ---")
         print("@ adress: ", pointer, "which is int: ", opcode)
-        return 'DONE', 'ERROR', 0, 0
-    return pointer, program, relative_base, outputs
+        return 'DONE', 'ERROR', 0, 0, 0
+    return pointer, program, relative_base, outputs, inputs
 
 
-# runs program (no shit)
-def run_program(ram):
-    rel_base = 0
-    pointer = 0
+# runs program until outputs or inputs are used then returns all
+def run_program(ram, pointer, rel_base):
     while True:
-        pointer, program, rel_base, outputs = opcode_processor(pointer, ram, rel_base)    
-        if outputs != 'null':
-            print(outputs)
-        if pointer == 'END':
+        pointer, ram, rel_base, outputs, inputs = opcode_processor(pointer, ram, rel_base)
+        if outputs != 'null' or inputs != 'null':
+            return outputs, inputs, pointer, ram, rel_base
+        if pointer == 'END':           # for day15 this should never happen
             print('END OF PROGRAM')
             return
 
 
-# grabs those inputs from a human user
+def program_io_manager(ram):
+    pointer = 0
+    rel_base = 0
+    maze = MazeMap()
+    counter = 0
+    while True:    # this will only return when outputs is full
+        outputs, inputs, pointer, ram, rel_base = run_program(ram, pointer, rel_base)
+        maze.update_history(outputs, inputs)
+        #maze.render_maze()
+        counter += 1
+        if counter == 100:
+            print('FYI: this program never ends. Hit ctrl c to terminate.')
+
+
+# gets input from user
 def get_inputs():
     move = input('MOVE: ')
-    if move == 'a':
-        move = 3
-    if move == 'w':
-        move = 1
-    if move == 'd':
-        move = 4
-    if move == 's':
-        move = 2
-    if not move in [1, 2, 3, 4]:
-       print('Whoopsie, only use w a s d')
-       return get_inputs()    # not propperly tail called 
-    return move
+    if move in ['w', 'a', 's', 'd']:
+        if move == 'w':
+            move = 1
+        if move == 'd':
+            move = 4
+        if move == 's':
+            move = 2
+        if move == 'a':
+            move = 3
+        return move
+    else:
+        print('Use w a s d to move')
+        return get_inputs()        # not properly tail called cuz python sucks sometimes
+
+
+class MazeMap(object):
+    def __init__(self):
+        self.history = []
+        self.spot = 'null'
+        return
+
+    def update_history(self, inputs, outputs):
+        if inputs != 'null':
+            self.history.append(inputs)
+        elif outputs != 'null':
+            self.history.append(outputs)
+        return
+
+    # needs to read history and determine: h, l, loc, walls, then print all
+    # it's gunna go i o i o i o ...
+    def render_maze(self):
+        loc = (0, 0)
+        walls = []
+        oxy = 'null'
+        spaces = []
+
+        # generates walls, loc, oxy
+        for i in range(len(self.history)):
+            number = self.history[i]             # symbolic
+            if i == 0 or i % 2 == 0:    # this means it's an input
+                if number == 1:
+                    self.spot = (loc[0], loc[1] + 1)
+                elif number == 2:
+                    self.spot = (loc[0], loc[1] - 1)
+                elif number == 3:
+                    self.spot = (loc[0] - 1, loc[1])
+                elif number == 4:
+                    self.spot = (loc[0] + 1, loc[1])
+            else:                       # this means it's an output
+                if number == 0:    # spot is wall, no change in loc
+                    walls.append((self.spot[0], self.spot[1]))
+                elif number == 1:    # spot is space, loc = spot
+                    loc = (self.spot[0], self.spot[1])
+                    spaces.append(loc[0], loc[1])
+                elif number == 2:    # spot is oxy, loc = spot
+                    loc = (self.spot[0], self.spot[1])
+                    oxy = (loc[0], loc[1])
+
+        # finds l and h, x_max _min , y_max _min
+        x_min = 9999
+        x_max = 0
+        y_min = 9999
+        y_max = 0
+        for wall in walls:
+            if wall[0] > x_max:
+                x_max = wall[0]
+            if wall[0] < x_min:
+                x_min = wall[0]
+            if wall[1] > y_max:
+                y_max = wall[1]
+            if wall[1] < y_min:
+                y_min = wall[1]
+        for space in spaces:
+            if space[0] > x_max:
+                x_max = space[0]
+            if space[0] < x_min:
+                x_min = space[0]
+            if space[1] > y_max:
+                y_max = space[1]
+            if space[1] < y_min:
+                y_min = space[1]
+        l = abs(x_min - x_max)
+        h = abs(y_min - y_max)
+
+    # print maze
+        # vv makes a blank map that's the right size
+        blank_map = []
+        for _ in range(h):
+            line = []
+            for _ in range(l):
+                line.append('.')
+            blank_map.append(line)
+
+        # converts to address
+        x_shift = -1 * x_min
+        y_shift = -1 * y_max
+        walls = convert(walls, x_shift, y_shift)
+        spaces = convert(spaces, x_shift, y_shift)
+        if oxy != 'null':
+            oxy = (oxy[0] + x_shift, oxy[1] + y_shift)
+        loc = (loc[0] + x_shift, loc[1] + y_shift)
+
+        # fills blank_map
+        for wall in walls:
+            blank_map[wall[1]][wall[0]] = '#'
+        for space in spaces:
+            blank_map[space[1]][space[0]] = ' '
+        if oxy != 'null':
+            blank_map[oxy[1]][oxy[0]] = '*'
+        blank_map[loc[1]][loc[0]] = 'o'
+        color_map = blank_map    # just for fun
+
+        # prints map
+        for line in color_map:
+            print(line)
+        return
+
+
+# converts to address
+def convert(subject, x_shift, y_shift):
+    for elem in subject:
+        elem = list(elem)
+        elem[0] += x_shift
+        elem[1] += y_shift
+    return subject
 
 
 # main program:
@@ -281,5 +409,5 @@ program = string_to_array(program, all_commas)
 program = add_memory(program)
 # done with file io / formatting
 
-run_program(program)
+program_io_manager(program)
 
