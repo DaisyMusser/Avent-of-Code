@@ -372,8 +372,9 @@ class MazeMap(object):
         print(x_min, y_max)
         print(walls)
         #walls = convert(walls, x_min, y_max)
-        for elem in walls:
-            print(elem)
+        for i in range(len(walls)):
+            walls[i] = list(walls[i])
+            walls[i] = (abs(walls[i][0] + x_min), abs(walls[i][1] + y_max))
         print(walls)
 
         # fills blank_map
