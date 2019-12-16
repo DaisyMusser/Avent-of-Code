@@ -266,7 +266,7 @@ def program_io_manager(ram):
     while True:    # this will only return when outputs is full
         outputs, inputs, pointer, ram, rel_base = run_program(ram, pointer, rel_base)
         maze.update_history(outputs, inputs)
-        #maze.render_maze()
+        maze.render_maze()
         counter += 1
         if counter == 100:
             print('FYI: this program never ends. Hit ctrl c to terminate.')
@@ -327,11 +327,11 @@ class MazeMap(object):
                     walls.append((self.spot[0], self.spot[1]))
                 elif number == 1:    # spot is space, loc = spot
                     loc = (self.spot[0], self.spot[1])
-                    spaces.append(loc[0], loc[1])
+                    spaces.append((loc[0], loc[1]))
                 elif number == 2:    # spot is oxy, loc = spot
                     loc = (self.spot[0], self.spot[1])
                     oxy = (loc[0], loc[1])
-        print(walls)
+        print(spaces)
 
         # finds l and h, x_max _min , y_max _min
 #        x_min = 9999
