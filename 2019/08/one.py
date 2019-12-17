@@ -6,6 +6,7 @@ def file_reader(file_name):
             if not line:
                 break
             raw_data = line[0:(len(line)-2)]    # strips \n\n from end of line
+    print(raw_data)
     return raw_data
 
 
@@ -54,6 +55,6 @@ data = data_processor(data)
 layer = zero_counter(data)
 
 # https://stackoverflow.com/questions/2600191/how-can-i-count-the-occurrences-of-a-list-item
-print((layer.count(1))*(layer.count(2)))
+#print((layer.count(1))*(layer.count(2)))
 
 

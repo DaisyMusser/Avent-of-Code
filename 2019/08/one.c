@@ -2,7 +2,7 @@
 #include<stdlib.h>
 #include<string.h>
 
-#define MAXCHARS 65536
+#define MAXCHARS 15000    // the exact len() of my input file
 
 //  file-reader subroutine to determine dynamic lengths
 void reader( FILE *f, int *n, char file_contents[] ) {
