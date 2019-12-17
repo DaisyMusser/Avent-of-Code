@@ -395,7 +395,7 @@ class MazeMap(object):
         for line in blank_map:
             pl = ''
             for elem in line:
-                line += elem
+                pl += elem
             print(pl)        
         return
 
