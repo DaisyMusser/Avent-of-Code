@@ -1,12 +1,10 @@
-# day 17: save the robots on the scaffolding
 
-
-# Reads file into string
-def read_file(file_name):
+# Reads file into string, code adapted from
+def file_to_string(file_name):
     with open(file_name) as fp:
         while True:
             line = fp.read()
-            if not line:         # a little bit of error catching
+            if not line:
                 break
             string_opcode = line
     return string_opcode
@@ -48,7 +46,7 @@ def string_to_array(opcode_string, comma_index):
 # MIGHT NEED MORE MEMORY
 def add_memory(program):
     # for _ in range(math.floor(len(program)/2)):
-    for _ in range(7000):
+    for _ in range(5000):
         program.append(0)
     return program
 
@@ -88,7 +86,7 @@ def opcode_checker(number):
 
 
 # given a pointer and a program, executes instructions and returns modified program + pointer
-def opcode_processor(pointer, program, relative_base, outputs):
+def opcode_processor(pointer, program, relative_base):
     opcode = program[pointer]         # purely symbolic
     if opcode_checker(opcode):        # this is only helpful for debugging
         yarn = yarnifier(opcode)
@@ -134,10 +132,8 @@ def opcode_processor(pointer, program, relative_base, outputs):
             program[address] = x * y  # * rule
             pointer += 4
 
-
         elif int(yarn[4]) == 3:  # get input rule
-            x = input('ERROR')   # this should not happen in part one
-            inputs = x
+            x = int(input('~INPUT: '))
             if first == 0:
                 program[program[pointer + 1]] = x
             elif first == 2:
@@ -145,13 +141,12 @@ def opcode_processor(pointer, program, relative_base, outputs):
             pointer += 2
 
         elif int(yarn[4]) == 4:  # print rule
-            print('      into if-4')
-            if first == 0:       # sent to outputs
-                outputs.append(program[program[pointer + 1]])
+            if first == 0:
+                print('OUTPUT:', program[program[pointer + 1]])
             if first == 1:
-                outputs.append(program[pointer + 1])
+                print('OUTPUT:', program[pointer + 1])
             elif first == 2:
-                outputs.append(program[program[pointer + 1] + relative_base])
+                print('OUTPUT:', program[program[pointer + 1] + relative_base])
             pointer += 2
 
         elif int(yarn[4]) == 5:   # jump-if-true
@@ -181,6 +176,10 @@ def opcode_processor(pointer, program, relative_base, outputs):
                 y = program[y]
             elif second == 2:
                 y = program[y + relative_base]
+            if x == 0:
+                pointer = y
+            else:
+                pointer += 3
 
         elif int(yarn[4]) == 7:   # less-than rule
             x = program[pointer + 1]
@@ -233,32 +232,31 @@ def opcode_processor(pointer, program, relative_base, outputs):
             pointer += 2
 
         elif int(yarn[3:5]) == 99:
-            return 'END', program, relative_base, outputs
+            return 'END', program, relative_base
     else:
         print("--- ERORR ---")
         print("@ adress: ", pointer, "which is int: ", opcode)
-        return 'END', 'ERROR', 0, 0, 0
-    return pointer, program, relative_base, outputs
+        return 'DONE', 'ERROR', 0, 0
+
+    return pointer, program, relative_base
 
 
-def get_outputs(ram):
-    outputs = []
-    rel_base = 0
+# runs program until END
+def run_program(program):
     pointer = 0
+    relative_base = 0
     while True:
-        pointer, ram, rel_base, outputs = opcode_processor(pointer, ram, rel_base, outputs)
+        pointer, program, relative_base = opcode_processor(pointer, program, relative_base)
         if pointer == 'END':
-            break
-    return outputs
+            return pointer, program, relative_base
 
 
-# main program
-raw = read_file('day09_input.txt')
-comma_index = comma_finder(raw)
-program = string_to_array(raw, comma_index)
+# main program:
+program = file_to_string('input.txt')  # change file name here!
+all_commas = comma_finder(program)
+program = string_to_array(program, all_commas)
 program = add_memory(program)
-# done with io / formatting
+# done with file io / formatting
 
-map_data = get_outputs(program)
-print(map_data)
+run_program(program)    # will print from opcode_processor
 
