@@ -255,10 +255,26 @@ def output_getter(program):
 # finds all returns in given veiw
 def find_returns(veiw):
     returns = []
-    for elem in veiw:
-        if elem == 10:
-            returns.append(veiw.index(elem))
+    for i in range(len(veiw)):
+        if veiw[i] == 10:
+            returns.append(i)
     return returns
+
+
+# splits veiw around 10
+def process_veiw(veiw, returns):
+    fancy_veiw = []
+    start = 0
+    for ten in returns:
+        line = []
+        for elem in veiw[start : len(veiw) - 1]:
+            if elem != 10:
+                line.append(elem)
+            else:
+                break
+        start = ten + 1   # ten is the adress of this ten in veiw
+        fancy_veiw.append(line)         
+    return fancy_veiw
 
 
 # main program:
@@ -269,7 +285,10 @@ program = add_memory(program)
 # done with file io / formatting
 
 veiw = output_getter(program)    # will print from opcode_processor
-
 tens = find_returns(veiw)
-print(tens)
+veiw = process_veiw(veiw, tens)
+
+for i in range(len(veiw)):
+    if veiw[i] == []:
+        del veiw[i]
 
