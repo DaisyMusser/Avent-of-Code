@@ -247,7 +247,7 @@ def get_outputs(ram):
     pointer = 0
     for _ in range(300):
         pointer, ram, rel_base, outputs = opcode_processor(pointer, ram, rel_base, outputs)
-        print(pointer, rel_base)
+        print(ram[332])
     return outputs
 
 
@@ -257,6 +257,10 @@ comma_index = comma_finder(raw)
 program = string_to_array(raw, comma_index)
 program = add_memory(program)
 # done with io / formatting
+
+#print(program)
+print(program[330])
+print(program[331])
 
 map_data = get_outputs(program)
 print(map_data)
