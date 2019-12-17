@@ -370,17 +370,17 @@ class MazeMap(object):
 
         # converts to address
         print(x_min, y_max)
+        print(walls)
         for i in range(len(walls)):
-            walls[i] = list(walls[i])
-            walls[i] = (abs(walls[i][0] + x_min), abs(walls[i][1] + y_max))
+            walls[i] = (abs(walls[i][0] - x_min), abs(walls[i][1] - y_max))
 
         loc = (abs(loc[0] + x_max), abs(loc[1] + y_min))
         if oxy != 'null':
             oxy = (abs(oxy[0] + x_min), abs(oxy[1] + y_max))
 
         # fills blank_map
-        print(blank_map)
         print(walls)
+        print(blank_map)
 
         for wall in walls:
             blank_map[wall[1]][wall[0]] = '#'
