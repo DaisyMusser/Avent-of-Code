@@ -277,6 +277,24 @@ def process_veiw(veiw, returns):
     return fancy_veiw
 
 
+# prints the veiw
+def render_veiw(veiw):
+    for i in range(len(veiw)):
+        for ii in range(len(veiw[i])):
+            if veiw[i][ii] == 35:
+                veiw[i][ii] = '#'
+            elif veiw[i][ii] == 46:
+                veiw[i][ii] = '.'
+            elif veiw[i][ii] == 10:
+                print('ERROR')
+    print_line = ''
+    for line in veiw:
+        for digit in line:
+            print_line += digit
+        print(print_line)
+    return
+
+                 
 # main program:
 program = file_to_string('input.txt')  # change file name here!
 all_commas = comma_finder(program)
@@ -288,7 +306,9 @@ veiw = output_getter(program)    # will print from opcode_processor
 tens = find_returns(veiw)
 veiw = process_veiw(veiw, tens)
 
+# strips off empty list at end
 for i in range(len(veiw)):
     if veiw[i] == []:
         del veiw[i]
 
+render_veiw(veiw)
