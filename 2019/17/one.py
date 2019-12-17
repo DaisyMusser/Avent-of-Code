@@ -86,7 +86,7 @@ def opcode_checker(number):
 
 
 # given a pointer and a program, executes instructions and returns modified program + pointer
-def opcode_processor(pointer, program, relative_base):
+def opcode_processor(pointer, program, relative_base, outputs):
     opcode = program[pointer]         # purely symbolic
     if opcode_checker(opcode):        # this is only helpful for debugging
         yarn = yarnifier(opcode)
@@ -142,11 +142,11 @@ def opcode_processor(pointer, program, relative_base):
 
         elif int(yarn[4]) == 4:  # print rule
             if first == 0:
-                print('OUTPUT:', program[program[pointer + 1]])
+                outputs.append(program[program[pointer + 1]])
             if first == 1:
-                print('OUTPUT:', program[pointer + 1])
+                outputs.append(program[pointer + 1])
             elif first == 2:
-                print('OUTPUT:', program[program[pointer + 1] + relative_base])
+                outputs.append(program[program[pointer + 1] + relative_base])
             pointer += 2
 
         elif int(yarn[4]) == 5:   # jump-if-true
@@ -232,23 +232,24 @@ def opcode_processor(pointer, program, relative_base):
             pointer += 2
 
         elif int(yarn[3:5]) == 99:
-            return 'END', program, relative_base
+            return 'END', program, relative_base, outputs
     else:
         print("--- ERORR ---")
         print("@ adress: ", pointer, "which is int: ", opcode)
         return 'DONE', 'ERROR', 0, 0
 
-    return pointer, program, relative_base
+    return pointer, program, relative_base, outputs
 
 
 # runs program until END
-def run_program(program):
+def output_getter(program):
     pointer = 0
     relative_base = 0
+    outputs = []
     while True:
-        pointer, program, relative_base = opcode_processor(pointer, program, relative_base)
+        pointer, program, relative_base, outputs = opcode_processor(pointer, program, relative_base, outputs)
         if pointer == 'END':
-            return pointer, program, relative_base
+            return outputs
 
 
 # main program:
@@ -258,5 +259,6 @@ program = string_to_array(program, all_commas)
 program = add_memory(program)
 # done with file io / formatting
 
-run_program(program)    # will print from opcode_processor
+drawing = output_getter(program)    # will print from opcode_processor
+print(drawing)
 
