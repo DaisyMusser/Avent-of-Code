@@ -247,7 +247,7 @@ def get_outputs(ram):
     pointer = 0
     for _ in range(300):
         pointer, ram, rel_base, outputs = opcode_processor(pointer, ram, rel_base, outputs)
-        print(ram[0:21])
+        print(pointer, rel_base)
     return outputs
 
 
