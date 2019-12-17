@@ -369,36 +369,33 @@ class MazeMap(object):
             blank_map.append(line)
 
         # converts to address
-        print(x_min, y_max)
-        print(walls)
-        #walls = convert(walls, x_min, y_max)
-        for i in range(len(walls)):
-            walls[i] = list(walls[i])
-            walls[i] = (abs(walls[i][0] + x_min), abs(walls[i][1] + y_max))
-        print(walls)
+        walls = convert(walls, x_min, y_max)
+        spaces = convert(spaces, x_min, y_max)
+        loc = (abs(loc[0] + x_max), abs(loc[1] + y_min))
+        if oxy != 'null':
+            oxy = (abs(oxy[0] + x_min), abs(oxy[1] + y_max))
 
         # fills blank_map
-#        for wall in walls:
- #           blank_map[wall[1]][wall[0]] = '#'
-  #      for space in spaces:
-   #         blank_map[space[1]][space[0]] = ' '
-    #    if oxy != 'null':
-     #       blank_map[oxy[1]][oxy[0]] = '*'
-      #  blank_map[loc[1]][loc[0]] = 'o'
-       # color_map = blank_map    # just for fun
+        for wall in walls:
+            blank_map[wall[1]][wall[0]] = '#'
+        for space in spaces:
+            blank_map[space[1]][space[0]] = ' '
+        if oxy != 'null':
+            blank_map[oxy[1]][oxy[0]] = '*'
+        blank_map[loc[1]][loc[0]] = 'o'
+        color_map = blank_map    # just for fun
 
         # prints map
-#        for line in color_map:
- #           print(line)
+        for line in color_map:
+            print(line)
         return
 
 
 # converts to address, might work now??
 def convert(subject, x_min, y_max):
-    for elem in subject:
-        elem = list(elem)
-        elem[0] = abs(elem[0] - x_min)
-        elem[1] = abs(elem[1] - y_max)
+    for i in range(len(subject)):
+        subject[i] = list(subject[i])
+        subject[i] = (abs(subject[i][0] + x_min), abs(subject[i][1] + y_max))
     return subject
 
 
