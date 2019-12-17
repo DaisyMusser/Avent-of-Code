@@ -266,9 +266,8 @@ def program_io_manager(ram):
     while True:    # this will only return when outputs is full
         outputs, inputs, pointer, ram, rel_base = run_program(ram, pointer, rel_base)
         maze.update_history(outputs, inputs)
-        if not counter % 2 == 0:
-            maze.render_maze()
-        if counter == 100:
+        maze.render_maze()
+        if counter == 50:
             print('FYI: this program never ends. Hit control-c to terminate.')
         counter += 1
 
@@ -369,27 +368,31 @@ class MazeMap(object):
             blank_map.append(line)
 
         # converts to address
-        print(x_min, y_max)
-        print(walls)
         for i in range(len(walls)):
             walls[i] = (abs(walls[i][0] - x_min), abs(walls[i][1] - y_max))
-
+        for i in range(len(spaces)):
+            spaces[i] = (abs(spaces[i][0] - x_min), abs(spaces[i][1] - y_max))
         loc = (abs(loc[0] + x_max), abs(loc[1] + y_min))
         if oxy != 'null':
             oxy = (abs(oxy[0] + x_min), abs(oxy[1] + y_max))
 
         # fills blank_map
-        print(walls)
-        print(blank_map)
-
         for wall in walls:
             blank_map[wall[1]][wall[0]] = '#'
-        print(blank_map)
+        for space in spaces:
+            blank_map[space[1]][space[0]] = ' '
+        blank_map[loc[1]][loc[0]] = 'o'
+        if oxy != 'null':
+            blank_map[oxy[1]][oxy[0]] = 'x'
+            print("Yay! You've found the end.")
+
+        # finally prints maze
+        for line in blank_map:
+            line = ''
+            for elem in line:
+                line += elem
+            print(line)        
         return
-
-
-# converts to address, might work now??
-
 
 
 # main program:
