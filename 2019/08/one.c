@@ -40,13 +40,11 @@ int main( int argc, char *argv[] ) {
   FILE* fp;
   int total_chars;
   char *temp;
-  // temp is given memory for maxchar char
   temp =(char *) malloc( MAXCHARS * sizeof( char ) );
   fp = fopen("intput.txt","r");
+  printf("\nmade it here\n");
   reader( fp, &total_chars, temp);
   fclose(fp);
-
-  printf("through reader module");
 
   char *input = malloc( (total_chars+1) * sizeof( char ) );
   strncpy( input, temp, total_chars );
