@@ -1,5 +1,8 @@
+# day 13: playing intcode breakout game
+import time
+start_time = time.time()
 
-# Reads file into string
+# Reads file into string, code adapted from ( https://github.com/imhoffman/advent/blob/master/2015/01/one.py )
 def file_to_string(file_name):
     with open(file_name) as fp:
         while True:
@@ -8,7 +11,6 @@ def file_to_string(file_name):
                 break
             string_opcode = line
     return string_opcode
-
 
 # finds commas in string
 # could be done with .split(), but oh well
@@ -46,7 +48,7 @@ def string_to_array(opcode_string, comma_index):
 # MIGHT NEED MORE MEMORY
 def add_memory(program):
     # for _ in range(math.floor(len(program)/2)):
-    for _ in range(5000):
+    for _ in range(7000):
         program.append(0)
     return program
 
@@ -86,7 +88,7 @@ def opcode_checker(number):
 
 
 # given a pointer and a program, executes instructions and returns modified program + pointer
-def opcode_processor(pointer, program, relative_base, outputs):
+def opcode_processor(pointer, program, relative_base, outputs, ball, paddle):
     opcode = program[pointer]         # purely symbolic
     if opcode_checker(opcode):        # this is only helpful for debugging
         yarn = yarnifier(opcode)
@@ -133,12 +135,12 @@ def opcode_processor(pointer, program, relative_base, outputs):
             pointer += 4
 
         elif int(yarn[4]) == 3:  # get input rule
-	    # this should not be activated for day 13 part 1
-            x = input('~INPUT: ')
+            x = generate_inputs(ball, paddle)
             if first == 0:
                 program[program[pointer + 1]] = x
             elif first == 2:
                 program[program[pointer + 1] + relative_base] = x
+            # stick = 'NULL'
             pointer += 2
 
         elif int(yarn[4]) == 4:  # print rule
@@ -237,100 +239,129 @@ def opcode_processor(pointer, program, relative_base, outputs):
     else:
         print("--- ERORR ---")
         print("@ adress: ", pointer, "which is int: ", opcode)
-        return 'DONE', 'ERROR', 0, 0
+        return 'END', 'ERROR', 0, 0
 
     return pointer, program, relative_base, outputs
 
 
-# runs program until program returns END, then returns outputs
+# runs program until outputs has 2 items or program returns END
 def run_program(ram):
-    outputs = []
     pointer = 0
-    relative_base = 0
+    rel_base = 0
+    outputs = []
+    ball = 'null'
+    paddle = 'null'
+    counter = 0
     while True:
-        pointer, ram, relative_base, outputs = opcode_processor(pointer, ram, relative_base, outputs)
-        if pointer == 'END':                  
-            return outputs
+        pointer, ram, rel_base, outputs = opcode_processor(pointer, ram, rel_base, outputs, ball, paddle)
+        ball, paddle, score, blocks = render_screen(outputs, ball, paddle)   # works now
+        if counter % 10 == 0:   # modulus
+            print('There are ', blocks, ' blocks left. The time is: ', (time.time() - start_time)//60, ' minuets.')
+        if pointer == 'END':
+            print('FINAL SCORE: ', score)
+            return
+        counter += 1
 
 
-# tidies up output into tuples
+# generates inputs such that paddle is always under ball
+def generate_inputs(ball, paddle):
+    if ball == paddle:
+        move = 0
+    else:
+        if ball > paddle:
+            move = 1
+        elif ball < paddle:
+            move = -1
+    return move
+
+
+def render_screen(output, ball, paddle):
+    output = output_processor(output)
+    ball, paddle, score, blocks = map_maker(output, ball, paddle)
+    #for i in range(h):
+    #    string = ''
+    #    for ii in range(l):
+    #        string += askii_map[i][ii]
+    #    print(string)
+    return ball, paddle, score, blocks
+
+
 def output_processor(dirty_output):
     clean_output = []
     iii = 0
-    for _ in range(len(dirty_output)//3):   # _ is idiomatic
+    for _ in range(len(dirty_output)//3):
         clean_output.append((dirty_output[iii], dirty_output[iii+1], dirty_output[iii+2]))
         iii += 3
     return clean_output
 
 
-# processes output into a complete askii_map and also counts blocks to answer one
-def map_maker(output):
-    x_min = 10000000
-    y_min = 10000000
-    x_max = 0
-    y_max = 0
+def map_maker(output, ball, paddle):
+    #x_min = 10000000
+    #y_min = 10000000
+    #x_max = 0
+    #y_max = 0
+    score = 0
+    blocks = 0
 
-    for elem in output:   # finds bounds of the screen
+    for elem in output:   # find score, print and remove
+        if elem[0] == -1:
+            score = elem[2]
+            #output.remove(elem)
+
+    #for elem in output:   # finds bounds of the screen
+    #    x = elem[0]       # symbolic
+    #    y = elem[1]
+    #    if x > x_max:
+    #        x_max = x
+    #    if y > y_max:
+    #        y_max = y
+    #    if x < x_min:
+    #        x_min = x
+    #    if y < y_min:
+    #        y_min = y
+
+    #length = x_max - x_min
+    #height = y_max - y_min
+
+    #askii_map = []                   # makes an empty map the size of the screen
+    #for _ in range(height + 1):      # not sure why these two +1s are needed?
+    #    line = []
+    #    for _ in range(length + 1):
+    #        line.append(0)
+    #    askii_map.append(line)
+
+    for elem in output:   # fills map with tile_ids
         x = elem[0]       # symbolic
         y = elem[1]
-        if x > x_max:
-            x_max = x
-        if y > y_max:
-            y_max = y
-        if x < x_min:
-            x_min = x
-        if y < y_min:
-            y_min = y
-    length = x_max - x_min
-    height = y_max - y_min
-
-    askii_map = []               # makes an empty map the size of the screen
-    for i in range(height + 1):  # not sure why these two +1s are needed?
-        line = []
-        for ii in range(length + 1):
-            line.append(0)
-        askii_map.append(line)
-
-    block_count = 0
-    for elem in output:          # fills map with tile_ids
-        x = elem[0]              # symbolic
-        y = elem[1]
         tile_id = elem[2]
-        if tile_id == 0:
-            tile = ' '
-        elif tile_id == 1:
-            tile = '&'
-        elif tile_id == 2:
-            tile = '#'
-            block_count += 1
+
+        #if tile_id == 0:
+        #    tile = ' '
+        #elif tile_id == 1:
+        #    tile = '#'
+        if tile_id == 2:
+            tile = 'u'
+            blocks += 1
         elif tile_id == 3:
-            tile = '-'
+            tile = '='
+            paddle = x
         elif tile_id == 4:
             tile = '@'
-        askii_map[y][x] = tile
+            ball = x      # so ball can be tracked
 
-    return askii_map, length, height, block_count
+        #askii_map[y][x] = tile
+    return ball, paddle, score, blocks
 
 
 # main program:
-program = file_to_string('input.txt')  # change file name here!
+program = file_to_string('hacked_input.txt')  # change file name here!
 all_commas = comma_finder(program)
 program = string_to_array(program, all_commas)
 program = add_memory(program)
 # done with file io / formatting
 
+# these steps need to be changed for inputs
 output = run_program(program)
-output = output_processor(output)
-askii_map, l, h, block_count = map_maker(output)
 
-for i in range(h):
-    string = ''
-    for ii in range(l):
-        string += askii_map[i][ii]
-    print(string)
-
-print('\n\nNumber of blocks: ', block_count)   # answer
-
-
-
-
+# just out of interest
+print("--- %s seconds ---" % ((time.time() - start_time)//60//60))
