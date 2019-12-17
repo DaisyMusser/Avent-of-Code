@@ -252,32 +252,13 @@ def output_getter(program):
             return outputs
 
 
-# takes a single line from veiw, starting at last_return
-def find_line(veiw, start):
-    line = []
-    for elem in veiw[start : len(veiw) + 1]:
-        if elem != 10:
-            #if elem == 35:
-            #    askie = '#'
-            #elif elem == 46:
-            #    askie = '.'
-            line.append(elem)    # lines don't enclude 10
-        else:
-            break
-    return line
-
-
-def find_map(veiw):
-    fancy_veiw = []
-    last_return = 0
-    while True:
-        print(last_return)
-        line = find_line(veiw, last_return)
-        fancy_veiw.append(line)
-        last_return = veiw.index(line[len(line) - 1]) + 2
-        if last_return > len(veiw) - 1:
-            break        
-    return fancy_veiw
+# finds all returns in given veiw
+def find_returns(veiw):
+    returns = []
+    for elem in veiw:
+        if elem == 10:
+            returns.append(veiw.index(elem))
+    return returns
 
 
 # main program:
@@ -288,6 +269,7 @@ program = add_memory(program)
 # done with file io / formatting
 
 veiw = output_getter(program)    # will print from opcode_processor
-print(veiw)
 
-veiw = find_map(veiw)
+tens = find_returns(veiw)
+print(tens)
+
