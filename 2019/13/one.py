@@ -329,7 +329,7 @@ for i in range(h):
         string += askii_map[i][ii]
     print(string)
 
-print('\n\nNumber of blocks: ', block_count)   # answer
+print('\nNumber of blocks: ', block_count)   # answer
 
 
 
