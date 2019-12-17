@@ -140,10 +140,10 @@ def opcode_processor(pointer, program, relative_base, outputs):
                 program[program[pointer + 1] + relative_base] = x
             pointer += 2
 
-        elif int(yarn[4]) == 4:  # print rule
+        elif int(yarn[4]) == 4:
             if first == 0:
                 outputs.append(program[program[pointer + 1]])
-            if first == 1:
+            elif first == 1:
                 outputs.append(program[pointer + 1])
             elif first == 2:
                 outputs.append(program[program[pointer + 1] + relative_base])
@@ -252,6 +252,34 @@ def output_getter(program):
             return outputs
 
 
+# takes a single line from veiw, starting at last_return
+def find_line(veiw, start):
+    line = []
+    for elem in veiw[start : len(veiw) + 1]:
+        if elem != 10:
+            #if elem == 35:
+            #    askie = '#'
+            #elif elem == 46:
+            #    askie = '.'
+            line.append(elem)    # lines don't enclude 10
+        else:
+            break
+    return line
+
+
+def find_map(veiw):
+    fancy_veiw = []
+    last_return = 0
+    while True:
+        print(last_return)
+        line = find_line(veiw, last_return)
+        fancy_veiw.append(line)
+        last_return = veiw.index(line[len(line) - 1]) + 2
+        if last_return > len(veiw) - 1:
+            break        
+    return fancy_veiw
+
+
 # main program:
 program = file_to_string('input.txt')  # change file name here!
 all_commas = comma_finder(program)
@@ -259,6 +287,7 @@ program = string_to_array(program, all_commas)
 program = add_memory(program)
 # done with file io / formatting
 
-drawing = output_getter(program)    # will print from opcode_processor
-print(drawing)
+veiw = output_getter(program)    # will print from opcode_processor
+print(veiw)
 
+veiw = find_map(veiw)
