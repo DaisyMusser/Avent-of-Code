@@ -145,15 +145,13 @@ def opcode_processor(pointer, program, relative_base, outputs):
             pointer += 2
 
         elif int(yarn[4]) == 4:  # print rule
+            print('      into if-4')
             if first == 0:       # sent to outputs
-                #outputs.append(program[program[pointer + 1]])
-                print(program[program[pointer + 1]])
+                outputs.append(program[program[pointer + 1]])
             if first == 1:
-                #outputs.append(program[pointer + 1])
-                print(program[pointer + 1])
+                outputs.append(program[pointer + 1])
             elif first == 2:
-                #outputs.append(program[program[pointer + 1] + relative_base])
-                print(program[program[pointer + 1] + relative_base])
+                outputs.append(program[program[pointer + 1] + relative_base])
             pointer += 2
 
         elif int(yarn[4]) == 5:   # jump-if-true
@@ -247,10 +245,11 @@ def get_outputs(ram):
     outputs = []
     rel_base = 0
     pointer = 0
-    while True:
+    for _ in range(300):
         pointer, ram, rel_base, outputs = opcode_processor(pointer, ram, rel_base, outputs)
-        if pointer == 'END':
-            return outputs
+        print(outputs)
+    return outputs
+
 
 # main program
 raw = read_file('input.txt')
