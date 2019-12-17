@@ -255,6 +255,7 @@ def get_outputs(ram):
 raw = read_file('input.txt')
 comma_index = comma_finder(raw)
 program = string_to_array(raw, comma_index)
+program = add_memory(program)
 # done with io / formatting
 
 map_data = get_outputs(program)
