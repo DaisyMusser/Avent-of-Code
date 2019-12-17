@@ -88,9 +88,7 @@ def opcode_checker(number):
 
 
 # given a pointer and a program, executes instructions and returns modified program + pointer
-def opcode_processor(pointer, program, relative_base):
-    outputs = 'null'
-    inputs = 'null'
+def opcode_processor(pointer, program, relative_base, outputs):
     opcode = program[pointer]         # purely symbolic
     if opcode_checker(opcode):        # this is only helpful for debugging
         yarn = yarnifier(opcode)
@@ -138,7 +136,7 @@ def opcode_processor(pointer, program, relative_base):
 
 
         elif int(yarn[4]) == 3:  # get input rule
-            x = get_inputs()
+            x = input('ERROR')   # this should not happen in part one
             inputs = x
             if first == 0:
                 program[program[pointer + 1]] = x
@@ -147,12 +145,15 @@ def opcode_processor(pointer, program, relative_base):
             pointer += 2
 
         elif int(yarn[4]) == 4:  # print rule
-            if first == 0:
-                outputs = program[program[pointer + 1]]
+            if first == 0:       # sent to outputs
+                #outputs.append(program[program[pointer + 1]])
+                print(program[program[pointer + 1]])
             if first == 1:
-                outputs = program[pointer + 1]
+                #outputs.append(program[pointer + 1])
+                print(program[pointer + 1])
             elif first == 2:
-                outputs = program[program[pointer + 1] + relative_base]
+                #outputs.append(program[program[pointer + 1] + relative_base])
+                print(program[program[pointer + 1] + relative_base])
             pointer += 2
 
         elif int(yarn[4]) == 5:   # jump-if-true
@@ -234,17 +235,29 @@ def opcode_processor(pointer, program, relative_base):
             pointer += 2
 
         elif int(yarn[3:5]) == 99:
-            return 'END', program, relative_base, outputs, inputs
+            return 'END', program, relative_base, outputs
     else:
         print("--- ERORR ---")
         print("@ adress: ", pointer, "which is int: ", opcode)
-        return 'DONE', 'ERROR', 0, 0, 0
-    return pointer, program, relative_base, outputs, inputs
+        return 'END', 'ERROR', 0, 0, 0
+    return pointer, program, relative_base, outputs
 
+
+def get_outputs(ram):
+    outputs = []
+    rel_base = 0
+    pointer = 0
+    while True:
+        pointer, ram, rel_base, outputs = opcode_processor(pointer, ram, rel_base, outputs)
+        if pointer == 'END':
+            return outputs
 
 # main program
 raw = read_file('input.txt')
 comma_index = comma_finder(raw)
 program = string_to_array(raw, comma_index)
+# done with io / formatting
 
-print(program)
+map_data = get_outputs(program)
+print(map_data)
+
