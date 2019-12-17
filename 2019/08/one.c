@@ -2,25 +2,23 @@
 #include<stdlib.h>
 #include<string.h>
 
-#define MAXCHARS 999999
+#define MAXCHARS 65536
 
-// file-reader subroutine to determine dynamic lengths
-// from https://gitlab.com/imhoffman/fa19b4-mat3006/blob/master/code/day15/single_line.c
+//  file-reader subroutine to determine dynamic lengths
 void reader( FILE *f, int *n, char file_contents[] ) {
   char buffer[MAXCHARS] = { '\0' };
   int num_lines = 0;
   char *qnull;
   size_t file_length;
-  
+
   while ( fgets( buffer, MAXCHARS, f ) != NULL ) {
     strncpy( file_contents, buffer, MAXCHARS );
     num_lines = num_lines + 1;
   }
 
   if ( num_lines > 1 ) {
-	  printf( "\n PROBLEM: more than one line in file\n number of lines == %d", num_lines );
+	  printf( "\n PROBLEM: more than one line in file\n" );
 	  *n = -1;
-          printf( "%d\n", num_lines );
 	  return;
   }
 
@@ -32,23 +30,32 @@ void reader( FILE *f, int *n, char file_contents[] ) {
 }
 
 
+//
+// main program
+//
+// takes cammand line args??
 int main( int argc, char *argv[] ) {
-  // https://gitlab.com/imhoffman/fa19b4-mat3006/blob/master/code/day15/single_line.c
+
   //  file I/O
   FILE* fp;
-  int nchars;
+  int total_chars;
   char *temp;
+  // temp is given memory for maxchar char
   temp =(char *) malloc( MAXCHARS * sizeof( char ) );
-  fp = fopen("input.txt","r");     // change file name here!
-  reader( fp, &nchars, temp);
+  fp = fopen("intput.txt","r");
+  reader( fp, &total_chars, temp);
   fclose(fp);
 
-  char *input = malloc( (nchars+1) * sizeof( char ) );
-  strncpy( input, temp, nchars );
+  printf("through reader module");
+
+  char *input = malloc( (total_chars+1) * sizeof( char ) );
+  strncpy( input, temp, total_chars );
   free( temp );     // free the huge temporary file-read buffer
-  input[nchars+1] = '\0';    // is this really needed ?
-  printf( "\n read in %d characters from one line\n\n", nchars);
- 
+  input[total_chars+1] = '\0';    // is this really needed ?
+  printf( "\n read in %d characters from one line\n\n", total_chars);
+  //  end of file I/O
+
+
   return 0;
 }
 
