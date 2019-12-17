@@ -118,7 +118,7 @@ def spot_checker(red_path, green_path):
     return intersections
 
 
-# returns closest to (0, 0)
+# returns closest xy to (0, 0)
 def manhattan_distance_checker(intersections):
     closest = 99999999999999
     for xy in intersections:
