@@ -100,44 +100,43 @@ class Asteroid:
         iii = {}
         iv = {}
         for asteroid in self.relative_map:     # there is no 0,0 in rel_map, also all tuples
-            rel_rock = self.relative_to_absolute(asteroid)
             x = asteroid[0]
             y = asteroid[1]
 
             if x == 0:
                 if y > 0:      # MAKE ALL OF 'UP' 'DOWN' 'II'... SEPARATE DICTIONARIES W/ KEY: RATIO, VALUE: TUPLE(XY)ZZ
-                    up.append(rel_rock)
+                    up.append(asteroid)
                 else:
-                    down.append(rel_rock)
+                    down.append(asteroid)
             elif y == 0:
                 if x > 0:
-                    right.append(rel_rock)
+                    right.append(asteroid)
                 else:
-                    left.append(rel_rock)
+                    left.append(asteroid)
             else:   # needs the separate branch to avoid dividing by zero
                 ratio = float(asteroid[0])/float(asteroid[1])  # ratio is x/y
                 if y < 0:
                     if x < 0:
                         if ratio in iii:
-                            iii[ratio].append(rel_rock)
+                            iii[ratio].append(asteroid)
                         else:
-                            iii[ratio] = [rel_rock]
+                            iii[ratio] = [asteroid]
                     else:
                         if ratio in iv:
-                            iv[ratio].append(rel_rock)
+                            iv[ratio].append(asteroid)
                         else:
-                            iv[ratio] = [rel_rock]
+                            iv[ratio] = [asteroid]
                 if y > 0:
                     if x > 0:
                         if ratio in i:
-                            i[ratio].append(rel_rock)
+                            i[ratio].append(asteroid)
                         else:
-                            i[ratio] = [rel_rock]
+                            i[ratio] = [asteroid]
                     else:
                         if ratio in ii:
-                            ii[ratio].append(rel_rock)
+                            ii[ratio].append(asteroid)
                         else:
-                            ii[ratio] = [rel_rock]
+                            ii[ratio] = [asteroid]
 
         # saves all asteroids into self
         self.up = up
@@ -152,9 +151,16 @@ class Asteroid:
 
     def zap_one_asteroid(self, rocks, last_rock, end):   # i think last_asteroid should be the tuple key
         if last_rock == 'FIRST':
-            if 'UP' in rocks:
-                return
-            # fuck i don't know how to do this
+            if len(self.up) > 0:
+                self.up.remove(min(self.up)) # removes the xy closest to 0,0
+            elif len(self.i) > 0:
+                if len(self.i[min(self.i)]) < 2:
+                    del self.i[min(self.i)]
+                else:
+                    self.i[min(self.i)].remove(min(self.i[min(self.i)]))
+            elif len(self.right) > 0:
+                if len
+
 
 
     def zap_asteroids(self):
@@ -173,5 +179,4 @@ for xy in asteroid_xy:
 
 base = Asteroid(most_seen[0])          # correct asteroid to build a base on
 base.generate_zappable_asteroids()
-
 
