@@ -258,6 +258,7 @@ def run_program(ram, pointer, rel_base):
             return
 
 
+# this never ends
 def program_io_manager(ram):
     pointer = 0
     rel_base = 0
@@ -265,7 +266,9 @@ def program_io_manager(ram):
     counter = 0
     while True:    # this will only return when outputs is full
         outputs, inputs, pointer, ram, rel_base = run_program(ram, pointer, rel_base)
+        print('try to update history')
         maze.update_history(outputs, inputs)
+        print('try to render maze') 
         maze.render_maze()
         if counter == 50:
             print('FYI: this program never ends. Hit control-c to terminate.')
@@ -297,6 +300,7 @@ class MazeMap(object):
         return
 
     def update_history(self, inputs, outputs):
+        print('  did update history')
         if inputs != 'null':
             self.history.append(inputs)
         elif outputs != 'null':
@@ -305,6 +309,7 @@ class MazeMap(object):
 
     # needs to read history and determine: h, l, loc, walls, then print all
     def render_maze(self):
+        print('  did render maze')
         loc = (0, 0)
         walls = []
         oxy = 'null'
@@ -323,12 +328,12 @@ class MazeMap(object):
                 elif number == 4:
                     self.spot = (loc[0] + 1, loc[1])
             else:                       # this means it's an output
-                if number == 0:    # spot is wall, no change in loc
+                if number == 0:         # spot is wall, no change in loc
                     walls.append((self.spot[0], self.spot[1]))
-                elif number == 1:    # spot is space, loc = spot
+                elif number == 1:       # spot is space, loc = spot
                     loc = (self.spot[0], self.spot[1])
                     spaces.append((loc[0], loc[1]))
-                elif number == 2:    # spot is oxy, loc = spot
+                elif number == 2:       # spot is oxy, loc = spot
                     loc = (self.spot[0], self.spot[1])
                     oxy = (loc[0], loc[1])
 
@@ -388,10 +393,10 @@ class MazeMap(object):
 
         # finally prints maze
         for line in blank_map:
-            line = ''
+            pl = ''
             for elem in line:
                 line += elem
-            print(line)        
+            print(pl)        
         return
 
 
