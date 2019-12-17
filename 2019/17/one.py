@@ -245,22 +245,19 @@ def get_outputs(ram):
     outputs = []
     rel_base = 0
     pointer = 0
-    for _ in range(300):
+    while True:
         pointer, ram, rel_base, outputs = opcode_processor(pointer, ram, rel_base, outputs)
-        print(ram[332])
+        if pointer == 'END':
+            break
     return outputs
 
 
 # main program
-raw = read_file('input.txt')
+raw = read_file('day09_input.txt')
 comma_index = comma_finder(raw)
 program = string_to_array(raw, comma_index)
 program = add_memory(program)
 # done with io / formatting
-
-#print(program)
-print(program[330])
-print(program[331])
 
 map_data = get_outputs(program)
 print(map_data)
