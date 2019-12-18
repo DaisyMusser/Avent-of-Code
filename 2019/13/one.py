@@ -1,10 +1,10 @@
 
 # Reads file into string
 def file_to_string(file_name):
-    with open(file_name) as fp:
+    with open(file_name) as file_pointer:
         while True:
-            line = fp.read()
-            if not line:         # a little bit of error catching
+            line = file_pointer.read()
+            if not line:    
                 break
             string_opcode = line
     return string_opcode
@@ -28,9 +28,9 @@ def comma_finder(string_opcode):
 # could be done with .split()
 def string_to_array(opcode_string, comma_index):
     opcode = []
-    buffer = 0
+    temp = 0
     for i in range(len(comma_index)+1):
-        start = buffer
+        start = temp
         if i == len(comma_index):
             end = len(opcode_string)+1
             opcode.append(int(opcode_string[start:end]))
@@ -38,7 +38,7 @@ def string_to_array(opcode_string, comma_index):
         if i < len(comma_index):
             end = comma_index[i]
         opcode.append(int(opcode_string[start:end]))
-        buffer = comma_index[i]+1
+        temp = comma_index[i]+1
     return opcode
 
 
@@ -52,27 +52,27 @@ def add_memory(program):
 
 
 # makes number str and back-fills with 0s
-def yarnifier(number):
-    yarn = str(number)
-    yarn = ("0" * int(5-len(yarn))) + yarn
-    return yarn
+def make_useable(number):
+    string_of_number = str(number)
+    string_of_number = ('0' * int(5-len(string_of_number))) + string_of_number
+    return string_of_number
 
 
 # returns true if number was a valid opcode, false if not
 def opcode_checker(number):
     answer = False                             # default falseyness
-    yarn = str(number)                         # string of number
-    if len(yarn) > 5:                          # greater than 5 digits c/t be an opcode
+    string_of_number = str(number)                         # string of number
+    if len(string_of_number) > 5:                          # greater than 5 digits c/t be an opcode
         return answer
     if number < 1:                             # 0 or -#s c/t be opcodes
         return answer
 
-    yarn = ("0" * int(5-len(yarn))) + yarn     # backfill yarn with 0s, just like yarnifier
+    string_of_number = ('0' * int(5-len(string_of_number))) + string_of_number 
 
-    opcode     = int(yarn[3:5])                # purely symbolic
-    mode_three = int(yarn[0])
-    mode_two   = int(yarn[1])
-    mode_one   = int(yarn[2])
+    opcode     = int(string_of_number[3: 5])                # purely symbolic
+    mode_three = int(string_of_number[0])
+    mode_two   = int(string_of_number[1])
+    mode_one   = int(string_of_number[2])
 
     # https://stackoverflow.com/questions/148042/using-or-comparisons-with-if-statements
     if opcode in (1, 2, 3, 4, 5, 6, 7, 8, 9):
@@ -89,12 +89,12 @@ def opcode_checker(number):
 def opcode_processor(pointer, program, relative_base, outputs):
     opcode = program[pointer]         # purely symbolic
     if opcode_checker(opcode):        # this is only helpful for debugging
-        yarn = yarnifier(opcode)
-        first = int(yarn[2])
-        second = int(yarn[1])
-        third = int(yarn[0])
+        string_opcode = make_useable(opcode)
+        first  = int(string_opcode[2])
+        second = int(string_opcode[1])
+        third  = int(string_opcode[0])
 
-        if int(yarn[4]) == 1:
+        if int(string_opcode[4]) == 1:
             # used this page to figure out an error message:
             # https://www.pythonforbeginners.com/concatenation/string-concatenation-and-formatting-in-python
             # used this to figure out another error:
@@ -115,7 +115,7 @@ def opcode_processor(pointer, program, relative_base, outputs):
             program[address] = x + y      # + rule
             pointer += 4
 
-        elif int(yarn[4]) == 2:
+        elif int(string_opcode[4]) == 2:
             x = program[pointer + 1]   # default x and y set to raw (mode 1)
             y = program[pointer + 2]
             if first == 0:
@@ -132,7 +132,7 @@ def opcode_processor(pointer, program, relative_base, outputs):
             program[address] = x * y  # * rule
             pointer += 4
 
-        elif int(yarn[4]) == 3:  # get input rule
+        elif int(string_opcode[4]) == 3:  # get input rule
 	    # this should not be activated for day 13 part 1
             x = input('~INPUT: ')
             if first == 0:
@@ -141,7 +141,7 @@ def opcode_processor(pointer, program, relative_base, outputs):
                 program[program[pointer + 1] + relative_base] = x
             pointer += 2
 
-        elif int(yarn[4]) == 4:  # print rule
+        elif int(string_opcode[4]) == 4:  # print rule
             if first == 0:
                 outputs.append(program[program[pointer + 1]])
             if first == 1:
@@ -150,7 +150,7 @@ def opcode_processor(pointer, program, relative_base, outputs):
                 outputs.append(program[program[pointer + 1] + relative_base])
             pointer += 2
 
-        elif int(yarn[4]) == 5:   # jump-if-true
+        elif int(string_opcode[4]) == 5:   # jump-if-true
             x = program[pointer + 1]
             y = program[pointer + 2]
             if first == 0:
@@ -166,7 +166,7 @@ def opcode_processor(pointer, program, relative_base, outputs):
             else:
                 pointer += 3
 
-        elif int(yarn[4]) == 6:   # jump-if-false
+        elif int(string_opcode[4]) == 6:   # jump-if-false
             x = program[pointer + 1]  # default mode 1
             y = program[pointer + 2]
             if first == 0:
@@ -182,7 +182,7 @@ def opcode_processor(pointer, program, relative_base, outputs):
             else:
                 pointer += 3
 
-        elif int(yarn[4]) == 7:   # less-than rule
+        elif int(string_opcode[4]) == 7:   # less-than rule
             x = program[pointer + 1]
             y = program[pointer + 2]
             if first == 0:
@@ -202,7 +202,7 @@ def opcode_processor(pointer, program, relative_base, outputs):
                 program[address] = 0
             pointer += 4
 
-        elif int(yarn[4]) == 8:   # equal-to rule
+        elif int(string_opcode[4]) == 8:   # equal-to rule
             x = program[pointer + 1]
             y = program[pointer + 2]
             if first == 0:
@@ -222,7 +222,7 @@ def opcode_processor(pointer, program, relative_base, outputs):
                 program[address] = 0
             pointer += 4
 
-        elif int(yarn[3:5]) == 9:   # relative base modifier rule
+        elif int(string_opcode[3:5]) == 9:   # relative base modifier rule
             # leading 0s not allowed https://stackoverflow.com/questions/36386346/syntaxerror-invalid-token
             value = program[pointer + 1]
             if first == 0:
@@ -232,7 +232,7 @@ def opcode_processor(pointer, program, relative_base, outputs):
             relative_base += value
             pointer += 2
 
-        elif int(yarn[3:5]) == 99:
+        elif int(string_opcode[3:5]) == 99:
             return 'END', program, relative_base, outputs
     else:
         print("--- ERORR ---")
@@ -323,14 +323,5 @@ output = run_program(program)
 output = output_processor(output)
 askii_map, l, h, block_count = map_maker(output)
 
-for i in range(h):
-    string = ''
-    for ii in range(l):
-        string += askii_map[i][ii]
-    print(string)
-
-print('\nNumber of blocks: ', block_count)   # answer
-
-
-
+print('\nNumber of blocks: ', block_count, '\n')   # answer
 
