@@ -3,10 +3,10 @@
 # basic file io
 def file_to_string(file_name):
     locations = []
-    with open(file_name) as fp:
+    with open(file_name) as file_pointer:
         while True:
-            line = fp.readline()
-            if not line:         # a little bit of error catching
+            line = file_pointer.readline()
+            if not line:        
                 break
             locations.append(line)
     return locations
