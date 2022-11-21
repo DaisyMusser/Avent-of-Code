@@ -1,32 +1,41 @@
 
+"""
+nice string:
+    1) at least three from (aeiou)
+    2) one char appears twice
+    3) does not contain "ab", "cd", "pq", or "xy"
+else naughty
+"""
+
+vowels  = list("aeiou")
+bad_seqs = ["ab", "cd", "pq", "xy"]
 data = open("input.txt").read()
 data = data.split("\n")
+#default true
+nice_count = 0
 for line in data:
-	passed_one = False
-	# unless...
-	# rule 1: must be xxybkxx or xxxx not xxx for some x
-    # get all unique letters
-    line_list = [*line]
-    char_set = set(line_list)
-    for letter in char_set:
-        # only check next letter if we havn't passed rule one yet
-        if not passed_one:
-            all_runs = {}
-            current_run = 1
-            # don't consider the last char in line
-            for i, other_letter in enumerate(line_list[:-1]):
-                if other_letter == letter:
-                    if other_letter == char_set[i + 1]:
-                        # next matches
-                        current_run += 1
-                    else:
-                        # next doesn't match
-                        if current_run > 1:
-                            # we have some run
-                            tag = str(current_run)
-                            current_run = 1
-                            if tag in all_runs.keys():
-                                all_runs[tag] += 1
-                            else:
-                                all_runs[tag] = 1
+    nice = True
+    # 1) vowel check
+    num_vowels = 0
+    for vowel in vowels:
+        num_vowels += line.count(vowel)
+    if num_vowels < 3:
+        nice = False
+    # 2) repeated char check
+    double = False
+    for i, char in enumerate(line):
+        next_i = i + 1
+        if next_i < len(line):
+            if char == line[next_i]:
+                double = True
+    if not double:
+        nice = False
+    # 3) dnc check
+    for bad_seq in bad_seqs:
+        if bad_seq in line:
+            nice = False
+    if nice:
+        print("add one")
+        nice_count += 1
+print(nice_count)
 
