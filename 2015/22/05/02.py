@@ -2,10 +2,11 @@
 data = open("test.txt").read()
 data = data.split("\n")
 for line in data:
-    passed_one = False
     # unless...
     # rule 1: must be xxybkxx or xxxx not xxx for some x
     # get all unique letters
+    passed_one = False
+    passed_both = False
     line_list = [*line]
     char_set = set(line_list)
     for letter in char_set:
@@ -29,6 +30,23 @@ for line in data:
                                 all_runs[tag] += 1
                             else:
                                 all_runs[tag] = 1
-        print("Runs for " + letter + ":\n")
-        print(all_runs)
+        num_2and3s = 0
+        if all_runs.get("2"):
+            num_2and3s += all_runs["2"]
+        if all_runs.get("3"):
+            num_2and3s += all_runs["3"]
+        if num_2and3s > 1:
+            passed_one = True
+            if all_runs.get("3"):
+                # must have passed rule two as well!
+                passed_both = True
+        if all_runs.get("4"):
+            passed_one = True
+            # must have passed rule two as well!
+            passed_both = True
+
+
+    # or, rule 2:
+    # for some x, need something like xyx, xax, or even xxx
+    passed_two = False
 
