@@ -1,8 +1,6 @@
 
 # emulates little Bobby table's circut toy
 
-
-
 # generic nodes need to know their parents
 class node(object):
     def __init__(self):
@@ -11,27 +9,38 @@ class node(object):
     def addParent(self, parent):
         self.parents.append(parent)
 
+    def getParents(self):
+        return self.parents
+
+    def getValue(self) -> int:
+        return None
+
+# specific node type: value
+# has a value 
+class value(node):
+    def __init__(self, val):
+        super().__init__()
+        self.val = val
+
+    def getValue(self) -> int:
+        return self.val
+
 # specific node type: address
-# has a value and a name
-# one parent
+# has a name
+# 1 parent
 class address(node):
     def __init__(self, name):
         super().__init__()
         # specific stuff
         self.name  = name
-        self.value = None
 
-    # set addr to some value
-    def set(self, val):
-        self.value = val
-
-    # read value stored at this addr
-    def read(self):
-        return self.value
-    
     # inherited 
     def addParent(self, parent):
-        super().__init__(parent)
+        super().addParent(parent)
+    
+    def getValue(self) -> int:
+        parents = super().getParents()
+        return parents[0].getValue()
 
 # specific node type: opperation
 # knows what opperation it is
@@ -49,24 +58,28 @@ class opperation(node):
         self.oppr = oppr
 
     # get nodes parents, run oppr on them, return result
-    def run(self):
-        parents = super().parents
+    def getValue(self) -> int:
+        # get values from parents
+        parents = super().getParents()
+        values = []
+        for parent in parents:
+            values.append(parent.getValue())
         # must be NOT
         if len(parents) == 1:
-            return ~parents[0]
+            return ~values[0]
         # AND
         elif self.oppr == "AND":
-            return parents[0] & parents[1]
+            return values[0] & values[1]
         # LSHIFT
         elif self.oppr == "LSHFIT":
-            return parents[0] << parents[1]
+            return values[0] << values[1]
         # RSHIFT
         elif self.oppr == "RSHFIT":
-            return parents[0] >> parents[1]
+            return values[0] >> values[1]
         # OR
         else:
-            return parents[0] | parents[1]
+            return values[0] | values[1]
 
     # inherited 
     def addParent(self, parent):
-        super().__init__(parent)
+        super().addParent(parent)

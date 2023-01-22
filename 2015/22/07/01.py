@@ -1,71 +1,47 @@
 
-from tqdm import tqdm
+from classy import *
 
-# poor form? idk...
-# mem maps terms (strings) to values (ints)
-mem = {}
+# test
+x0  = value(123)
+x1  = value(456)
+x2  = value(2)
+x3  = address("x")
+x4  = address("y")
+x5  = value(2)
+x6  = opperation("NOT")
+x7  = opperation("LSHIFT")
+x8  = opperation("AND")
+x9  = opperation("OR")
+x10 = opperation("RSHIFT")
+x11 = opperation("NOT")
+x12 = address("h")
+x13 = address("f")
+x14 = address("d")
+x15 = address("e")
+x16 = address("g")
+x17 = address("i")
 
-# takes a term and returns its value
-def simpTerm(term):
-    if isinstance(term, int):
-        return term
-    else:
-        # is int
-        if not term in mem.keys():
-            mem[term] = 0
-        return mem[term] 
+x17.addParent(x11)
+x16.addParent(x10)
+x15.addParent(x9)
+x14.addParent(x8)
+x13.addParent(x7)
+x12.addParent(x6)
+x6.addParent(x3)
+x7.addParent(x3)
+x7.addParent(x2)
+x8.addParent(x3)
+x8.addParent(x4)
+x9.addParent(x3)
+x9.addParent(x4)
+x10.addParent(x4)
+x10.addParent(x5)
+x11.addParent(x4)
+x3.addParent(x0)
+x4.addParent(x1)
 
-def rSimplify(terms):
-    if terms == [""]:
-        return 0 
-    addr = terms[len(terms) - 1]
-    # terms looks like ["123", "AND", "y", "->", "e"]
-    # turn all strings to ints where needed
-    for i, term in enumerate(terms):
-        if not isinstance(term, int):
-            if term in "0123456789":
-                terms[i] = int(term)
-    # base case:
-    if len(terms) == 3:
-        if not isinstance(terms[0], int):
-            terms[0] = simpTerm(terms[0])
-        mem[addr] = terms[0]
-    # recusive case:
-    else:
-        # possible opperations:
+circut = [x0, x1, x2, x3, x4, x5, x6, x7, x8, x9, x10, x11, x12, x13, x14, x15, x16, x17]
 
-        # AND    - bitwise and
-        # LSHIFT - left-shift
-        # RSHIFT - right-shift
-        # NOT    - bitwise complement
-        # OR     - bitwise or
-
-        # special case for NOT
-        if terms[0] == "NOT":
-            val = ~simpTerm(terms[1])
-            reduced_terms = [val, "->", addr]
-            return rSimplify(reduced_terms)
-        # all other oppr 
-        else:
-            oppr = terms[1]
-            val1 = int(simpTerm(terms[0]))
-            val2 = int(simpTerm(terms[2]))
-            if oppr == "AND":
-                val = val1 & val2
-            elif oppr == "LSHIFT":
-                val = val1 << val2
-            elif oppr == "RSHIFT":
-                val = val1 >> val2
-            else: # OR
-                val = val1 | val2
-            reduced_terms = [val, "->", addr]
-            return rSimplify(reduced_terms)
-
-
-data = open("example.txt").read()
-data = data.split("\n")
-for line in tqdm(data):
-    terms = line.split(" ")
-    rSimplify(terms)
-print(mem["a"])
-
+for n in circut:
+    if isinstance(n, address):
+        print(n.name + ": " + str(n.getValue()))
