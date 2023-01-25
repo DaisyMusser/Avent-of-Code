@@ -40,7 +40,10 @@ class address(node):
     
     def getValue(self) -> int:
         parents = super().getParents()
-        return parents[0].getValue()
+        voltage = parents[0].getValue()
+        if voltage < 0: # voltage wraps
+            voltage += 65535 + 1
+        return voltage
 
 # specific node type: opperation
 # knows what opperation it is
@@ -71,10 +74,10 @@ class opperation(node):
         elif self.oppr == "AND":
             return values[0] & values[1]
         # LSHIFT
-        elif self.oppr == "LSHFIT":
+        elif self.oppr == "LSHIFT":
             return values[0] << values[1]
         # RSHIFT
-        elif self.oppr == "RSHFIT":
+        elif self.oppr == "RSHIFT":
             return values[0] >> values[1]
         # OR
         else:
