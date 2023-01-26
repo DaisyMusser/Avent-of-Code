@@ -337,3 +337,4 @@ o AND q -> r
 NOT p -> q
 k AND m -> n
 as RSHIFT 2 -> at
+STOP
