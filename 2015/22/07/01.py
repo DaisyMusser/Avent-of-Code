@@ -1,128 +1,61 @@
-
-NO_INPUT = -1
-
-def bitwise_not(n, bits):
-    return (1 << bits) - 1 - n
-
+from emulate_tlk import *
 
 if __name__ == "__main__":
-    # data = open("example.txt").read()
     data = open("input.txt").read()
 
     # get seperate lines
-    data = data.split("\n")
-    data.remove("") # remove empty string at end of input
+    lines = data.split("\n")
+    lines.remove("") # remove empty string at end of input
 
-    # split up lines into terms
-    for index, line in enumerate(data):
-        data[index] = line.split(" ")
+    # test my objects
+    x = Wire("x")
+    y = Wire("y")
+    x_in = Literal(123)
+    y_in = Literal(456)
+    x.addParent(x_in)
+    y.addParent(y_in)
+    x_and_y = AND("x_and_y")
+    x_and_y.addParent(x)
+    x_and_y.addParent(y)
+    d = Wire("d")
+    d.addParent(x_and_y)
+    print(d.getValue())
 
-    # 1ST PASS
-    # make dictionary of wires with null starting value (-1)
-    wires = {}
-    for line in data:
-        wires[line[-1]] = NO_INPUT
+    # AND works
 
-    # 2ND PASS
-    # if line can be executed at this time: execute and overwrite with "DONE"
-    # if not, keep in data and move on
-    while wires["a"] == -1:
-        for index, line in enumerate(data):
-            # if line has been executed, skip it
-            if line == "DONE":
-                continue
+    not_x = NOT("not_x")
+    not_x.addParent(x)
+    h = Wire("h")
+    h.addParent(not_x)
+    print(h.getValue())
 
-            num_of_terms = len(line)
+    # NOT works
 
-            # literal assignment, viz:
-            # 123 -> x
-            if num_of_terms == 3:
-                if line[0].isalpha():
-                    # value is a wire
-                    value = wires[line[0]]
-                else:
-                    # value is a number
-                    value = int(line[0])
-                # make sure we don't read an empty wire
-                if value == NO_INPUT:
-                    continue
-                wires[line[-1]] = value
-                data[index] = "DONE"
+    two = Literal(2)
+    x_lshift_2 = LSHIFT("x_<<_2")
+    x_lshift_2.addParent(x)
+    x_lshift_2.addParent(two)
+    f = Wire("f")
+    f.addParent(x_lshift_2)
+    print(f.getValue())
 
-            # NOT, viz:
-            # NOT x -> h
-            if "NOT" in line:
-                operand = wires[line[1]]
-                if operand == NO_INPUT:
-                    # can't execute line yet, skip it
-                    continue
-                else:
-                    # can execute line!
-                    wires[line[-1]] = bitwise_not(operand, bits=16)
-                    data[index] = "DONE"
+    # LSHIFT works
 
-            # RSHIFT, viz:
-            # y RSHIFT 2 -> g
-            if "RSHIFT" in line:
-                operand = wires[line[0]]
-                if operand == NO_INPUT:
-                    # can't execute line yet, skip it
-                    continue
-                else:
-                    # can execute line!
-                    wires[line[-1]] = operand >> int(line[2])
-                    data[index] = "DONE"
+    y_rshift_2 = RSHIFT("y_>>_2")
+    y_rshift_2.addParent(y)
+    y_rshift_2.addParent(two)
+    g = Wire("g")
+    g.addParent(y_rshift_2)
+    print(g.getValue())
 
-            # LSHIFT, viz:
-            # x LSHIFT 2 -> f
-            if "LSHIFT" in line:
-                operand = wires[line[0]]
-                if operand == NO_INPUT:
-                    # can't execute line yet, skip it
-                    continue
-                else:
-                    # can execute line!
-                    wires[line[-1]] = operand << int(line[2])
-                    data[index] = "DONE"
+    # RSHIFT works
 
-            # OR, viz:
-            # x OR y -> e
-            if "OR" in line:
-                x = wires[line[0]]
-                y = wires[line[2]]
-                if (x == NO_INPUT) or (y == NO_INPUT):
-                    # can't execute line yet, skip it
-                    continue
-                else:
-                    # can execute line!
-                    wires[line[-1]] = x | y
-                    data[index] = "DONE"
+    x_or_y = OR("x_or_y")
+    x_or_y.addParent(x)
+    x_or_y.addParent(y)
+    e = Wire("e")
+    e.addParent(x_or_y)
+    print(e.getValue())
 
-            # AND, viz:
-            # x AND y -> d
-            if "AND" in line:
-                # is x a wire or literal ?
-                if line[0].isalpha():
-                    # x is wire
-                    x = wires[line[0]]
-                else:
-                    # x is literal
-                    x = int(line[0])
-                # is y a wire or literal ?
-                if line[2].isalpha():
-                    # y is wire
-                    y = wires[line[2]]
-                else:
-                    # y is literal
-                    y = int(line[2])
+    # OR works!
 
-                # check if any empty wires
-                if (x == NO_INPUT) or (y == NO_INPUT):
-                    # can't execute line yet, skip it
-                    continue
-                else:
-                    # can execute line!
-                    wires[line[-1]] = x & y
-                    data[index] = "DONE"
-
-    print(wires["a"])

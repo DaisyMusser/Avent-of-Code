@@ -23,6 +23,7 @@ class value(node):
         self.val = val
 
     def getValue(self) -> int:
+        print("gv")
         return self.val
 
 # specific node type: address
@@ -43,6 +44,7 @@ class address(node):
         voltage = parents[0].getValue()
         if voltage < 0: # voltage wraps
             voltage += 65535 + 1
+        print("gv")
         return voltage
 
 # specific node type: opperation
@@ -62,6 +64,7 @@ class opperation(node):
 
     # get nodes parents, run oppr on them, return result
     def getValue(self) -> int:
+        print("gv")
         # get values from parents
         parents = super().getParents()
         values = []

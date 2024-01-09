@@ -23,20 +23,21 @@ if __name__ == "__main__":
     for line in data:
         wires[line[-1]] = NO_INPUT
 
+    # CHANGE FOR PART 2
+    wires["b"] = 956
+
     # 2ND PASS
     # if line can be executed at this time: execute and overwrite with "DONE"
     # if not, keep in data and move on
-    while wires["a"] == -1:
+    while wires["a"] == NO_INPUT:
         for index, line in enumerate(data):
             # if line has been executed, skip it
             if line == "DONE":
                 continue
 
-            num_of_terms = len(line)
-
             # literal assignment, viz:
             # 123 -> x
-            if num_of_terms == 3:
+            if len(line) == 3:
                 if line[0].isalpha():
                     # value is a wire
                     value = wires[line[0]]
@@ -125,4 +126,4 @@ if __name__ == "__main__":
                     wires[line[-1]] = x & y
                     data[index] = "DONE"
 
-    print(wires["a"])
+    print("a:", wires["a"])
