@@ -51,6 +51,7 @@ class Wire(InformalNonLiteralInterface):
 """ The following five classes are Opperation nodes. They varry only by number of parents (1-2) and getValue logic """
 
 """ bitwise AND opperation node, 2 parents """
+#Tangable
 class AND(InformalNonLiteralInterface):
     def __init__(self, a: InformalNodeInterface, b: InformalNodeInterface):
         super().__init__()
@@ -64,6 +65,7 @@ class AND(InformalNonLiteralInterface):
 
 
 """ bitwise NOT opperation node, 1 parent """
+#Tangable
 class NOT(InformalNonLiteralInterface):
     def __init__(self, a: InformalNodeInterface):
         super().__init__()
@@ -77,6 +79,7 @@ class NOT(InformalNonLiteralInterface):
 
 
 """ bitwise LSHIFT opperation node, 2 parents """
+#Tangable
 class LSHIFT(InformalNonLiteralInterface):
     def __init__(self, a: InformalNodeInterface, b: InformalNodeInterface):
         super().__init__()
@@ -90,6 +93,7 @@ class LSHIFT(InformalNonLiteralInterface):
 
 
 """ bitwise RSHIFT opperation node, 2 parents """
+#Tangable
 class RSHIFT(InformalNonLiteralInterface):
     def __init__(self, a: InformalNodeInterface, b: InformalNodeInterface):
         super().__init__()
@@ -103,6 +107,7 @@ class RSHIFT(InformalNonLiteralInterface):
 
 
 """ bitwise OR opperation node, 2 parents """
+#Tangable
 class OR(InformalNonLiteralInterface):
     def __init__(self, a: InformalNodeInterface, b: InformalNodeInterface):
         super().__init__()
