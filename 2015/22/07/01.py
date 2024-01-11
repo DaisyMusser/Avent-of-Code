@@ -16,7 +16,7 @@ def handleWireOrLiteral(term, memory):
             return a, memory
 
 if __name__ == "__main__":
-    data = open("input.txt").read()
+    data = open("input-fuckery.txt").read()
 
     # get seperate lines
     lines = data.split("\n")
@@ -69,11 +69,6 @@ if __name__ == "__main__":
             c, memory = handleWireOrLiteral(line[2], memory)
             c.addParent(a)
     
-    a = memory["a"] 
-    print(a.getValue())
-
-
-
-
-
+    a = memory["a"]
+    print(str(a.getValue()))
 
