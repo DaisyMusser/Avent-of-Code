@@ -1,23 +1,56 @@
+import re
 
-from tqdm import tqdm
+# given a string and a sub, returns a copy of string with sub removed
+def eatSub(s, sub):
+    i   = s.find(sub)
+    sub = list(sub)
+    s   = list(s)
+    for x in range(len(sub)):
+        s[i + x] = "-"
+    return "".join(s)
 
-data = open("input.txt").read()
-data = data.split("\n")
-
-char_cnt = 0
-
-for line in tqdm(data):
-    # lose start and end quotes
-    line = line[1:len(line) - 1]
-    # \\   --> \
-    # I think i get to skip this one?? seems like python will handle it for me
-    # \"   --> '
-    # this too?
-    # \xAB --> where AB are ascii for one char 
-    # this too??
-    for char in line:
-        char_cnt += 1
-
-print(char_cnt)
+# Given string s and a sub, replaces sub with r
+def repSub(s, sub, r):
+    i   = s.find(sub)
+    sub = list(sub)
+    s   = list(s)
+    r   = list(r)
+    for x in range(len(sub)):
+        s.pop(i)
+    r.reverse()
+    for r_char in r:
+        s.insert(i, r_char)
+    return "".join(s) 
 
 
+if __name__ == "__main__":
+    lines = open("ex.txt").read().split("\n")
+    lines.remove("")
+
+    total_code = 0
+    total_mem  = 0
+    
+    for s in lines:
+        total_code += len(s)
+        print(str(len(s)) + ": ", end="")
+        # now replace all code with literals 
+        # drop quotes
+        s = s[1:-1]
+        while r"\\" in s:  # rep with \
+            s = repSub(s, r"\\", "\\")
+        while r"\"" in s:  # rep with "
+            s = repSub(s, r"\"", "\"")
+        #m = re.findall("\x(([0-9]|[A-F]){2})", s) # rep with '
+        m = re.findall(r"\\x[0-9A-Fa-f]{2}", s) # rep with '
+        for sub in m:
+            s = repSub(s, sub, "'")
+        total_mem += len(s)
+        print(len(s))
+
+
+    print(total_code)
+    print(total_mem)
+    print(total_code - total_mem)
+
+# 872 is too low.
+# 1385 is too high.
