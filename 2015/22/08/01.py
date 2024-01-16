@@ -24,7 +24,7 @@ def repSub(s, sub, r):
 
 
 if __name__ == "__main__":
-    lines = open("ex.txt").read().split("\n")
+    lines = open("input.txt").read().split("\n")
     lines.remove("")
 
     total_code = 0
@@ -32,21 +32,18 @@ if __name__ == "__main__":
     
     for s in lines:
         total_code += len(s)
-        print(str(len(s)) + ": ", end="")
         # now replace all code with literals 
         # drop quotes
         s = s[1:-1]
         while r"\\" in s:  # rep with \
-            s = repSub(s, r"\\", "\\")
+            s = repSub(s, r"\\", "*")
         while r"\"" in s:  # rep with "
-            s = repSub(s, r"\"", "\"")
+            s = repSub(s, r"\"", "*")
         #m = re.findall("\x(([0-9]|[A-F]){2})", s) # rep with '
         m = re.findall(r"\\x[0-9A-Fa-f]{2}", s) # rep with '
         for sub in m:
-            s = repSub(s, sub, "'")
+            s = repSub(s, sub, "*")
         total_mem += len(s)
-        print(len(s))
-
 
     print(total_code)
     print(total_mem)
