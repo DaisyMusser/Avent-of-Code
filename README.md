@@ -1,2 +1,2 @@
-# Avent-of-Code
+# Advent-of-Code
 Someone's gotta save Christmas
